@@ -43,7 +43,7 @@ final class GaussianStandardKde1dCalculator {
      * </p>
      * 
      * @param source 入力ソース
-     * @throws IllegalArgumentException ソースが空の場合, NaNを含む場合
+     * @throws IllegalArgumentException ソースが空の場合, infやNaNを含む場合
      * @throws NullPointerException 引数にnullが含まれる場合
      */
     WritableKde1dResult calc(double[] source) {
@@ -51,6 +51,11 @@ final class GaussianStandardKde1dCalculator {
         if (source.length == 0) {
             throw new IllegalArgumentException("source is empty");
         }
+        if (Arrays.stream(source)
+                .anyMatch(d -> !Double.isFinite(d))) {
+            throw new IllegalArgumentException("source includes inf or NaN");
+        }
+
         double min = Arrays.stream(source).min().getAsDouble();
         double max = Arrays.stream(source).max().getAsDouble();
         if (Double.isFinite(min) && Double.isFinite(max)) {
