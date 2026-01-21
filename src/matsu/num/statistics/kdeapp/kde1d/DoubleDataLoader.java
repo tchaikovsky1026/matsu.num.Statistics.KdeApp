@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.1.13
+ * 2026.1.21
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -41,12 +41,20 @@ final class DoubleDataLoader {
      * 配列として返す.
      * 
      * <p>
-     * 実行には, ストリームのサプライヤ ({@link IOSupplier}) を渡す.
+     * 実行には, ストリームのサプライヤ ({@link IOSupplier}) を渡す. <br>
+     * このメソッド内でストリームが生成され, クローズ処理が実行される.
+     * </p>
+     * 
+     * <p>
+     * このメソッドは実用においては, <br>
+     * {@code () -> Files.lines(inputPath)} <br>
+     * を渡されることを主に想定している.
      * </p>
      * 
      * @param linesSupplier supplier
      * @return double[]
-     * @throws IOException
+     * @throws IOException {@link IOSupplier} によるストリームの生成で例外が発生した場合,
+     *             ファイルのフォーマットが不正の場合
      * @throws NullPointerException 引数やストリームの要素にnullを含む場合
      */
     public double[] load(IOSupplier<Stream<String>> linesSupplier) throws IOException {
