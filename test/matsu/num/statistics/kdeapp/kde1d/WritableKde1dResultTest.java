@@ -21,25 +21,10 @@ import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 
 /**
- * {@link GaussianStandardKde1dCalc} のテスト.
+ * {@link GaussianStandardKde1dCalculator} のテスト.
  */
 @RunWith(Enclosed.class)
-final class GaussianStandardKde1dCalcTest {
-
-    public static class 引数の検証に関する {
-
-        @Test(expected = IllegalArgumentException.class)
-        public void test_空ソースは例外() {
-            new GaussianStandardKde1dCalc().runAndWrite(new double[0], new PrintWriter(System.out));
-        }
-
-        @Test(expected = IllegalArgumentException.class)
-        public void test_NaNを含むと例外() {
-            new GaussianStandardKde1dCalc().runAndWrite(
-                    new double[] { 1d, Double.NaN },
-                    new PrintWriter(System.out));
-        }
-    }
+final class WritableKde1dResultTest {
 
     public static class 結果出力のフォーマットに関する {
 
@@ -48,8 +33,9 @@ final class GaussianStandardKde1dCalcTest {
         @Before
         public void before_結果となる文字列を準備() {
             StringWriter sw = new StringWriter();
-            new GaussianStandardKde1dCalc()
-                    .runAndWrite(new double[] { 0d, 1d }, new PrintWriter(sw));
+            new GaussianStandardKde1dCalculator()
+                    .calc(new double[] { 0d, 1d })
+                    .write(new PrintWriter(sw));
 
             lineStrings = sw.toString().split("\\R");
         }
