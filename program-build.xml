@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project name="ProgramExport" default="build-program" basedir=".">
+
+	<!--
+	local.properties: ローカルなパラメータを記述する.
+	local.properties.example を参照のこと.
+	-->
+	<property file="local.properties" />
+
+	<!-- ========== ビルド用プロパティファイル ========== -->
+	<property file="build.properties" />
+
+	<!-- ========== パス, 名前の定義 ========== -->
+	<property name="src.dir" location="src" />
+	<property name="bin.dir" location="bin" />
+	<property name="res.dir" location="." />
+	<property name="jar.name" value="${dist.label}.jar" />
+	<property name="program.dir" location="${dist.dir}/${dist.label}" />
+
+	<property name="zip.path" location="${dist.dir}/${dist.label}.zip" />
+
+	<!-- ========== 初期化（ビルドディレクトリ作成） ========== -->
+	<target name="init">
+		<mkdir dir="${bin.dir}" />
+		<mkdir dir="${program.dir}" />
+	</target>
+
+	<!-- ========== クリーンターゲット ========== -->
+	<target name="clean">
+		<delete dir="${bin.dir}" />
+		<delete dir="${program.dir}" />
+		<delete file="${zip.path}" />
+	</target>
+
+	<!-- ========== Javaファイルのコンパイル ========== -->
+	<target name="compile" depends="clean, init">
+		<javac srcdir="${src.dir}"
+		       destdir="${bin.dir}"
+		       includeantruntime="false"
+		       modulepath="${module.path}"
+		       release="17"
+		>
+			<compilerarg value="-Xlint:-removal" />
+		</javac>
+	</target>
+
+	<!-- ========== JARファイルの生成 ========== -->
+	<target name="build-jar" depends="compile">
+		<jar destfile="${program.dir}/${jar.name}" compress="true">
+			<!-- コンパイル済みクラス -->
+			<fileset dir="${bin.dir}" includes="**/*.class" />
+
+			<!-- ソースファイル -->
+			<fileset dir="${src.dir}" includes="**/*.java" />
+
+			<!-- マニフェスト自動生成 -->
+			<manifest>
+				<attribute name="Manifest-Version" value="1.0" />
+			</manifest>
+		</jar>
+	</target>
+
+	<!-- ========== プログラム構造の生成 ========== -->
+	<target name="build-program" depends="build-jar">
+		<!-- プロパティファイルから読み込んだリソースをコピー -->
+		<copy todir="${program.dir}">
+			<fileset dir="${res.dir}" includes="${other.resources}" />
+		</copy>
+		<copy todir="${program.dir}" flatten="true">
+			<fileset dir="${res.dir}" includes="${other.resources.flatten}" />
+		</copy>
+
+		<mkdir dir="${program.dir}/lib" />
+
+		<zip destfile="${zip.path}" compress="true">
+			<fileset dir="${program.dir}" includes="*" />
+		</zip>
+	</target>
+
+</project>

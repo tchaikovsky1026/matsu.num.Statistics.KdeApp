@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.1.21
+ * 2026.1.23
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -48,6 +48,10 @@ final class Kde1dCli {
      * <li>ソースの値は 1 column で縦に並べる</li>
      * <li>ソースの値には inf, NaN を含まず, {@link Double#parseDouble(String)} で解釈可能</li>
      * </ul>
+     * 
+     * <p>
+     * 出力フォーマットは, ラベル無しのタブ区切り 2 columns である.
+     * </p>
      * 
      * <p>
      * 入力ファイルが見つからない, ファイルフォーマットが不正の場合は例外をスロー.
