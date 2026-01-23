@@ -15,9 +15,16 @@ package matsu.num.statistics.kdeapp.kde1d;
  * 
  * @author Matsuura Y.
  */
-public final class KdeCliEntryPoint {
+public final class Kde1dCliEntryPoint {
+
+    private Kde1dCliEntryPoint() {
+        // インスタンス化不可
+        throw new AssertionError();
+    }
 
     /**
+     * エントリーポイント.
+     * 
      * @param args パラメータ
      * @throws Exception 例外スロー時
      */
