@@ -87,8 +87,13 @@ final class Kde1dCli {
 
         double[] source = loader.load(() -> Files.lines(input));
 
+        WritingFormatter writingFormatter =
+                new WritingFormatter.Builder()
+                        .disableLabel()
+                        .setSeparator('\t')
+                        .build();
         WritableKde1dResult result = new GaussianStandardKde1dCalculator().calc(source);
-        result.write(new PrintWriter(out));
+        result.write(new PrintWriter(out), writingFormatter);
 
         out.println("Bye.");
         return 0;
