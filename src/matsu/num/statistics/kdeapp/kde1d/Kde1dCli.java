@@ -13,9 +13,7 @@ package matsu.num.statistics.kdeapp.kde1d;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 
 /**
  * 最も単純な1次元カーネル密度推定を実行するクラス.
@@ -80,12 +78,9 @@ final class Kde1dCli {
         }
 
         out.println("kde1d...");
+
         Path input = Path.of(args[0]).toAbsolutePath().normalize();
-
-        DoubleLineParser lineParser = new DoubleLineParser(List.of("#"));
-        DoubleDataLoader loader = new DoubleDataLoader(lineParser);
-
-        double[] source = loader.load(() -> Files.lines(input));
+        double[] source = new Kde1dSourceLoader("#").loadFrom(input);
 
         WritingFormatter writingFormatter =
                 new WritingFormatter.Builder()
