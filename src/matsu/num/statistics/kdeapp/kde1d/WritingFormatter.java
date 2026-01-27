@@ -23,7 +23,7 @@ import matsu.num.statistics.kerneldensity.output.Kde1dCharSVTextFormatter;
 final class WritingFormatter {
 
     private final char separator;
-    private final Character labelHeader;
+    private final String labelHeader;
 
     private final Kde1dCharSVTextFormatter formatter;
 
@@ -64,7 +64,7 @@ final class WritingFormatter {
     static final class Builder {
 
         private volatile char separator;
-        private volatile Character labelHeader;
+        private volatile String labelHeader;
 
         /**
          * デフォルトの設定でビルダインスタンスを立ち上げる.
@@ -107,8 +107,8 @@ final class WritingFormatter {
         }
 
         /**
-         * ラベル出力に関し, 出力する設定に変更する. <br>
-         * ラベルの先頭に付与する文字を与える.
+         * ラベル出力に関し, 出力する設定に変更する
+         * (ラベルの先頭に付与する文字を与える).
          * 
          * <p>
          * <i>
@@ -121,7 +121,26 @@ final class WritingFormatter {
          * @return {@code this}
          */
         Builder enableLabel(char labelHeader) {
-            this.labelHeader = Character.valueOf(labelHeader);
+            return this.enableLabel(String.valueOf(labelHeader));
+        }
+
+        /**
+         * ラベル出力に関し, 出力する設定に変更する
+         * (ラベルの先頭に付与する文字列を与える).
+         * 
+         * <p>
+         * <i>
+         * {@code this}
+         * をリターンするので注意.
+         * </i>
+         * </p>
+         * 
+         * @param labelHeader ラベルの先頭に付与する文字
+         * @return {@code this}
+         * @throws NullPointerException 引数がnullの場合
+         */
+        Builder enableLabel(String labelHeader) {
+            this.labelHeader = Objects.requireNonNull(labelHeader);
             return this;
         }
 
