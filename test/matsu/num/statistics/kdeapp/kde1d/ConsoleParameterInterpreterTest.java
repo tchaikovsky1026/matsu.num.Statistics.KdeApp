@@ -75,7 +75,7 @@ final class ConsoleParameterInterpreterTest {
 
         @Test
         public void test_inputFileは設定ずみ() {
-            assertThat(interpretation.valueOf(INPUT_FILE_PATH).get().get(), is(file));
+            assertThat(interpretation.valueOf(INPUT_FILE_PATH).get(), is(file));
         }
 
         @Test
@@ -86,7 +86,7 @@ final class ConsoleParameterInterpreterTest {
         @SuppressWarnings("deprecation")
         @Test
         public void test_dummyNoArgは設定済み() {
-            assertThat(interpretation.valueOf(DUMMY_NO_ARG).get(), is(Optional.empty()));
+            assertThat(interpretation.valueOf(DUMMY_NO_ARG), not(Optional.empty()));
         }
     }
 }
