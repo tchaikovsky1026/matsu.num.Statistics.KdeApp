@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.1.21
+ * 2026.2.2
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -29,6 +29,6 @@ public final class Kde1dCliEntryPoint {
      * @throws Exception 例外スロー時
      */
     public static void main(String[] args) throws Exception {
-        System.exit(new Kde1dCli().run(args));
+        System.exit(new Kde1dCliWithStyle010().run(args));
     }
 }
