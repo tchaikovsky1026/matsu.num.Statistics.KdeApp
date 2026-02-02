@@ -29,6 +29,6 @@ public final class Kde1dCliEntryPoint {
      * @throws Exception 例外スロー時
      */
     public static void main(String[] args) throws Exception {
-        System.exit(new Kde1dCliWithStyle010().run(args));
+        System.exit(new Kde1dCliWithStyle020().run(args));
     }
 }
