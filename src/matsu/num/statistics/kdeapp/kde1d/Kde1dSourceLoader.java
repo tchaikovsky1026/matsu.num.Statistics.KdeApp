@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.1.28
+ * 2026.2.2
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 1次元のカーネル密度推定に使うデータソースのローダー.
@@ -23,28 +24,29 @@ import java.util.List;
 final class Kde1dSourceLoader {
 
     private final DoubleDataLoader loader;
+    private final Path path;
 
     /**
      * エスケープする文字列を指定し, ローダーを起動.
      * 
+     * @param path ロードするファイルのパス
      * @param escapes エスケープする文字列のセット
      * @throws IllegalArgumentException エスケープ文字列に空文字が含まれる場合
      * @throws NullPointerException 引数にnullを含む場合
      */
-    Kde1dSourceLoader(String... escapes) {
+    Kde1dSourceLoader(Path path, String... escapes) {
         DoubleLineParser lineParser = new DoubleLineParser(List.of(escapes));
         this.loader = new DoubleDataLoader(lineParser);
+        this.path = Objects.requireNonNull(path);
     }
 
     /**
      * ファイルをロードし, データソースを取得する.
      * 
-     * @param path ファイルのパス
      * @return データソース
      * @throws IOException ファイルアクセスで例外が発生した場合, ファイルのフォーマットが不正の場合
-     * @throws NullPointerException 引数がnull
      */
-    double[] loadFrom(Path path) throws IOException {
+    double[] load() throws IOException {
         return loader.load(() -> Files.lines(path));
     }
 }
