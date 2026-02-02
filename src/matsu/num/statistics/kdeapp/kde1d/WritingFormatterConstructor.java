@@ -38,10 +38,10 @@ final class WritingFormatterConstructor implements ComponentConstructor<WritingF
                 .setSeparator('\t');
 
         interpreter.valueOf(LABEL_HEADER)
-                .ifPresent(opHeader -> builder.enableLabel(opHeader.get()));
+                .ifPresent(header -> builder.enableLabel(header));
 
         interpreter.valueOf(SEPARATOR)
-                .ifPresent(opSeparator -> builder.setSeparator(opSeparator.get().charAt(0)));
+                .ifPresent(separator -> builder.setSeparator(separator.charAt(0)));
 
         return builder.build();
     }

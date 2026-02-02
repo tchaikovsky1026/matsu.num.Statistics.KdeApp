@@ -22,10 +22,10 @@ import java.util.Optional;
  */
 final class ConsoleParameterInterpreter {
 
-    private final Map<ConsoleOptionCommand, Optional<String>> optionMapper;
+    private final Map<ConsoleOptionCommand, String> optionMapper;
 
     private ConsoleParameterInterpreter(
-            Map<ConsoleOptionCommand, Optional<String>> optionMapper) {
+            Map<ConsoleOptionCommand, String> optionMapper) {
         this.optionMapper = Objects.requireNonNull(optionMapper);
     }
 
@@ -33,15 +33,11 @@ final class ConsoleParameterInterpreter {
      * オプションの値を取得する.
      * 
      * <p>
-     * 戻り値型は二重のオプショナルである. <br>
-     * オプションが指定されていない場合は, 外側が空である.
-     * </p>
-     * 
-     * <p>
-     * 内側のオプショナルは, コマンドの性質に依存する. <br>
-     * コマンドがパラメータをとる場合 ({@link ConsoleOptionCommand#hasArg()}),
-     * 内側はパラメータである文字列をラップしたオプショナルを返す. <br>
-     * パラメータをとらない場合, 内側は空になる.
+     * 戻り値型はオプショナルである. <br>
+     * オプションが指定されていない場合は, 空である. <br>
+     * パラメータを取らないオプションの場合
+     * (see: {@link ConsoleOptionCommand#hasArg()}),
+     * ダミー文字列である.
      * </p>
      * 
      * <p>
@@ -51,11 +47,11 @@ final class ConsoleParameterInterpreter {
      * </i>
      * </p>
      * 
-     * @param option
-     * @return オプションの値, 指定されていない場合は外側が空, 内側はメソッド説明文を参照.
+     * @param option オプションの属性
+     * @return オプションの値, 指定されていない場合は空.
      * @throws NullPointerException 引数がnullの場合
      */
-    Optional<Optional<String>> valueOf(ConsoleOptionCommand option) {
+    Optional<String> valueOf(ConsoleOptionCommand option) {
         return Optional.ofNullable(optionMapper.get(Objects.requireNonNull(option)));
     }
 
@@ -87,7 +83,7 @@ final class ConsoleParameterInterpreter {
         final int size = args.length;
 
         int cursor = 0;
-        Map<ConsoleOptionCommand, Optional<String>> optionMapper =
+        Map<ConsoleOptionCommand, String> optionMapper =
                 new EnumMap<>(ConsoleOptionCommand.class);
         while (cursor < size) {
             // オプションコマンドを同定
@@ -104,9 +100,9 @@ final class ConsoleParameterInterpreter {
                         "duplicate: <" + command.commandString() + ">");
             }
 
-            // 後続のパラメータが必要ない場合は, オプションコマンドの存在を記録
+            // 後続のパラメータが必要ない場合は, オプションコマンドの存在を記録(ダミー文字列)
             if (!command.hasArg()) {
-                optionMapper.put(command, Optional.empty());
+                optionMapper.put(command, "");
                 continue;
             }
 
@@ -115,7 +111,7 @@ final class ConsoleParameterInterpreter {
                 throw new InvalidParameterException(
                         "args lack: <" + command.commandString() + ">");
             }
-            optionMapper.put(command, Optional.of(args[cursor]));
+            optionMapper.put(command, Objects.requireNonNull(args[cursor]));
             cursor++;
         }
 

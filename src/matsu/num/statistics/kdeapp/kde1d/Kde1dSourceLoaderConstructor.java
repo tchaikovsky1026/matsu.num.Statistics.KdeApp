@@ -12,8 +12,6 @@ package matsu.num.statistics.kdeapp.kde1d;
 
 import static matsu.num.statistics.kdeapp.kde1d.ConsoleOptionCommand.*;
 
-import java.util.Optional;
-
 /**
  * {@link Kde1dSourceLoader} の構築器.
  * 
@@ -36,12 +34,10 @@ final class Kde1dSourceLoaderConstructor implements ComponentConstructor<Kde1dSo
     public Kde1dSourceLoader construct(ConsoleParameterInterpreter interpreter) {
 
         String pathString = interpreter.valueOf(INPUT_FILE_PATH)
-                .orElseThrow(() -> new InvalidParameterException("lack parameter: " + INPUT_FILE_PATH.commandString()))
-                .get();
+                .orElseThrow(() -> new InvalidParameterException("lack parameter: " + INPUT_FILE_PATH.commandString()));
 
         String escape = interpreter.valueOf(COMMENT_CHAR)
-                .orElse(Optional.of("#"))
-                .get();
+                .orElse("#");
         return new Kde1dSourceLoader(pathString, escape);
     }
 }
