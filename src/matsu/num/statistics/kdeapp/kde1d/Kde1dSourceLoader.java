@@ -12,6 +12,7 @@ package matsu.num.statistics.kdeapp.kde1d;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
@@ -24,7 +25,7 @@ import java.util.Objects;
 final class Kde1dSourceLoader {
 
     private final DoubleDataLoader loader;
-    private final Path path;
+    private final String pathString;
 
     /**
      * エスケープする文字列を指定し, ローダーを起動.
@@ -34,10 +35,10 @@ final class Kde1dSourceLoader {
      * @throws IllegalArgumentException エスケープ文字列に空文字が含まれる場合
      * @throws NullPointerException 引数にnullを含む場合
      */
-    Kde1dSourceLoader(Path path, String... escapes) {
+    Kde1dSourceLoader(String pathString, String... escapes) {
         DoubleLineParser lineParser = new DoubleLineParser(List.of(escapes));
         this.loader = new DoubleDataLoader(lineParser);
-        this.path = Objects.requireNonNull(path);
+        this.pathString = Objects.requireNonNull(pathString);
     }
 
     /**
@@ -47,6 +48,11 @@ final class Kde1dSourceLoader {
      * @throws IOException ファイルアクセスで例外が発生した場合, ファイルのフォーマットが不正の場合
      */
     double[] load() throws IOException {
-        return loader.load(() -> Files.lines(path));
+        try {
+            Path path = Path.of(pathString);
+            return loader.load(() -> Files.lines(path));
+        } catch (InvalidPathException ipe) {
+            throw new IOException("InvalidPathException: " + ipe.getMessage());
+        }
     }
 }
