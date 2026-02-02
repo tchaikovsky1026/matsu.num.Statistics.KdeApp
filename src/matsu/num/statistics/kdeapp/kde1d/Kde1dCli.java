@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.1.23
+ * 2026.2.2
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -77,10 +77,12 @@ final class Kde1dCli {
             System.exit(1);
         }
 
+        // ここでコンソールパラメータの構文解析を行いたい
+
         out.println("kde1d...");
 
         Path input = Path.of(args[0]).toAbsolutePath().normalize();
-        double[] source = new Kde1dSourceLoader("#").loadFrom(input);
+        double[] source = new Kde1dSourceLoader(input, "#").load();
 
         WritingFormatter writingFormatter =
                 new WritingFormatter.Builder()
