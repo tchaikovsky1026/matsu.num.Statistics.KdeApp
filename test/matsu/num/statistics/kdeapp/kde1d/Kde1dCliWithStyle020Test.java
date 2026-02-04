@@ -20,12 +20,12 @@ import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 
 /**
- * {@link Kde1dCli} のテスト.
+ * {@link Kde1dCliWithStyle020} のテスト.
  */
 @RunWith(Enclosed.class)
-final class Kde1dCliTest {
+final class Kde1dCliWithStyle020Test {
 
-    public static final Class<?> TEST_CLASS = Kde1dCli.class;
+    public static final Class<?> TEST_CLASS = Kde1dCliWithStyle020.class;
 
     public static class 処理の実行のテスト {
 
@@ -40,7 +40,7 @@ final class Kde1dCliTest {
             PrintStream err = new PrintStream(OutputStream.nullOutputStream());
 
             assertThat(
-                    new Kde1dCli().run(new String[] { p.toString() }, out, err),
+                    new Kde1dCliWithStyle020().run(new String[] { "-f", p.toString() }, out, err),
                     is(0));
         }
     }
@@ -52,7 +52,7 @@ final class Kde1dCliTest {
             System.out.println(TEST_CLASS.getName() + ":");
             try {
                 // ファイルがないパターン
-                new Kde1dCli().run(new String[] { "dummy.txt" });
+                new Kde1dCliWithStyle020().run(new String[] { "-f", "dummy.txt" });
             } catch (Exception e) {
                 System.out.println(errorMessage(e));
             }

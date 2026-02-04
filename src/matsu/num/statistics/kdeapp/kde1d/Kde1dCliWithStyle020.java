@@ -6,28 +6,29 @@
  */
 
 /*
- * 2026.1.23
+ * 2026.2.2
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.List;
 
 /**
  * 最も単純な1次元カーネル密度推定を実行するクラス.
  * 
+ * <p>
+ * コンソールパラメータは, version 0.2.0 のスタイルとする.
+ * </p>
+ * 
  * @author Matsuura Y.
  */
-final class Kde1dCli {
+final class Kde1dCliWithStyle020 {
 
     /**
      * 唯一のコンストラクタ.
      */
-    Kde1dCli() {
+    Kde1dCliWithStyle020() {
         super();
     }
 
@@ -74,21 +75,19 @@ final class Kde1dCli {
      */
     int run(String[] args, PrintStream out, PrintStream err) throws IOException {
 
-        if (args.length != 1) {
-            err.println("Usage: args = {<input-file-path>}");
-            System.exit(1);
-        }
-
         out.println("kde1d...");
-        Path input = Path.of(args[0]).toAbsolutePath().normalize();
 
-        DoubleLineParser lineParser = new DoubleLineParser(List.of("#"));
-        DoubleDataLoader loader = new DoubleDataLoader(lineParser);
+        ConsoleParameterInterpreter interpretation =
+                ConsoleParameterInterpreter.from(args);
 
-        double[] source = loader.load(() -> Files.lines(input));
+        Kde1dSourceLoader loader =
+                Kde1dSourceLoaderConstructor.INSTANCE.construct(interpretation);
+        WritingFormatter writingFormatter =
+                WritingFormatterConstructor.INSTANCE.construct(interpretation);
 
+        double[] source = loader.load();
         WritableKde1dResult result = new GaussianStandardKde1dCalculator().calc(source);
-        result.write(new PrintWriter(out));
+        result.write(new PrintWriter(out), writingFormatter);
 
         out.println("Bye.");
         return 0;

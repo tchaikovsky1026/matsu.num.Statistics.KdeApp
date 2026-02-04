@@ -54,7 +54,7 @@ final class DoubleDataLoader {
      * @param linesSupplier supplier
      * @return double[]
      * @throws IOException {@link IOSupplier} によるストリームの生成で例外が発生した場合,
-     *             ファイルのフォーマットが不正の場合
+     *             文字列フォーマットが不正の場合
      * @throws NullPointerException 引数やストリームの要素にnullを含む場合
      */
     public double[] load(IOSupplier<Stream<String>> linesSupplier) throws IOException {
