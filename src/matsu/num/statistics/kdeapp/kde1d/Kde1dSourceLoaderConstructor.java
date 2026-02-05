@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.2
+ * 2026.2.5
  */
 package matsu.num.statistics.kdeapp.kde1d;
 

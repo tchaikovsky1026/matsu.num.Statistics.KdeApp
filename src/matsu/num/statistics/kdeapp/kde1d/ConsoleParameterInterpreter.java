@@ -6,11 +6,11 @@
  */
 
 /*
- * 2026.2.2
+ * 2026.2.5
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
-import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -84,14 +84,15 @@ final class ConsoleParameterInterpreter {
 
         int cursor = 0;
         Map<ConsoleOptionCommand, String> optionMapper =
-                new EnumMap<>(ConsoleOptionCommand.class);
+                new HashMap<>();
         while (cursor < size) {
             // オプションコマンドを同定
             String commandAsString = args[cursor];
-            ConsoleOptionCommand command = ConsoleOptionCommand.interpret(commandAsString)
-                    .orElseThrow(
-                            () -> new InvalidParameterException(
-                                    "unknown command: <" + commandAsString + ">"));
+            ConsoleOptionCommand command =
+                    ConsoleOptionCommand.interpret(commandAsString)
+                            .orElseThrow(
+                                    () -> new InvalidParameterException(
+                                            "unknown command: <" + commandAsString + ">"));
             cursor++;
 
             // オプションの重複確認

@@ -6,34 +6,68 @@
  */
 
 /*
- * 2026.1.30
+ * 2026.2.5
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
 import static java.util.stream.Collectors.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
 /**
- * コンソールオプションコマンドを表現するクラス.
+ * コンソールオプションコマンドの列挙を表現するクラス.
  * 
  * @author Matsuura Y.
  */
-@Deprecated
-enum ConsoleOptionCommand {
-
-    INPUT_FILE_PATH(true, "--input-file", "-f"),
-    COMMENT_CHAR(true, "--comment-char"),
-    SEPARATOR(true, "--separator", "-sep"),
-    LABEL_HEADER(true, "--label-header"),
+final class ConsoleOptionCommand {
 
     /**
-     * 引数をとらないダミーオプション.
+     * 入力ファイルの指定を表現するシングルトンインスタンス.
+     * 
+     * <p>
+     * 要arg.
+     * </p>
+     */
+    public static final ConsoleOptionCommand INPUT_FILE_PATH =
+            new ConsoleOptionCommand(true, "--input-file", "-f");
+
+    /**
+     * 入力のコメント行の prefix の指定を表現するシングルトンインスタンス.
+     * 
+     * <p>
+     * 要arg.
+     * </p>
+     */
+    public static final ConsoleOptionCommand COMMENT_CHAR =
+            new ConsoleOptionCommand(true, "--comment-char");
+
+    /**
+     * 区切り文字の指定を表現するシングルトンインスタンス.
+     * 
+     * <p>
+     * 要arg.
+     * </p>
+     */
+    public static final ConsoleOptionCommand SEPARATOR =
+            new ConsoleOptionCommand(true, "--separator", "-sep");
+
+    /**
+     * 出力のラベルに付与する prefix の指定を表現するシングルトンインスタンス.
+     * 
+     * <p>
+     * 要arg.
+     * </p>
+     */
+    public static final ConsoleOptionCommand LABEL_HEADER =
+            new ConsoleOptionCommand(true, "--label-header");
+
+    /**
+     * 引数をとらないダミーオプション, シングルトンインスタンス.
      * 
      * <p>
      * 引数をとらないオプションが導入されたら, このオプションは削除する.
@@ -42,7 +76,8 @@ enum ConsoleOptionCommand {
      * @deprecated ダミーオプション, プロダクトコードから参照してはいけない.
      */
     @Deprecated
-    DUMMY_NO_ARG(false, "--dummy-no-arg");
+    public static final ConsoleOptionCommand DUMMY_NO_ARG =
+            new ConsoleOptionCommand(false, "--dummy-no-arg");
 
     /**
      * オプションに続くパラメータを持つかどうか.
@@ -94,6 +129,17 @@ enum ConsoleOptionCommand {
         return OptionCommandStringInterpreter.interpret(commandAsString);
     }
 
+    /**
+     * このクラスのシングルトンインスタンスの集合を取得する. <br>
+     * 不変コレクション.
+     * 
+     * @return シングルトンインスタンスの集合
+     */
+    static Collection<ConsoleOptionCommand> values() {
+        // ここはリフレクションで処理したい
+        return SingletonHolder.values;
+    }
+
     private static final class OptionCommandStringInterpreter {
 
         private static final Map<String, ConsoleOptionCommand> toOptionMapper;
@@ -101,7 +147,7 @@ enum ConsoleOptionCommand {
         static {
 
             // フラット化
-            List<Pair> pairs = Arrays.stream(ConsoleOptionCommand.values())
+            List<Pair> pairs = ConsoleOptionCommand.values().stream()
                     .flatMap(
                             o -> o.listOfAsString.stream()
                                     .map(str -> new Pair(o, str)))
@@ -141,6 +187,20 @@ enum ConsoleOptionCommand {
                 this.command = command;
                 this.asString = asString;
             }
+        }
+    }
+
+    private static final class SingletonHolder {
+
+        /**
+         * オプションコマンドの集合. <br>
+         * 不変になるようにすること.
+         */
+        static final Collection<ConsoleOptionCommand> values;
+
+        static {
+            // ここはリフレクションで処理したい
+            values = List.of(INPUT_FILE_PATH, COMMENT_CHAR, SEPARATOR, LABEL_HEADER, DUMMY_NO_ARG);
         }
     }
 }
