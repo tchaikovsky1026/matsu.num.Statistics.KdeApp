@@ -24,6 +24,7 @@ import java.util.Optional;
  * 
  * @author Matsuura Y.
  */
+@Deprecated
 enum ConsoleOptionCommand {
 
     INPUT_FILE_PATH(true, "--input-file", "-f"),
