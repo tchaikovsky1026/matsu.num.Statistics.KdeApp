@@ -6,11 +6,11 @@
  */
 
 /*
- * 2026.2.2
+ * 2026.2.5
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
-import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -22,10 +22,10 @@ import java.util.Optional;
  */
 final class ConsoleParameterInterpreter {
 
-    private final Map<ConsoleOptionCommand, String> optionMapper;
+    private final Map<ConsoleOptionCommand<?>, String> optionMapper;
 
     private ConsoleParameterInterpreter(
-            Map<ConsoleOptionCommand, String> optionMapper) {
+            Map<ConsoleOptionCommand<?>, String> optionMapper) {
         this.optionMapper = Objects.requireNonNull(optionMapper);
     }
 
@@ -51,7 +51,7 @@ final class ConsoleParameterInterpreter {
      * @return オプションの値, 指定されていない場合は空.
      * @throws NullPointerException 引数がnullの場合
      */
-    Optional<String> valueOf(ConsoleOptionCommand option) {
+    Optional<String> valueOf(ConsoleOptionCommand<?> option) {
         return Optional.ofNullable(optionMapper.get(Objects.requireNonNull(option)));
     }
 
@@ -83,15 +83,16 @@ final class ConsoleParameterInterpreter {
         final int size = args.length;
 
         int cursor = 0;
-        Map<ConsoleOptionCommand, String> optionMapper =
-                new EnumMap<>(ConsoleOptionCommand.class);
+        Map<ConsoleOptionCommand<?>, String> optionMapper =
+                new HashMap<>();
         while (cursor < size) {
             // オプションコマンドを同定
             String commandAsString = args[cursor];
-            ConsoleOptionCommand command = ConsoleOptionCommand.interpret(commandAsString)
-                    .orElseThrow(
-                            () -> new InvalidParameterException(
-                                    "unknown command: <" + commandAsString + ">"));
+            ConsoleOptionCommand<?> command =
+                    ConsoleOptionCommand.interpret(commandAsString)
+                            .orElseThrow(
+                                    () -> new InvalidParameterException(
+                                            "unknown command: <" + commandAsString + ">"));
             cursor++;
 
             // オプションの重複確認

@@ -6,33 +6,71 @@
  */
 
 /*
- * 2026.1.30
+ * 2026.2.5
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
 import static java.util.stream.Collectors.*;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
 /**
- * コンソールオプションコマンドを表現するクラス.
+ * コンソールオプションコマンドの列挙を表現するクラス.
  * 
  * @author Matsuura Y.
+ * @param <T> コマンドの引数の変更先の型, see {@link #convertArg(String)}
  */
-enum ConsoleOptionCommand {
-
-    INPUT_FILE_PATH(true, "--input-file", "-f"),
-    COMMENT_CHAR(true, "--comment-char"),
-    SEPARATOR(true, "--separator", "-sep"),
-    LABEL_HEADER(true, "--label-header"),
+final class ConsoleOptionCommand<T> {
 
     /**
-     * 引数をとらないダミーオプション.
+     * 入力ファイルの指定を表現するシングルトンインスタンス.
+     * 
+     * <p>
+     * 要arg.
+     * </p>
+     */
+    public static final ConsoleOptionCommand<String> INPUT_FILE_PATH =
+            new ConsoleOptionCommand<>("INPUT_FILE_PATH", true, "--input-file", "-f");
+
+    /**
+     * 入力のコメント行の prefix の指定を表現するシングルトンインスタンス.
+     * 
+     * <p>
+     * 要arg.
+     * </p>
+     */
+    public static final ConsoleOptionCommand<String> COMMENT_CHAR =
+            new ConsoleOptionCommand<>("COMMENT_CHAR", true, "--comment-char");
+
+    /**
+     * 区切り文字の指定を表現するシングルトンインスタンス.
+     * 
+     * <p>
+     * 要arg.
+     * </p>
+     */
+    public static final ConsoleOptionCommand<Character> SEPARATOR =
+            new ConsoleOptionCommand<>("SEPARATOR", true, "--separator", "-sep");
+
+    /**
+     * 出力のラベルに付与する prefix の指定を表現するシングルトンインスタンス.
+     * 
+     * <p>
+     * 要arg.
+     * </p>
+     */
+    public static final ConsoleOptionCommand<String> LABEL_HEADER =
+            new ConsoleOptionCommand<>("LABEL_HEADER", true, "--label-header");
+
+    /**
+     * 引数をとらないダミーオプション, シングルトンインスタンス.
      * 
      * <p>
      * 引数をとらないオプションが導入されたら, このオプションは削除する.
@@ -41,7 +79,10 @@ enum ConsoleOptionCommand {
      * @deprecated ダミーオプション, プロダクトコードから参照してはいけない.
      */
     @Deprecated
-    DUMMY_NO_ARG(false, "--dummy-no-arg");
+    public static final ConsoleOptionCommand<?> DUMMY_NO_ARG =
+            new ConsoleOptionCommand<>("DUMMY_NO_ARG", false, "--dummy-no-arg");
+
+    private final String enumString;
 
     /**
      * オプションに続くパラメータを持つかどうか.
@@ -51,7 +92,11 @@ enum ConsoleOptionCommand {
     private final String commandString;
     private final List<String> listOfAsString;
 
-    private ConsoleOptionCommand(boolean hasArg, String commandString, String... asString) {
+    private ConsoleOptionCommand(String enumString,
+            boolean hasArg, String commandString, String... asString) {
+
+        this.enumString = enumString;
+
         this.hasArg = hasArg;
         this.commandString = commandString;
 
@@ -83,24 +128,43 @@ enum ConsoleOptionCommand {
     }
 
     /**
+     * このインスタンスの文字列表現を返す.
+     */
+    @Override
+    public String toString() {
+        return this.enumString;
+    }
+
+    /**
      * 与えられた文字列からオプションコマンドを解釈して返す.
      * 
      * @param commandAsString 文字列表現
      * @return 該当するオプションコマンド, 該当なしなら空
      * @throws NullPointerException 引数がnull
      */
-    static Optional<ConsoleOptionCommand> interpret(String commandAsString) {
+    static Optional<ConsoleOptionCommand<?>> interpret(String commandAsString) {
         return OptionCommandStringInterpreter.interpret(commandAsString);
+    }
+
+    /**
+     * このクラスのシングルトンインスタンスの集合を取得する. <br>
+     * 不変コレクション.
+     * 
+     * @return シングルトンインスタンスの集合
+     */
+    static Collection<ConsoleOptionCommand<?>> values() {
+        // ここはリフレクションで処理したい
+        return SingletonHolder.values;
     }
 
     private static final class OptionCommandStringInterpreter {
 
-        private static final Map<String, ConsoleOptionCommand> toOptionMapper;
+        private static final Map<String, ConsoleOptionCommand<?>> toOptionMapper;
 
         static {
 
             // フラット化
-            List<Pair> pairs = Arrays.stream(ConsoleOptionCommand.values())
+            List<Pair> pairs = ConsoleOptionCommand.values().stream()
                     .flatMap(
                             o -> o.listOfAsString.stream()
                                     .map(str -> new Pair(o, str)))
@@ -125,21 +189,54 @@ enum ConsoleOptionCommand {
          * 
          * @throws NullPointerException 引数がnull
          */
-        static Optional<ConsoleOptionCommand> interpret(String commandAsString) {
+        static Optional<ConsoleOptionCommand<?>> interpret(String commandAsString) {
             return Optional.ofNullable(
                     toOptionMapper.get(Objects.requireNonNull(commandAsString)));
         }
 
         // option と String のペアを表現するクラス
         private static final class Pair {
-            final ConsoleOptionCommand command;
+            final ConsoleOptionCommand<?> command;
             final String asString;
 
-            Pair(ConsoleOptionCommand command, String asString) {
+            Pair(ConsoleOptionCommand<?> command, String asString) {
                 super();
                 this.command = command;
                 this.asString = asString;
             }
+        }
+    }
+
+    private static final class SingletonHolder {
+
+        /**
+         * オプションコマンドの集合. <br>
+         * 不変になるようにすること.
+         */
+        static final Collection<ConsoleOptionCommand<?>> values;
+
+        static {
+            // ここはリフレクションで処理したい
+            //            values = List.of(INPUT_FILE_PATH, COMMENT_CHAR, SEPARATOR, LABEL_HEADER, DUMMY_NO_ARG);
+
+            List<ConsoleOptionCommand<?>> constantFieldList = new ArrayList<>();
+
+            @SuppressWarnings("rawtypes")
+            Class<ConsoleOptionCommand> clazz = ConsoleOptionCommand.class;
+
+            // staticかつ互換性のあるフィールドのみが対象
+            for (Field f : ConsoleOptionCommand.class.getFields()) {
+                if ((f.getModifiers() & Modifier.STATIC) == 0) {
+                    continue;
+                }
+                try {
+                    constantFieldList.add(clazz.cast(f.get(null)));
+                } catch (IllegalAccessException | ClassCastException ignore) {
+                    //無関係なフィールドなら無視する
+                }
+            }
+
+            values = List.copyOf(constantFieldList);
         }
     }
 }

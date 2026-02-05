@@ -7,8 +7,10 @@
 
 package matsu.num.statistics.kdeapp.kde1d;
 
-import static org.hamcrest.CoreMatchers.*;
+import static matsu.num.statistics.kdeapp.kde1d.ConsoleOptionCommand.*;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.Matchers.*;
 
 import java.util.Optional;
 
@@ -22,27 +24,35 @@ import org.junit.runner.RunWith;
 @RunWith(Enclosed.class)
 final class ConsoleOptionCommandTest {
 
+    public static class オプションコマンドの集合生成に関するテスト {
+
+        @Test
+        public void test_INPUT_FILE_PATHを含むことを確かめる() {
+            assertThat(values(), containsInRelativeOrder(INPUT_FILE_PATH));
+        }
+    }
+
     public static class オプションコマンドの文字列解釈のテスト {
 
         @Test(expected = NullPointerException.class)
         public void test_nullは不可() {
-            ConsoleOptionCommand.interpret(null);
+            interpret(null);
         }
 
         @Test
         public void test_セパレータコマンド() {
             assertThat(
-                    ConsoleOptionCommand.interpret("--separator").get(),
+                    interpret("--separator").get(),
                     is(ConsoleOptionCommand.SEPARATOR));
             assertThat(
-                    ConsoleOptionCommand.interpret("-sep").get(),
+                    interpret("-sep").get(),
                     is(ConsoleOptionCommand.SEPARATOR));
         }
 
         @Test
         public void test_未定義の場合() {
             assertThat(
-                    ConsoleOptionCommand.interpret("--unknown"),
+                    interpret("--unknown"),
                     is(Optional.empty()));
         }
     }
