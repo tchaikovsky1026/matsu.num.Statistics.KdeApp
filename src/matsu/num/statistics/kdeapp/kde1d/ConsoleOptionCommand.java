@@ -25,8 +25,9 @@ import java.util.Optional;
  * コンソールオプションコマンドの列挙を表現するクラス.
  * 
  * @author Matsuura Y.
+ * @param <T> コマンドの引数の変更先の型, see {@link #convertArg(String)}
  */
-final class ConsoleOptionCommand {
+final class ConsoleOptionCommand<T> {
 
     /**
      * 入力ファイルの指定を表現するシングルトンインスタンス.
@@ -35,8 +36,8 @@ final class ConsoleOptionCommand {
      * 要arg.
      * </p>
      */
-    public static final ConsoleOptionCommand INPUT_FILE_PATH =
-            new ConsoleOptionCommand("INPUT_FILE_PATH", true, "--input-file", "-f");
+    public static final ConsoleOptionCommand<String> INPUT_FILE_PATH =
+            new ConsoleOptionCommand<>("INPUT_FILE_PATH", true, "--input-file", "-f");
 
     /**
      * 入力のコメント行の prefix の指定を表現するシングルトンインスタンス.
@@ -45,8 +46,8 @@ final class ConsoleOptionCommand {
      * 要arg.
      * </p>
      */
-    public static final ConsoleOptionCommand COMMENT_CHAR =
-            new ConsoleOptionCommand("COMMENT_CHAR", true, "--comment-char");
+    public static final ConsoleOptionCommand<String> COMMENT_CHAR =
+            new ConsoleOptionCommand<>("COMMENT_CHAR", true, "--comment-char");
 
     /**
      * 区切り文字の指定を表現するシングルトンインスタンス.
@@ -55,8 +56,8 @@ final class ConsoleOptionCommand {
      * 要arg.
      * </p>
      */
-    public static final ConsoleOptionCommand SEPARATOR =
-            new ConsoleOptionCommand("SEPARATOR", true, "--separator", "-sep");
+    public static final ConsoleOptionCommand<Character> SEPARATOR =
+            new ConsoleOptionCommand<>("SEPARATOR", true, "--separator", "-sep");
 
     /**
      * 出力のラベルに付与する prefix の指定を表現するシングルトンインスタンス.
@@ -65,8 +66,8 @@ final class ConsoleOptionCommand {
      * 要arg.
      * </p>
      */
-    public static final ConsoleOptionCommand LABEL_HEADER =
-            new ConsoleOptionCommand("LABEL_HEADER", true, "--label-header");
+    public static final ConsoleOptionCommand<String> LABEL_HEADER =
+            new ConsoleOptionCommand<>("LABEL_HEADER", true, "--label-header");
 
     /**
      * 引数をとらないダミーオプション, シングルトンインスタンス.
@@ -78,8 +79,8 @@ final class ConsoleOptionCommand {
      * @deprecated ダミーオプション, プロダクトコードから参照してはいけない.
      */
     @Deprecated
-    public static final ConsoleOptionCommand DUMMY_NO_ARG =
-            new ConsoleOptionCommand("DUMMY_NO_ARG", false, "--dummy-no-arg");
+    public static final ConsoleOptionCommand<?> DUMMY_NO_ARG =
+            new ConsoleOptionCommand<>("DUMMY_NO_ARG", false, "--dummy-no-arg");
 
     private final String enumString;
 
@@ -141,7 +142,7 @@ final class ConsoleOptionCommand {
      * @return 該当するオプションコマンド, 該当なしなら空
      * @throws NullPointerException 引数がnull
      */
-    static Optional<ConsoleOptionCommand> interpret(String commandAsString) {
+    static Optional<ConsoleOptionCommand<?>> interpret(String commandAsString) {
         return OptionCommandStringInterpreter.interpret(commandAsString);
     }
 
@@ -151,14 +152,14 @@ final class ConsoleOptionCommand {
      * 
      * @return シングルトンインスタンスの集合
      */
-    static Collection<ConsoleOptionCommand> values() {
+    static Collection<ConsoleOptionCommand<?>> values() {
         // ここはリフレクションで処理したい
         return SingletonHolder.values;
     }
 
     private static final class OptionCommandStringInterpreter {
 
-        private static final Map<String, ConsoleOptionCommand> toOptionMapper;
+        private static final Map<String, ConsoleOptionCommand<?>> toOptionMapper;
 
         static {
 
@@ -188,17 +189,17 @@ final class ConsoleOptionCommand {
          * 
          * @throws NullPointerException 引数がnull
          */
-        static Optional<ConsoleOptionCommand> interpret(String commandAsString) {
+        static Optional<ConsoleOptionCommand<?>> interpret(String commandAsString) {
             return Optional.ofNullable(
                     toOptionMapper.get(Objects.requireNonNull(commandAsString)));
         }
 
         // option と String のペアを表現するクラス
         private static final class Pair {
-            final ConsoleOptionCommand command;
+            final ConsoleOptionCommand<?> command;
             final String asString;
 
-            Pair(ConsoleOptionCommand command, String asString) {
+            Pair(ConsoleOptionCommand<?> command, String asString) {
                 super();
                 this.command = command;
                 this.asString = asString;
@@ -212,14 +213,15 @@ final class ConsoleOptionCommand {
          * オプションコマンドの集合. <br>
          * 不変になるようにすること.
          */
-        static final Collection<ConsoleOptionCommand> values;
+        static final Collection<ConsoleOptionCommand<?>> values;
 
         static {
             // ここはリフレクションで処理したい
             //            values = List.of(INPUT_FILE_PATH, COMMENT_CHAR, SEPARATOR, LABEL_HEADER, DUMMY_NO_ARG);
 
-            List<ConsoleOptionCommand> constantFieldList = new ArrayList<>();
+            List<ConsoleOptionCommand<?>> constantFieldList = new ArrayList<>();
 
+            @SuppressWarnings("rawtypes")
             Class<ConsoleOptionCommand> clazz = ConsoleOptionCommand.class;
 
             // staticかつ互換性のあるフィールドのみが対象
