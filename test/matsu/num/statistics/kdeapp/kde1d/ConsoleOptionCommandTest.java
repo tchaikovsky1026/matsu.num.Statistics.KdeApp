@@ -8,8 +8,9 @@
 package matsu.num.statistics.kdeapp.kde1d;
 
 import static matsu.num.statistics.kdeapp.kde1d.ConsoleOptionCommand.*;
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.Matchers.*;
 
 import java.util.Optional;
 
@@ -22,6 +23,14 @@ import org.junit.runner.RunWith;
  */
 @RunWith(Enclosed.class)
 final class ConsoleOptionCommandTest {
+
+    public static class オプションコマンドの集合生成に関するテスト {
+
+        @Test
+        public void test_INPUT_FILE_PATHを含むことを確かめる() {
+            assertThat(values(), containsInRelativeOrder(INPUT_FILE_PATH));
+        }
+    }
 
     public static class オプションコマンドの文字列解釈のテスト {
 

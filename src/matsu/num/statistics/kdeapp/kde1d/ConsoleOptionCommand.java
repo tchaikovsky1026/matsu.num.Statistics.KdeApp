@@ -12,6 +12,8 @@ package matsu.num.statistics.kdeapp.kde1d;
 
 import static java.util.stream.Collectors.*;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -34,7 +36,7 @@ final class ConsoleOptionCommand {
      * </p>
      */
     public static final ConsoleOptionCommand INPUT_FILE_PATH =
-            new ConsoleOptionCommand(true, "--input-file", "-f");
+            new ConsoleOptionCommand("INPUT_FILE_PATH", true, "--input-file", "-f");
 
     /**
      * 入力のコメント行の prefix の指定を表現するシングルトンインスタンス.
@@ -44,7 +46,7 @@ final class ConsoleOptionCommand {
      * </p>
      */
     public static final ConsoleOptionCommand COMMENT_CHAR =
-            new ConsoleOptionCommand(true, "--comment-char");
+            new ConsoleOptionCommand("COMMENT_CHAR", true, "--comment-char");
 
     /**
      * 区切り文字の指定を表現するシングルトンインスタンス.
@@ -54,7 +56,7 @@ final class ConsoleOptionCommand {
      * </p>
      */
     public static final ConsoleOptionCommand SEPARATOR =
-            new ConsoleOptionCommand(true, "--separator", "-sep");
+            new ConsoleOptionCommand("SEPARATOR", true, "--separator", "-sep");
 
     /**
      * 出力のラベルに付与する prefix の指定を表現するシングルトンインスタンス.
@@ -64,7 +66,7 @@ final class ConsoleOptionCommand {
      * </p>
      */
     public static final ConsoleOptionCommand LABEL_HEADER =
-            new ConsoleOptionCommand(true, "--label-header");
+            new ConsoleOptionCommand("LABEL_HEADER", true, "--label-header");
 
     /**
      * 引数をとらないダミーオプション, シングルトンインスタンス.
@@ -77,7 +79,9 @@ final class ConsoleOptionCommand {
      */
     @Deprecated
     public static final ConsoleOptionCommand DUMMY_NO_ARG =
-            new ConsoleOptionCommand(false, "--dummy-no-arg");
+            new ConsoleOptionCommand("DUMMY_NO_ARG", false, "--dummy-no-arg");
+
+    private final String enumString;
 
     /**
      * オプションに続くパラメータを持つかどうか.
@@ -87,7 +91,11 @@ final class ConsoleOptionCommand {
     private final String commandString;
     private final List<String> listOfAsString;
 
-    private ConsoleOptionCommand(boolean hasArg, String commandString, String... asString) {
+    private ConsoleOptionCommand(String enumString,
+            boolean hasArg, String commandString, String... asString) {
+
+        this.enumString = enumString;
+
         this.hasArg = hasArg;
         this.commandString = commandString;
 
@@ -116,6 +124,14 @@ final class ConsoleOptionCommand {
      */
     boolean hasArg() {
         return hasArg;
+    }
+
+    /**
+     * このインスタンスの文字列表現を返す.
+     */
+    @Override
+    public String toString() {
+        return this.enumString;
     }
 
     /**
@@ -200,7 +216,25 @@ final class ConsoleOptionCommand {
 
         static {
             // ここはリフレクションで処理したい
-            values = List.of(INPUT_FILE_PATH, COMMENT_CHAR, SEPARATOR, LABEL_HEADER, DUMMY_NO_ARG);
+            //            values = List.of(INPUT_FILE_PATH, COMMENT_CHAR, SEPARATOR, LABEL_HEADER, DUMMY_NO_ARG);
+
+            List<ConsoleOptionCommand> constantFieldList = new ArrayList<>();
+
+            Class<ConsoleOptionCommand> clazz = ConsoleOptionCommand.class;
+
+            // staticかつ互換性のあるフィールドのみが対象
+            for (Field f : ConsoleOptionCommand.class.getFields()) {
+                if ((f.getModifiers() & Modifier.STATIC) == 0) {
+                    continue;
+                }
+                try {
+                    constantFieldList.add(clazz.cast(f.get(null)));
+                } catch (IllegalAccessException | ClassCastException ignore) {
+                    //無関係なフィールドなら無視する
+                }
+            }
+
+            values = List.copyOf(constantFieldList);
         }
     }
 }
