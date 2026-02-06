@@ -10,11 +10,11 @@
  * 
  * <p>
  * <i>依存モジュール:</i> <br>
- * {@code matsu.num.Statistics.KernelDensity}
+ * {@code matsu.num.Statistics.KernelDensity} (version {@code 1} 系最新版)
  * </p>
  * 
  * @author Matsuura Y.
- * @version 0.2.0
+ * @version 0.3.0
  */
 module matsu.num.Statistics.KdeApp {
     requires matsu.num.Statistics.KernelDensity;
