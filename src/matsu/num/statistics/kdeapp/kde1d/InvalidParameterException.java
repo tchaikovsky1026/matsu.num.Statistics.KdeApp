@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.2
+ * 2026.2.6
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -19,19 +19,38 @@ public final class InvalidParameterException extends IllegalArgumentException {
 
     private static final long serialVersionUID = 1L;
 
-    InvalidParameterException() {
+    /**
+     * 引数なしコンストラクタ.
+     */
+    public InvalidParameterException() {
         super();
     }
 
-    InvalidParameterException(String s) {
+    /**
+     * 文字列を指定するコンストラクタ.
+     * 
+     * @param s 文字列
+     */
+    public InvalidParameterException(String s) {
         super(s);
     }
 
-    InvalidParameterException(Throwable cause) {
+    /**
+     * 原因を指定するコンストラクタ.
+     * 
+     * @param cause 原因
+     */
+    public InvalidParameterException(Throwable cause) {
         super(cause);
     }
 
-    InvalidParameterException(String message, Throwable cause) {
+    /**
+     * メッセージと原因を指定するコンストラクタ.
+     * 
+     * @param message メッセージ
+     * @param cause 原因
+     */
+    public InvalidParameterException(String message, Throwable cause) {
         super(message, cause);
     }
 }

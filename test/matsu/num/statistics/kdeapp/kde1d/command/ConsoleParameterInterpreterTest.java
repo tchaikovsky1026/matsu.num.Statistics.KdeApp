@@ -5,9 +5,10 @@
  * http://opensource.org/licenses/mit-license.php
  */
 
-package matsu.num.statistics.kdeapp.kde1d;
+package matsu.num.statistics.kdeapp.kde1d.command;
 
-import static matsu.num.statistics.kdeapp.kde1d.ConsoleOptionCommand.*;
+import static matsu.num.statistics.kdeapp.kde1d.command.ArgumentRequiringCommand.*;
+import static matsu.num.statistics.kdeapp.kde1d.command.NoArgumentCommand.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
@@ -23,6 +24,8 @@ import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
+
+import matsu.num.statistics.kdeapp.kde1d.InvalidParameterException;
 
 /**
  * {@link ConsoleParameterInterpreter} のテスト.
@@ -50,6 +53,23 @@ final class ConsoleParameterInterpreterTest {
         @Theory
         public void test_正常系の網羅テスト(String[] args) {
             // 例外がスローされなければOK
+            ConsoleParameterInterpreter.from(args);
+        }
+    }
+
+    public static class 解釈生成の異常系に関するテスト {
+
+        @Test(expected = InvalidParameterException.class)
+        public void test_パラメータに重複がある場合は例外_引数有り() {
+
+            String[] args = { "-f", "test.txt", "-f", "test.txt" };
+            ConsoleParameterInterpreter.from(args);
+        }
+
+        @Test(expected = InvalidParameterException.class)
+        public void test_パラメータに重複がある場合は例外_引数無し() {
+
+            String[] args = { "--dummy-no-arg", "--dummy-no-arg" };
             ConsoleParameterInterpreter.from(args);
         }
     }
@@ -86,7 +106,7 @@ final class ConsoleParameterInterpreterTest {
         @SuppressWarnings("deprecation")
         @Test
         public void test_dummyNoArgは設定済み() {
-            assertThat(interpretation.valueOf(DUMMY_NO_ARG), not(Optional.empty()));
+            assertThat(interpretation.contains(DUMMY_NO_ARG), is(true));
         }
     }
 }

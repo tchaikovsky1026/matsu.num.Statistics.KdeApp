@@ -1,12 +1,13 @@
 # matsu.num.Statistics.KdeApp
 `matsu.num.Statistics.KdeApp` は Java 言語でカーネル密度推定を実行する App を提供する.
 
-現在は開発中バージョン `0.2.0` であり, Java 17 に準拠する.
+現在は開発中バージョン `0.3.0` であり, Java 17 に準拠する.
 
 ## Dependency
 このソフトウェアは次のモジュールを要求する.
 
 - `matsu.num.Statistics.KernelDensity`, version `1` 系最新版
+([tchaikovsky1026/matsu.num.Statistics.KernelDensity](https://github.com/tchaikovsky1026/matsu.num.Statistics.KernelDensity.git))
 
 ## Installation
 - zipアーカイブを展開する.
@@ -48,7 +49,7 @@ chmod +x kde1d.sh
 #### Parameter
 パラメータは次の形で与える.
 
-##### `--input-file <入力ファイルパス>` または `-f　 <入力ファイルパス>`
+##### `--input-file <入力ファイルパス>` または `-f <入力ファイルパス>`
 入力ファイルパスを指定するコマンドである.
 このパラメータは必ず指定されなければならない.
 指定されない場合, 例外がスローされる.
@@ -61,12 +62,20 @@ chmod +x kde1d.sh
 出力における区切り文字を指定するコマンドである.
 指定されない場合, `\t` が区切り文字となる.
 
-2文字以上が指定された場合, 先頭文字を区切り文字とする
-(ただし仕様ではない, 将来的に変更される可能性がある).
+区切り文字に指定できる文字パターンは次の通りである.
+- ASCII 1文字
+- エスケープシーケンス: `"\t"`, `"\r"`, `"\n"`, `"\\"`
 
 ##### `--label-header <文字列>`
 出力のラベル行の先頭につける文字列を指定するコマンドである.
 指定されない場合, ラベルを出力しない.
+
+##### `--output-force <出力ファイルパス>` または `-out-f <出力ファイルパス>`
+結果のファイル強制出力を行うコマンドである.
+ファイルが存在しても, 出力を試みる.
+ファイルパスまでのディレクトリが必要.
+
+指定されない場合, ファイル出力されない.
 
 #### Input file format
 入力ファイル形式は, 次の通りである.
@@ -90,7 +99,7 @@ chmod +x kde1d.sh
 
 以下は, ラベルヘッダーを `//`, 区切り文字を `,` とした場合の例である.
 
-```input-file-example.txt
+```output-file-example.txt
 //x,density
 0.0,0.25
 1.0,0.5

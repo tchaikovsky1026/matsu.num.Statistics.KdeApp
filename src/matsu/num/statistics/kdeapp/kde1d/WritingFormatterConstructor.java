@@ -6,11 +6,13 @@
  */
 
 /*
- * 2026.2.2
+ * 2026.2.5
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
-import static matsu.num.statistics.kdeapp.kde1d.ConsoleOptionCommand.*;
+import static matsu.num.statistics.kdeapp.kde1d.command.ArgumentRequiringCommand.*;
+
+import matsu.num.statistics.kdeapp.kde1d.command.ConsoleParameterInterpreter;
 
 /**
  * {@link WritingFormatter} の構築器.
@@ -41,7 +43,7 @@ final class WritingFormatterConstructor implements ComponentConstructor<WritingF
                 .ifPresent(header -> builder.enableLabel(header));
 
         interpreter.valueOf(SEPARATOR)
-                .ifPresent(separator -> builder.setSeparator(separator.charAt(0)));
+                .ifPresent(separator -> builder.setSeparator(separator.charValue()));
 
         return builder.build();
     }

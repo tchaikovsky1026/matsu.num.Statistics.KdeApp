@@ -6,11 +6,13 @@
  */
 
 /*
- * 2026.2.2
+ * 2026.2.5
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
-import static matsu.num.statistics.kdeapp.kde1d.ConsoleOptionCommand.*;
+import static matsu.num.statistics.kdeapp.kde1d.command.ArgumentRequiringCommand.*;
+
+import matsu.num.statistics.kdeapp.kde1d.command.ConsoleParameterInterpreter;
 
 /**
  * {@link Kde1dSourceLoader} の構築器.
@@ -29,6 +31,7 @@ final class Kde1dSourceLoaderConstructor implements ComponentConstructor<Kde1dSo
 
     /**
      * @throws InvalidParameterException {@inheritDoc }
+     * @throws NullPointerException {@inheritDoc }
      */
     @Override
     public Kde1dSourceLoader construct(ConsoleParameterInterpreter interpreter) {

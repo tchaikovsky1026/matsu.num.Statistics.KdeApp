@@ -22,6 +22,7 @@ import org.junit.runner.RunWith;
 /**
  * {@link Kde1dCliWithStyle010} のテスト.
  */
+@SuppressWarnings("deprecation")
 @RunWith(Enclosed.class)
 final class Kde1dCliWithStyle010Test {
 
