@@ -55,13 +55,14 @@ final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand {
      * 区切り文字の指定を表現するシングルトンインスタンス.
      * 
      * <p>
-     * 引数はバリデーションされたうえで, {@code char} に変換される.
+     * 引数はバリデーションされたうえで, {@code char} に変換される. <br>
+     * 暫定的に, 空文字をはじく.
      * </p>
      */
     public static final ArgumentRequiringCommand<Character> SEPARATOR =
             new ArgumentRequiringCommand<>(
                     "SEPARATOR", Character.class,
-                    s -> s.charAt(0),
+                    s -> (s.length() == 0 ? null : s.charAt(0)),
                     "--separator", "-sep");
 
     /**
@@ -80,8 +81,14 @@ final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand {
     /**
      * 内部から呼ばれる唯一のコンストラクタ.
      * 
+     * <p>
+     * コンバータは, コンバートできない場合 (例外をスローすべき引数の場合) は {@code null} を返す. <br>
+     * 正常系で {@code null} を返してはいけない. <br>
+     * コンバータ (Function) に {@code null} が与えられることはない.
+     * </p>
+     * 
      * @param valueType 変更先の型トークン
-     * @param converter 変更方法
+     * @param converter コンバータ
      */
     private ArgumentRequiringCommand(
             String enumString,
@@ -129,8 +136,12 @@ final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand {
      * @throws NullPointerException 引数がnullの場合(必ず)
      */
     final T convertArg(String arg) {
-        // TODO: 例外スローに, コマンドの内容を含める
-        return converter.apply(Objects.requireNonNull(arg));
+        T out = converter.apply(Objects.requireNonNull(arg));
+        if (Objects.isNull(out)) {
+            throw new InvalidParameterException(
+                    "invalid-arg for <" + this.commandString() + ">: \"" + arg + "\"");
+        }
+        return out;
     }
 
     /**

@@ -128,7 +128,7 @@ final class ConsoleParameterInterpreter {
                     // 後続のパラメータが必要な場合, 存在しているかを確かめる
                     if (cursor >= size) {
                         throw new InvalidParameterException(
-                                "args lack: <" + command.commandString() + ">");
+                                "args lack for <" + command.commandString() + ">");
                     }
 
                     // すでにコマンドが登録されていたら例外スロー
