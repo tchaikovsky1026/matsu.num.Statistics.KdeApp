@@ -58,13 +58,20 @@ public final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand {
      * 
      * <p>
      * 引数はバリデーションされたうえで, {@code char} に変換される. <br>
-     * 暫定的に, 空文字をはじく.
+     * 区切り文字の正当性ルールは次の通りである. <br>
+     * (エスケープシーケンスは, 列挙定数で用意されている,
+     * 自動テストで文字列出力される.)
      * </p>
+     * 
+     * <ul>
+     * <li>ASCII 1文字</li>
+     * <li>エスケープシーケンス</li>
+     * </ul>
      */
     public static final ArgumentRequiringCommand<Character> SEPARATOR =
             new ArgumentRequiringCommand<>(
                     "SEPARATOR", Character.class,
-                    s -> (s.length() == 0 ? null : s.charAt(0)),
+                    SeparatorInterpreter::from,
                     "--separator", "-sep");
 
     /**
