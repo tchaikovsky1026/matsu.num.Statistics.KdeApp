@@ -19,18 +19,37 @@ public final class InvalidParameterException extends IllegalArgumentException {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * 引数なしコンストラクタ.
+     */
     public InvalidParameterException() {
         super();
     }
 
+    /**
+     * 文字列を指定するコンストラクタ.
+     * 
+     * @param s 文字列
+     */
     public InvalidParameterException(String s) {
         super(s);
     }
 
+    /**
+     * 原因を指定するコンストラクタ.
+     * 
+     * @param cause 原因
+     */
     public InvalidParameterException(Throwable cause) {
         super(cause);
     }
 
+    /**
+     * メッセージと原因を指定するコンストラクタ.
+     * 
+     * @param message メッセージ
+     * @param cause 原因
+     */
     public InvalidParameterException(String message, Throwable cause) {
         super(message, cause);
     }
