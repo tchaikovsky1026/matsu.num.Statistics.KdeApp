@@ -7,6 +7,7 @@
 このソフトウェアは次のモジュールを要求する.
 
 - `matsu.num.Statistics.KernelDensity`, version `1` 系最新版
+([tchaikovsky1026/matsu.num.Statistics.KernelDensity](https://github.com/tchaikovsky1026/matsu.num.Statistics.KernelDensity.git))
 
 ## Installation
 - zipアーカイブを展開する.
@@ -72,6 +73,8 @@ chmod +x kde1d.sh
 ##### `--output-force <出力ファイルパス>` または `-out-f <出力ファイルパス>`
 結果のファイル強制出力を行うコマンドである.
 ファイルが存在しても, 出力を試みる.
+ファイルパスまでのディレクトリが必要.
+
 指定されない場合, ファイル出力されない.
 
 #### Input file format
