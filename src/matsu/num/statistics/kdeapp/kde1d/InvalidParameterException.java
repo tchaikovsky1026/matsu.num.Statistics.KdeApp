@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.2
+ * 2026.2.6
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -19,19 +19,19 @@ public final class InvalidParameterException extends IllegalArgumentException {
 
     private static final long serialVersionUID = 1L;
 
-    InvalidParameterException() {
+    public InvalidParameterException() {
         super();
     }
 
-    InvalidParameterException(String s) {
+    public InvalidParameterException(String s) {
         super(s);
     }
 
-    InvalidParameterException(Throwable cause) {
+    public InvalidParameterException(Throwable cause) {
         super(cause);
     }
 
-    InvalidParameterException(String message, Throwable cause) {
+    public InvalidParameterException(String message, Throwable cause) {
         super(message, cause);
     }
 }

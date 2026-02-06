@@ -8,7 +8,7 @@
 /*
  * 2026.2.6
  */
-package matsu.num.statistics.kdeapp.kde1d;
+package matsu.num.statistics.kdeapp.kde1d.command;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
  * 
  * @author Matsuura Y.
  */
-abstract sealed class ConsoleOptionCommand
+public abstract sealed class ConsoleOptionCommand
         permits ArgumentRequiringCommand, NoArgumentCommand {
 
     private final String enumString;
@@ -26,6 +26,13 @@ abstract sealed class ConsoleOptionCommand
     private final String commandString;
     private final List<String> expressions;
 
+    /**
+     * 唯一のコンストラクタ.
+     * 
+     * @param enumString インスタンスの文字列表現
+     * @param commandString コマンドの正式な文字列表現
+     * @param asString 正式表現以外の文字列表現
+     */
     ConsoleOptionCommand(String enumString, String commandString, String... asString) {
 
         this.enumString = enumString;
@@ -46,7 +53,7 @@ abstract sealed class ConsoleOptionCommand
      * 
      * @return 正式な文字列表現
      */
-    final String commandString() {
+    public final String commandString() {
         return commandString;
     }
 
@@ -64,7 +71,7 @@ abstract sealed class ConsoleOptionCommand
      * このインスタンスの文字列表現を返す.
      */
     @Override
-    public String toString() {
+    public final String toString() {
         return this.enumString;
     }
 }

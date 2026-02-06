@@ -8,7 +8,7 @@
 /*
  * 2026.2.6
  */
-package matsu.num.statistics.kdeapp.kde1d;
+package matsu.num.statistics.kdeapp.kde1d.command;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,12 +17,14 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
+import matsu.num.statistics.kdeapp.kde1d.InvalidParameterException;
+
 /**
  * コンソールパラメータの解釈器.
  * 
  * @author Matsuura Y.
  */
-final class ConsoleParameterInterpreter {
+public final class ConsoleParameterInterpreter {
 
     private final Map<ArgumentRequiringCommand<?>, Object> argCommandMapper;
     private final Set<NoArgumentCommand> noArgCommandSet;
@@ -45,7 +47,7 @@ final class ConsoleParameterInterpreter {
      * @return オプションの値, 指定されていない場合は空.
      * @throws NullPointerException 引数がnullの場合
      */
-    <T> Optional<T> valueOf(ArgumentRequiringCommand<T> command) {
+    public <T> Optional<T> valueOf(ArgumentRequiringCommand<T> command) {
         return Optional.ofNullable(
                 command.cast(argCommandMapper.get(Objects.requireNonNull(command))));
     }
@@ -57,7 +59,7 @@ final class ConsoleParameterInterpreter {
      * @return オプションの値, 指定されていない場合は空.
      * @throws NullPointerException 引数がnullの場合
      */
-    boolean contains(NoArgumentCommand option) {
+    public boolean contains(NoArgumentCommand option) {
         return noArgCommandSet.contains(Objects.requireNonNull(option));
     }
 
@@ -76,7 +78,7 @@ final class ConsoleParameterInterpreter {
      * @throws InvalidParameterException パラメータの形式が不正の場合
      * @throws NullPointerException 引数にnullが含まれる場合
      */
-    static ConsoleParameterInterpreter from(String[] args)
+    public static ConsoleParameterInterpreter from(String[] args)
             throws InvalidParameterException {
 
         /*

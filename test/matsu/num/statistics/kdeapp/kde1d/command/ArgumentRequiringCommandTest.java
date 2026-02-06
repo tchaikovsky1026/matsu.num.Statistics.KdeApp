@@ -5,9 +5,9 @@
  * http://opensource.org/licenses/mit-license.php
  */
 
-package matsu.num.statistics.kdeapp.kde1d;
+package matsu.num.statistics.kdeapp.kde1d.command;
 
-import static matsu.num.statistics.kdeapp.kde1d.ArgumentRequiringCommand.*;
+import static matsu.num.statistics.kdeapp.kde1d.command.ArgumentRequiringCommand.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
@@ -17,6 +17,8 @@ import java.util.Optional;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
+
+import matsu.num.statistics.kdeapp.kde1d.InvalidParameterException;
 
 /**
  * {@link ArgumentRequiringCommand} のテスト.

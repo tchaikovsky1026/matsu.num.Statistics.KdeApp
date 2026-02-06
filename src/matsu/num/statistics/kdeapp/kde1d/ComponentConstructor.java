@@ -10,6 +10,8 @@
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
+import matsu.num.statistics.kdeapp.kde1d.command.ConsoleParameterInterpreter;
+
 /**
  * オプションパラメータからインスタンスを構築することを表現するインターフェース.
  * 
