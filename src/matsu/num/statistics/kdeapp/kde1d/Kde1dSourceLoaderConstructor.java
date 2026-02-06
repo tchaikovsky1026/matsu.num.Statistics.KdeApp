@@ -31,6 +31,7 @@ final class Kde1dSourceLoaderConstructor implements ComponentConstructor<Kde1dSo
 
     /**
      * @throws InvalidParameterException {@inheritDoc }
+     * @throws NullPointerException {@inheritDoc }
      */
     @Override
     public Kde1dSourceLoader construct(ConsoleParameterInterpreter interpreter) {

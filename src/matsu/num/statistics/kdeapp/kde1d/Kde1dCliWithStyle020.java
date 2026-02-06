@@ -12,7 +12,6 @@ package matsu.num.statistics.kdeapp.kde1d;
 
 import java.io.IOException;
 import java.io.PrintStream;
-import java.io.PrintWriter;
 
 import matsu.num.statistics.kdeapp.kde1d.command.ConsoleParameterInterpreter;
 
@@ -86,10 +85,12 @@ final class Kde1dCliWithStyle020 {
                 Kde1dSourceLoaderConstructor.INSTANCE.construct(interpretation);
         WritingFormatter writingFormatter =
                 WritingFormatterConstructor.INSTANCE.construct(interpretation);
+        OutputTargets targets =
+                new OutputTargetsConstructor(out, err).construct(interpretation);
 
         double[] source = loader.load();
         WritableKde1dResult result = new GaussianStandardKde1dCalculator().calc(source);
-        result.write(new PrintWriter(out), writingFormatter);
+        targets.write(result, writingFormatter);
 
         out.println("Bye.");
         return 0;

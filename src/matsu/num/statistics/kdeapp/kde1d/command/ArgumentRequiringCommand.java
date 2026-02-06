@@ -44,6 +44,16 @@ public final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand {
             identifying("INPUT_FILE_PATH", "--input-file", "-f");
 
     /**
+     * 出力ファイルの指定を表現するシングルトンインスタンス.
+     * 
+     * <p>
+     * 引数はバリデーションされない.
+     * </p>
+     */
+    public static final ArgumentRequiringCommand<String> OUTPUT_FORCE_FILE_PATH =
+            identifying("OUTPUT_FORCE_FILE_PATH", "--output-force", "-out-f");
+
+    /**
      * 入力のコメント行の prefix の指定を表現するシングルトンインスタンス.
      * 
      * <p>
