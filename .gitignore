@@ -4,6 +4,7 @@
 /testout/
 /javadoc-file/
 /local/
+/test/output/
 
 # Eclipse
 .project
