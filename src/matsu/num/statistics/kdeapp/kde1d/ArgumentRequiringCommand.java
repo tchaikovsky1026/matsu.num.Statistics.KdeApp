@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * 引数をとるコマンドを扱うクラス.
@@ -32,33 +33,108 @@ final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand {
 
     /**
      * 入力ファイルの指定を表現するシングルトンインスタンス.
+     * 
+     * <p>
+     * 引数はバリデーションされない.
+     * </p>
      */
     public static final ArgumentRequiringCommand<String> INPUT_FILE_PATH =
-            new ArgumentRequiringCommand<>("INPUT_FILE_PATH", "--input-file", "-f");
+            identifying("INPUT_FILE_PATH", "--input-file", "-f");
 
     /**
      * 入力のコメント行の prefix の指定を表現するシングルトンインスタンス.
+     * 
+     * <p>
+     * 引数はバリデーションされない.
+     * </p>
      */
     public static final ArgumentRequiringCommand<String> COMMENT_CHAR =
-            new ArgumentRequiringCommand<>("COMMENT_CHAR", "--comment-char");
+            identifying("COMMENT_CHAR", "--comment-char");
 
     /**
      * 区切り文字の指定を表現するシングルトンインスタンス.
+     * 
+     * <p>
+     * 引数はバリデーションされたうえで, {@code char} に変換される.
+     * </p>
      */
     public static final ArgumentRequiringCommand<Character> SEPARATOR =
-            new ArgumentRequiringCommand<>("SEPARATOR", "--separator", "-sep");
+            new ArgumentRequiringCommand<>(
+                    "SEPARATOR", Character.class,
+                    s -> s.charAt(0),
+                    "--separator", "-sep");
 
     /**
      * 出力のラベルに付与する prefix の指定を表現するシングルトンインスタンス.
+     * 
+     * <p>
+     * 引数はバリデーションされない.
+     * </p>
      */
     public static final ArgumentRequiringCommand<String> LABEL_HEADER =
-            new ArgumentRequiringCommand<>("LABEL_HEADER", "--label-header");
+            identifying("LABEL_HEADER", "--label-header");
+
+    private final Class<T> valueType;
+    private final Function<? super String, ? extends T> converter;
 
     /**
      * 内部から呼ばれる唯一のコンストラクタ.
+     * 
+     * @param valueType 変更先の型トークン
+     * @param converter 変更方法
      */
-    private ArgumentRequiringCommand(String enumString, String commandString, String... asString) {
+    private ArgumentRequiringCommand(
+            String enumString,
+            Class<T> valueType, Function<? super String, ? extends T> converter,
+            String commandString, String... asString) {
         super(enumString, commandString, asString);
+
+        this.valueType = valueType;
+        this.converter = converter;
+    }
+
+    /**
+     * コンバータに恒等写像を与える形式で, インスタンスを生成.
+     */
+    private static ArgumentRequiringCommand<String> identifying(
+            String enumString, String commandString, String... asString) {
+
+        return new ArgumentRequiringCommand<String>(
+                enumString, String.class, s -> s,
+                commandString, asString);
+    }
+
+    /**
+     * 与えたインスタンスを自身の型にキャストする.
+     * 
+     * <p>
+     * {@code null} が与えられれば {@code null} を返す.
+     * </p>
+     * 
+     * @param obj インスタンス
+     * @return キャストしたobj
+     * @throws ClassCastException キャストに失敗した場合
+     */
+    final T cast(Object obj) {
+        return this.valueType.cast(obj);
+    }
+
+    /**
+     * 文字列として与えられる引数を, このコマンドで解釈できる形に変換する. <br>
+     * 変換に関しては, シングルトン定数の説明に書かれるべきである.
+     * 
+     * <p>
+     * このインスタンスが引数を要求しないオプションの場合,
+     * (おそらく) {@code null} が返る.
+     * </p>
+     * 
+     * @param arg 文字列
+     * @return 変換後の値
+     * @throws InvalidParameterException パラメータ不正の場合
+     * @throws NullPointerException 引数がnullの場合(必ずスローするわけではない)
+     */
+    final T convertArg(String arg) {
+        return converter.apply(arg);
     }
 
     /**
