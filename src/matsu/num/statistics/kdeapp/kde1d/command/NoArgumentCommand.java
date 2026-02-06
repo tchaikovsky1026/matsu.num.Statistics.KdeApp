@@ -8,7 +8,7 @@
 /*
  * 2026.2.6
  */
-package matsu.num.statistics.kdeapp.kde1d;
+package matsu.num.statistics.kdeapp.kde1d.command;
 
 import static java.util.stream.Collectors.*;
 
@@ -27,7 +27,7 @@ import java.util.Optional;
  * 
  * @author Matsuura Y.
  */
-final class NoArgumentCommand extends ConsoleOptionCommand {
+public final class NoArgumentCommand extends ConsoleOptionCommand {
 
     /**
      * 引数をとらないダミーオプション, シングルトンインスタンス. <br>
@@ -64,7 +64,6 @@ final class NoArgumentCommand extends ConsoleOptionCommand {
      * @return 文字列表現リスト
      */
     static List<String> allExpressions() {
-
         return values().stream()
                 .flatMap(command -> command.expressions().stream())
                 .toList();

@@ -10,7 +10,9 @@
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
-import static matsu.num.statistics.kdeapp.kde1d.ArgumentRequiringCommand.*;
+import static matsu.num.statistics.kdeapp.kde1d.command.ArgumentRequiringCommand.*;
+
+import matsu.num.statistics.kdeapp.kde1d.command.ConsoleParameterInterpreter;
 
 /**
  * {@link Kde1dSourceLoader} の構築器.

@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 
+import matsu.num.statistics.kdeapp.kde1d.command.ConsoleParameterInterpreter;
+
 /**
  * 最も単純な1次元カーネル密度推定を実行するクラス.
  * 

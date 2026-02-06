@@ -8,7 +8,7 @@
 /*
  * 2026.2.6
  */
-package matsu.num.statistics.kdeapp.kde1d;
+package matsu.num.statistics.kdeapp.kde1d.command;
 
 import static java.util.stream.Collectors.*;
 
@@ -22,6 +22,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
+import matsu.num.statistics.kdeapp.kde1d.InvalidParameterException;
+
 /**
  * 引数をとるコマンドを扱うクラス.
  * 各インスタンスはシングルトンで表現される.
@@ -29,7 +31,7 @@ import java.util.function.Function;
  * @author Matsuura Y.
  * @param <T> コマンドの引数の変更先の型, see {@link #convertArg(String)}
  */
-final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand {
+public final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand {
 
     /**
      * 入力ファイルの指定を表現するシングルトンインスタンス.
@@ -162,7 +164,6 @@ final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand {
      * @return 文字列表現リスト
      */
     static List<String> allExpressions() {
-
         return values().stream()
                 .flatMap(command -> command.expressions().stream())
                 .toList();
