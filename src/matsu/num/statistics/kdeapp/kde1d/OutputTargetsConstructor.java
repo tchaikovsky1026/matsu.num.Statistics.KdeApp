@@ -10,7 +10,10 @@
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
+import static matsu.num.statistics.kdeapp.kde1d.command.ArgumentRequiringCommand.*;
+
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -41,8 +44,10 @@ final class OutputTargetsConstructor implements ComponentConstructor<OutputTarge
      */
     @Override
     public OutputTargets construct(ConsoleParameterInterpreter interpreter) {
-        // 暫定: オプションからは何も受け取らない
-        Objects.requireNonNull(interpreter);
-        return new OutputTargets(out, err, List.of());
+        List<String> filePaths = new ArrayList<>();
+        interpreter.valueOf(OUTPUT_FORCE_FILE_PATH)
+                .ifPresent(filePaths::add);
+
+        return new OutputTargets(out, err, filePaths);
     }
 }
