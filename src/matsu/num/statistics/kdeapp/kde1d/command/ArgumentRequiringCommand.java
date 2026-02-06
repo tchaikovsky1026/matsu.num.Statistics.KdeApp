@@ -64,7 +64,7 @@ public final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand {
     public static final ArgumentRequiringCommand<Character> SEPARATOR =
             new ArgumentRequiringCommand<>(
                     "SEPARATOR", Character.class,
-                    s -> (s.length() == 0 ? null : s.charAt(0)),
+                    SeparatorInterpreter::from,
                     "--separator", "-sep");
 
     /**
