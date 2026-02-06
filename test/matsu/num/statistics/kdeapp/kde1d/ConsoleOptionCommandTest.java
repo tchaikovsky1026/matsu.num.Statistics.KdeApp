@@ -7,12 +7,12 @@
 
 package matsu.num.statistics.kdeapp.kde1d;
 
-import static matsu.num.statistics.kdeapp.kde1d.ConsoleOptionCommand.*;
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.*;
-import static org.hamcrest.Matchers.*;
 
-import java.util.Optional;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
@@ -24,36 +24,20 @@ import org.junit.runner.RunWith;
 @RunWith(Enclosed.class)
 final class ConsoleOptionCommandTest {
 
-    public static class オプションコマンドの集合生成に関するテスト {
+    public static class サブクラスの重複の検証 {
 
         @Test
-        public void test_INPUT_FILE_PATHを含むことを確かめる() {
-            assertThat(values(), containsInRelativeOrder(INPUT_FILE_PATH));
-        }
-    }
+        public void test_サブクラスのコマンド文字列表現が重複しないことを確認() {
+            List<String> argCommandExpressions = ArgumentRequiringCommand.allExpressions();
+            List<String> noArgCommandExpressions = NoArgumentCommand.allExpressions();
 
-    public static class オプションコマンドの文字列解釈のテスト {
+            Set<String> merged = new HashSet<>(argCommandExpressions);
+            merged.addAll(noArgCommandExpressions);
 
-        @Test(expected = NullPointerException.class)
-        public void test_nullは不可() {
-            interpret(null);
-        }
+            int overlapCount = argCommandExpressions.size() +
+                    noArgCommandExpressions.size() - merged.size();
 
-        @Test
-        public void test_セパレータコマンド() {
-            assertThat(
-                    interpret("--separator").get(),
-                    is(ConsoleOptionCommand.SEPARATOR));
-            assertThat(
-                    interpret("-sep").get(),
-                    is(ConsoleOptionCommand.SEPARATOR));
-        }
-
-        @Test
-        public void test_未定義の場合() {
-            assertThat(
-                    interpret("--unknown"),
-                    is(Optional.empty()));
+            assertThat("Subclass-command overlapped count", overlapCount, is(0));
         }
     }
 }
