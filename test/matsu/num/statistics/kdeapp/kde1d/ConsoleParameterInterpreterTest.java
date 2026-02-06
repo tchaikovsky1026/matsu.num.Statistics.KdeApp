@@ -55,6 +55,23 @@ final class ConsoleParameterInterpreterTest {
         }
     }
 
+    public static class 解釈生成の異常系に関するテスト {
+
+        @Test(expected = InvalidParameterException.class)
+        public void test_パラメータに重複がある場合は例外_引数有り() {
+
+            String[] args = { "-f", "test.txt", "-f", "test.txt" };
+            ConsoleParameterInterpreter.from(args);
+        }
+
+        @Test(expected = InvalidParameterException.class)
+        public void test_パラメータに重複がある場合は例外_引数無し() {
+
+            String[] args = { "--dummy-no-arg", "--dummy-no-arg" };
+            ConsoleParameterInterpreter.from(args);
+        }
+    }
+
     public static class 解釈結果の取得に関するテスト {
 
         /*

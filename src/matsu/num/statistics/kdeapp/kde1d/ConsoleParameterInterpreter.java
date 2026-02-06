@@ -91,6 +91,8 @@ final class ConsoleParameterInterpreter {
         int cursor = 0;
         Map<ArgumentRequiringCommand<?>, String> argCommandMapper =
                 new HashMap<>();
+
+        // 引数なしコマンドの設定されている化のセット
         Set<NoArgumentCommand> noArgCommandSet = new HashSet<>();
 
         while (cursor < size) {
@@ -105,15 +107,16 @@ final class ConsoleParameterInterpreter {
                     NoArgumentCommand command = op.get();
                     cursor++;
 
-                    if (noArgCommandSet.contains(command)) {
+                    // すでにコマンドが登録されていたら例外スロー
+                    if (!noArgCommandSet.add(command)) {
                         throw new InvalidParameterException(
                                 "duplicate: <" + command.commandString() + ">");
                     }
-                    noArgCommandSet.add(command);
 
                     continue;
                 }
             }
+
             // 引数有りコマンドを検索
             {
                 Optional<ArgumentRequiringCommand<?>> op =
@@ -122,17 +125,20 @@ final class ConsoleParameterInterpreter {
                     ArgumentRequiringCommand<?> command = op.get();
                     cursor++;
 
-                    if (argCommandMapper.keySet().contains(command)) {
-                        throw new InvalidParameterException(
-                                "duplicate: <" + command.commandString() + ">");
-                    }
-
                     // 後続のパラメータが必要な場合, 存在しているかを確かめる
                     if (cursor >= size) {
                         throw new InvalidParameterException(
                                 "args lack: <" + command.commandString() + ">");
                     }
-                    argCommandMapper.put(command, Objects.requireNonNull(args[cursor]));
+
+                    // すでにコマンドが登録されていたら例外スロー
+                    if (Objects.nonNull(
+                            argCommandMapper.put(
+                                    command,
+                                    Objects.requireNonNull(args[cursor])))) {
+                        throw new InvalidParameterException(
+                                "duplicate: <" + command.commandString() + ">");
+                    }
                     cursor++;
 
                     continue;
