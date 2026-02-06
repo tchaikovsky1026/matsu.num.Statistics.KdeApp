@@ -23,7 +23,7 @@ import org.junit.runner.RunWith;
  */
 @RunWith(Enclosed.class)
 final class ArgumentRequiringCommandTest {
-    
+
     public static class オプションコマンドの集合生成に関するテスト {
 
         @Test
@@ -54,6 +54,14 @@ final class ArgumentRequiringCommandTest {
             assertThat(
                     interpret("--unknown"),
                     is(Optional.empty()));
+        }
+    }
+
+    public static class オプションコマンドのコンバータのバリデーションテスト {
+
+        @Test(expected = InvalidParameterException.class)
+        public void test_セパレータは空文字は不可() {
+            SEPARATOR.convertArg("");
         }
     }
 }
