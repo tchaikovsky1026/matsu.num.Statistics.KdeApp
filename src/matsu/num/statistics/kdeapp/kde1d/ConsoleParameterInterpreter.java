@@ -24,11 +24,11 @@ import java.util.Set;
  */
 final class ConsoleParameterInterpreter {
 
-    private final Map<ArgumentRequiringCommand<?>, String> argCommandMapper;
+    private final Map<ArgumentRequiringCommand<?>, Object> argCommandMapper;
     private final Set<NoArgumentCommand> noArgCommandSet;
 
     private ConsoleParameterInterpreter(
-            Map<ArgumentRequiringCommand<?>, String> argCommandMapper,
+            Map<ArgumentRequiringCommand<?>, Object> argCommandMapper,
             Set<NoArgumentCommand> noArgCommandSet) {
         this.argCommandMapper = Objects.requireNonNull(argCommandMapper);
         this.noArgCommandSet = Objects.requireNonNull(noArgCommandSet);
@@ -38,16 +38,16 @@ final class ConsoleParameterInterpreter {
      * 引数有りオプションの値を取得する.
      * 
      * <p>
-     * 戻り値型はオプショナルである. <br>
-     * オプションが指定されていない場合は, 空である.
+     * 戻り値型はオプショナルである.
      * </p>
      * 
      * @param command オプションの属性
      * @return オプションの値, 指定されていない場合は空.
      * @throws NullPointerException 引数がnullの場合
      */
-    Optional<String> valueOf(ArgumentRequiringCommand<?> command) {
-        return Optional.ofNullable(argCommandMapper.get(Objects.requireNonNull(command)));
+    <T> Optional<T> valueOf(ArgumentRequiringCommand<T> command) {
+        return Optional.ofNullable(
+                command.cast(argCommandMapper.get(Objects.requireNonNull(command))));
     }
 
     /**
@@ -89,7 +89,7 @@ final class ConsoleParameterInterpreter {
         final int size = args.length;
 
         int cursor = 0;
-        Map<ArgumentRequiringCommand<?>, String> argCommandMapper =
+        Map<ArgumentRequiringCommand<?>, Object> argCommandMapper =
                 new HashMap<>();
 
         // 引数なしコマンドの設定されている化のセット
@@ -132,10 +132,11 @@ final class ConsoleParameterInterpreter {
                     }
 
                     // すでにコマンドが登録されていたら例外スロー
+                    // コンバートに失敗した場合, 例外スロー
                     if (Objects.nonNull(
                             argCommandMapper.put(
                                     command,
-                                    Objects.requireNonNull(args[cursor])))) {
+                                    command.convertArg(Objects.requireNonNull(args[cursor]))))) {
                         throw new InvalidParameterException(
                                 "duplicate: <" + command.commandString() + ">");
                     }

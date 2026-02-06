@@ -123,18 +123,14 @@ final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand {
      * 文字列として与えられる引数を, このコマンドで解釈できる形に変換する. <br>
      * 変換に関しては, シングルトン定数の説明に書かれるべきである.
      * 
-     * <p>
-     * このインスタンスが引数を要求しないオプションの場合,
-     * (おそらく) {@code null} が返る.
-     * </p>
-     * 
      * @param arg 文字列
      * @return 変換後の値
      * @throws InvalidParameterException パラメータ不正の場合
-     * @throws NullPointerException 引数がnullの場合(必ずスローするわけではない)
+     * @throws NullPointerException 引数がnullの場合(必ず)
      */
     final T convertArg(String arg) {
-        return converter.apply(arg);
+        // TODO: 例外スローに, コマンドの内容を含める
+        return converter.apply(Objects.requireNonNull(arg));
     }
 
     /**

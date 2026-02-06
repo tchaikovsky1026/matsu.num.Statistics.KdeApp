@@ -41,7 +41,7 @@ final class WritingFormatterConstructor implements ComponentConstructor<WritingF
                 .ifPresent(header -> builder.enableLabel(header));
 
         interpreter.valueOf(SEPARATOR)
-                .ifPresent(separator -> builder.setSeparator(separator.charAt(0)));
+                .ifPresent(separator -> builder.setSeparator(separator.charValue()));
 
         return builder.build();
     }
