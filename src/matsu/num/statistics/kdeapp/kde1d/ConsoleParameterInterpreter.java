@@ -6,14 +6,16 @@
  */
 
 /*
- * 2026.2.5
+ * 2026.2.6
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * コンソールパラメータの解釈器.
@@ -22,37 +24,41 @@ import java.util.Optional;
  */
 final class ConsoleParameterInterpreter {
 
-    private final Map<ConsoleOptionCommand<?>, String> optionMapper;
+    private final Map<ArgumentRequiringCommand<?>, String> argCommandMapper;
+    private final Set<NoArgumentCommand> noArgCommandSet;
 
     private ConsoleParameterInterpreter(
-            Map<ConsoleOptionCommand<?>, String> optionMapper) {
-        this.optionMapper = Objects.requireNonNull(optionMapper);
+            Map<ArgumentRequiringCommand<?>, String> argCommandMapper,
+            Set<NoArgumentCommand> noArgCommandSet) {
+        this.argCommandMapper = Objects.requireNonNull(argCommandMapper);
+        this.noArgCommandSet = Objects.requireNonNull(noArgCommandSet);
     }
 
     /**
-     * オプションの値を取得する.
+     * 引数有りオプションの値を取得する.
      * 
      * <p>
      * 戻り値型はオプショナルである. <br>
-     * オプションが指定されていない場合は, 空である. <br>
-     * パラメータを取らないオプションの場合
-     * (see: {@link ConsoleOptionCommand#hasArg()}),
-     * ダミー文字列である.
+     * オプションが指定されていない場合は, 空である.
      * </p>
      * 
-     * <p>
-     * <i>
-     * (設計コメント) <br>
-     * もしかすると, 独自のクラスで表現したほうが良いかもしれない.
-     * </i>
-     * </p>
+     * @param command オプションの属性
+     * @return オプションの値, 指定されていない場合は空.
+     * @throws NullPointerException 引数がnullの場合
+     */
+    Optional<String> valueOf(ArgumentRequiringCommand<?> command) {
+        return Optional.ofNullable(argCommandMapper.get(Objects.requireNonNull(command)));
+    }
+
+    /**
+     * 引数無しオプションが指定されているかを判定する.
      * 
      * @param option オプションの属性
      * @return オプションの値, 指定されていない場合は空.
      * @throws NullPointerException 引数がnullの場合
      */
-    Optional<String> valueOf(ConsoleOptionCommand<?> option) {
-        return Optional.ofNullable(optionMapper.get(Objects.requireNonNull(option)));
+    boolean contains(NoArgumentCommand option) {
+        return noArgCommandSet.contains(Objects.requireNonNull(option));
     }
 
     /**
@@ -83,39 +89,61 @@ final class ConsoleParameterInterpreter {
         final int size = args.length;
 
         int cursor = 0;
-        Map<ConsoleOptionCommand<?>, String> optionMapper =
+        Map<ArgumentRequiringCommand<?>, String> argCommandMapper =
                 new HashMap<>();
+        Set<NoArgumentCommand> noArgCommandSet = new HashSet<>();
+
         while (cursor < size) {
-            // オプションコマンドを同定
+            // オプションコマンドを同定し, 分岐
             String commandAsString = args[cursor];
-            ConsoleOptionCommand<?> command =
-                    ConsoleOptionCommand.interpret(commandAsString)
-                            .orElseThrow(
-                                    () -> new InvalidParameterException(
-                                            "unknown command: <" + commandAsString + ">"));
-            cursor++;
 
-            // オプションの重複確認
-            if (optionMapper.keySet().contains(command)) {
-                throw new InvalidParameterException(
-                        "duplicate: <" + command.commandString() + ">");
+            // 引数なしコマンドを検索
+            {
+                Optional<NoArgumentCommand> op =
+                        NoArgumentCommand.interpret(commandAsString);
+                if (op.isPresent()) {
+                    NoArgumentCommand command = op.get();
+                    cursor++;
+
+                    if (noArgCommandSet.contains(command)) {
+                        throw new InvalidParameterException(
+                                "duplicate: <" + command.commandString() + ">");
+                    }
+                    noArgCommandSet.add(command);
+
+                    continue;
+                }
+            }
+            // 引数有りコマンドを検索
+            {
+                Optional<ArgumentRequiringCommand<?>> op =
+                        ArgumentRequiringCommand.interpret(commandAsString);
+                if (op.isPresent()) {
+                    ArgumentRequiringCommand<?> command = op.get();
+                    cursor++;
+
+                    if (argCommandMapper.keySet().contains(command)) {
+                        throw new InvalidParameterException(
+                                "duplicate: <" + command.commandString() + ">");
+                    }
+
+                    // 後続のパラメータが必要な場合, 存在しているかを確かめる
+                    if (cursor >= size) {
+                        throw new InvalidParameterException(
+                                "args lack: <" + command.commandString() + ">");
+                    }
+                    argCommandMapper.put(command, Objects.requireNonNull(args[cursor]));
+                    cursor++;
+
+                    continue;
+                }
             }
 
-            // 後続のパラメータが必要ない場合は, オプションコマンドの存在を記録(ダミー文字列)
-            if (!command.hasArg()) {
-                optionMapper.put(command, "");
-                continue;
-            }
-
-            // 後続のパラメータが必要な場合, 存在しているかを確かめる
-            if (cursor >= size) {
-                throw new InvalidParameterException(
-                        "args lack: <" + command.commandString() + ">");
-            }
-            optionMapper.put(command, Objects.requireNonNull(args[cursor]));
-            cursor++;
+            // オプションが不明である場合は例外をスローする
+            throw new InvalidParameterException(
+                    "unknown command: <" + commandAsString + ">");
         }
 
-        return new ConsoleParameterInterpreter(optionMapper);
+        return new ConsoleParameterInterpreter(argCommandMapper, noArgCommandSet);
     }
 }

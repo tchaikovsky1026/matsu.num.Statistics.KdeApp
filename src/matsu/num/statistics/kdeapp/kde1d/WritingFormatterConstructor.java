@@ -10,7 +10,7 @@
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
-import static matsu.num.statistics.kdeapp.kde1d.ConsoleOptionCommand.*;
+import static matsu.num.statistics.kdeapp.kde1d.ArgumentRequiringCommand.*;
 
 /**
  * {@link WritingFormatter} の構築器.

@@ -7,7 +7,8 @@
 
 package matsu.num.statistics.kdeapp.kde1d;
 
-import static matsu.num.statistics.kdeapp.kde1d.ConsoleOptionCommand.*;
+import static matsu.num.statistics.kdeapp.kde1d.ArgumentRequiringCommand.*;
+import static matsu.num.statistics.kdeapp.kde1d.NoArgumentCommand.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
@@ -86,7 +87,7 @@ final class ConsoleParameterInterpreterTest {
         @SuppressWarnings("deprecation")
         @Test
         public void test_dummyNoArgは設定済み() {
-            assertThat(interpretation.valueOf(DUMMY_NO_ARG), not(Optional.empty()));
+            assertThat(interpretation.contains(DUMMY_NO_ARG), is(true));
         }
     }
 }
