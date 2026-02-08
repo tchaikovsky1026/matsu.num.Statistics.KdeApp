@@ -10,11 +10,16 @@ package matsu.num.statistics.kdeapp.kde1d;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Comparator;
+import java.util.stream.Stream;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
@@ -29,18 +34,30 @@ final class Kde1dCliWithStyle020Test {
 
     public static class 処理の実行のテスト {
 
+        private final Path inputFile = Path.of("test/resources/kde1d test.txt");
+        private final Path outputDir = Path.of("test/output");
+        private final Path outputFile = outputDir.resolve("kde1d result.txt");
+
+        @Before
+        public void before_ハッピーパスの準備() throws IOException{
+            // アウトプットファイルが含まれるディレクトリの削除
+            deleteDir(outputDir);
+        }
+
         @Test
         public void test_ハッピーパス() throws Exception {
-            Path p = Path.of("test/resources/kde1d test.txt");
-            if (!Files.exists(p)) {
-                throw new AssertionError("does not exists: " + p.toAbsolutePath());
+            if (!Files.exists(inputFile)) {
+                throw new AssertionError("does not exists: " + inputFile.toAbsolutePath());
             }
 
             PrintStream out = new PrintStream(OutputStream.nullOutputStream());
             PrintStream err = new PrintStream(OutputStream.nullOutputStream());
 
             assertThat(
-                    new Kde1dCliWithStyle020().run(new String[] { "-f", p.toString() }, out, err),
+                    new Kde1dCliWithStyle020().run(
+                            new String[] {
+                                    "-f", inputFile.toString(), "-out-f", outputFile.toString()
+                            }, out, err),
                     is(0));
         }
     }
@@ -63,4 +80,28 @@ final class Kde1dCliWithStyle020Test {
             return e.getClass().getName() + ": " + e.getMessage();
         }
     }
+
+    /**
+     * 与えたパスのディレクトリまたはファイルを削除する.
+     */
+    private static void deleteDir(Path path) throws IOException {
+        if (!Files.exists(path)) {
+            return;
+        }
+
+        try (Stream<Path> eachPath = Files.walk(path)) {
+            eachPath
+                    .sorted(Comparator.reverseOrder()) // ← 深い順に
+                    .forEach(p -> {
+                        try {
+                            Files.delete(p);
+                        } catch (IOException e) {
+                            throw new UncheckedIOException(e);
+                        }
+                    });
+        } catch (UncheckedIOException e2) {
+            throw e2.getCause();
+        }
+    }
+
 }
