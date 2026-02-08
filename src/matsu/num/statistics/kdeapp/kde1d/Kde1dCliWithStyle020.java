@@ -19,7 +19,7 @@ import matsu.num.statistics.kdeapp.kde1d.command.ConsoleParameterInterpreter;
  * 最も単純な1次元カーネル密度推定を実行するクラス.
  * 
  * <p>
- * コンソールパラメータは, version 0.2.0 のスタイルとする.
+ * コンソールパラメータは, version 0.2.0 以降のスタイルとする.
  * </p>
  * 
  * @author Matsuura Y.
