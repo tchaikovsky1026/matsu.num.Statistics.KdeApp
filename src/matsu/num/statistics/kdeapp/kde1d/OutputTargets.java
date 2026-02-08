@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.6
+ * 2026.2.8
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -15,6 +15,8 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
@@ -62,10 +64,21 @@ final class OutputTargets {
 
         result.write(new PrintWriter(out), writingFormatter);
 
-        for (String p : filePaths) {
+        for (String pathStr : filePaths) {
+            Path path;
+            try {
+                path = Paths.get(pathStr);
+                Path parent = path.getParent();
+                if (Objects.nonNull(path)) {
+                    Files.createDirectories(parent);
+                }
+            } catch (InvalidPathException ipe) {
+                throw new IOException("InvalidPathException: " + ipe.getMessage());
+            }
+
             try (PrintWriter output = new PrintWriter(
                     Files.newBufferedWriter(
-                            Paths.get(p),
+                            path,
                             StandardCharsets.UTF_8))) {
 
                 result.write(output, writingFormatter);
