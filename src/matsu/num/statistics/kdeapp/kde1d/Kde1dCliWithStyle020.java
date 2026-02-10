@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 import matsu.num.statistics.kdeapp.kde1d.command.ConsoleParameterInterpreter;
+import matsu.num.statistics.kdeapp.kde1d.exception.ApplicationException;
 
 /**
  * 最も単純な1次元カーネル密度推定を実行するクラス.
@@ -73,8 +74,9 @@ final class Kde1dCliWithStyle020 {
      * 
      * @param out System.out
      * @param err System.err
+     * @throws ApplicationException アプリケーション例外がスローされた場合
      */
-    int run(String[] args, PrintStream out, PrintStream err) throws IOException {
+    int run(String[] args, PrintStream out, PrintStream err) {
 
         out.println("kde1d...");
 
