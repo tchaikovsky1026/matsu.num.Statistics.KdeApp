@@ -64,7 +64,9 @@ final class OutputTargets {
      */
     void write(WritableKde1dResult result, WritingFormatter writingFormatter) {
 
-        result.write(new PrintWriter(out), writingFormatter);
+        if (result.write(new PrintWriter(out), writingFormatter)) {
+            throw new OutputException("System.out");
+        }
 
         for (String pathStr : filePaths) {
             try {
@@ -79,7 +81,9 @@ final class OutputTargets {
                 // 結果の出力
                 try (PrintWriter output = new PrintWriter(
                         Files.newBufferedWriter(path, StandardCharsets.UTF_8))) {
-                    result.write(output, writingFormatter);
+                    if (result.write(output, writingFormatter)) {
+                        throw new IOException("write to " + path.toString());
+                    }
                 }
             } catch (InvalidPathException | IOException e) {
                 throw new OutputException(
