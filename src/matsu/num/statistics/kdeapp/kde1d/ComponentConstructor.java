@@ -24,8 +24,9 @@ interface ComponentConstructor<T> {
      * コンソールパラメータからインスタンスを構築する.
      * 
      * <p>
-     * インスタンスを構築できない場合, {@link InvalidParameterException} をスローする. <br>
-     * TODO: ここで {@link InvalidParameterException} をスローするのは不適切である.
+     * (インスタンスを構築できない場合, {@link InvalidParameterException} をスローする.) <br>
+     * TODO: ここで {@link InvalidParameterException} をスローするのは不適切である. <br>
+     * このメソッドは例外をスローしないのが正しい.
      * </p>
      * 
      * @implSpec

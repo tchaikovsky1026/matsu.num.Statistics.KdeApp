@@ -17,6 +17,8 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 
+import matsu.num.statistics.kdeapp.kde1d.exception.InputException;
+
 /**
  * 1次元のカーネル密度推定に使うデータソースのローダー.
  * 
@@ -45,14 +47,15 @@ final class Kde1dSourceLoader {
      * ファイルをロードし, データソースを取得する.
      * 
      * @return データソース
-     * @throws IOException ファイルアクセスで例外が発生した場合, ファイルのフォーマットが不正の場合
+     * @throws InputException ファイルアクセスで例外が発生した場合, ファイルのフォーマットが不正の場合
      */
-    double[] load() throws IOException {
+    double[] load() {
         try {
             Path path = Path.of(pathString);
             return loader.load(() -> Files.lines(path));
-        } catch (InvalidPathException ipe) {
-            throw new IOException("InvalidPathException: " + ipe.getMessage());
+        } catch (InvalidPathException | IOException e) {
+            throw new InputException(
+                    e.getClass().getSimpleName() + ": " + e.getMessage());
         }
     }
 }
