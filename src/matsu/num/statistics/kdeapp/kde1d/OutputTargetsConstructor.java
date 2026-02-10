@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.6
+ * 2026.2.10
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -39,7 +39,6 @@ final class OutputTargetsConstructor implements ComponentConstructor<OutputTarge
     }
 
     /**
-     * @throws InvalidParameterException {@inheritDoc }
      * @throws NullPointerException {@inheritDoc }
      */
     @Override

@@ -17,7 +17,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-import matsu.num.statistics.kdeapp.kde1d.InvalidParameterException;
+import matsu.num.statistics.kdeapp.kde1d.exception.InvalidParameterException;
 
 /**
  * コンソールパラメータの解釈器.

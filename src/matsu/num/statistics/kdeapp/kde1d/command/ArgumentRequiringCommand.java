@@ -22,7 +22,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
-import matsu.num.statistics.kdeapp.kde1d.InvalidParameterException;
+import matsu.num.statistics.kdeapp.kde1d.exception.InvalidParameterException;
 
 /**
  * 引数をとるコマンドを扱うクラス.

@@ -25,7 +25,7 @@ import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
-import matsu.num.statistics.kdeapp.kde1d.InvalidParameterException;
+import matsu.num.statistics.kdeapp.kde1d.exception.InvalidParameterException;
 
 /**
  * {@link ConsoleParameterInterpreter} のテスト.

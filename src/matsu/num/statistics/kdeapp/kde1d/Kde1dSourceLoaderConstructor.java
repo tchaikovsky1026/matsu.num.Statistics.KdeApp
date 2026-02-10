@@ -13,6 +13,7 @@ package matsu.num.statistics.kdeapp.kde1d;
 import static matsu.num.statistics.kdeapp.kde1d.command.ArgumentRequiringCommand.*;
 
 import matsu.num.statistics.kdeapp.kde1d.command.ConsoleParameterInterpreter;
+import matsu.num.statistics.kdeapp.kde1d.exception.InvalidParameterException;
 
 /**
  * {@link Kde1dSourceLoader} の構築器.
