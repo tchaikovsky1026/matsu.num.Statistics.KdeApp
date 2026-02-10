@@ -15,7 +15,7 @@ package matsu.num.statistics.kdeapp.kde1d.exception;
  * 
  * @author Matsuura Y.
  */
-public final class InvalidParameterException extends ApplicationException {
+public class InvalidParameterException extends ApplicationException {
 
     private static final long serialVersionUID = 1L;
 
