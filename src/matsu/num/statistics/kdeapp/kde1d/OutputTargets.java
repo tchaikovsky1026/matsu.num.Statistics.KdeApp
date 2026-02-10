@@ -21,6 +21,8 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 
+import matsu.num.statistics.kdeapp.kde1d.exception.OutputException;
+
 /**
  * 結果出力のリソースを扱う.
  * 
@@ -57,31 +59,31 @@ final class OutputTargets {
      * 
      * @param result 結果
      * @param writingFormatter フォーマッタ
-     * @throws IOException 例外が発生した場合(一度でも)
+     * @throws OutputException 例外が発生した場合(一度でも)
      * @throws NullPointerException 引数がnull
      */
-    void write(WritableKde1dResult result, WritingFormatter writingFormatter) throws IOException {
+    void write(WritableKde1dResult result, WritingFormatter writingFormatter) {
 
         result.write(new PrintWriter(out), writingFormatter);
 
         for (String pathStr : filePaths) {
-            Path path;
             try {
-                path = Paths.get(pathStr);
+                Path path = Paths.get(pathStr);
+
+                // 出力ディレクトリの構築
                 Path parent = path.getParent();
                 if (Objects.nonNull(path)) {
                     Files.createDirectories(parent);
                 }
-            } catch (InvalidPathException ipe) {
-                throw new IOException("InvalidPathException: " + ipe.getMessage());
-            }
 
-            try (PrintWriter output = new PrintWriter(
-                    Files.newBufferedWriter(
-                            path,
-                            StandardCharsets.UTF_8))) {
-
-                result.write(output, writingFormatter);
+                // 結果の出力
+                try (PrintWriter output = new PrintWriter(
+                        Files.newBufferedWriter(path, StandardCharsets.UTF_8))) {
+                    result.write(output, writingFormatter);
+                }
+            } catch (InvalidPathException | IOException e) {
+                throw new OutputException(
+                        e.getClass().getSimpleName() + ": " + e.getMessage());
             }
         }
     }
