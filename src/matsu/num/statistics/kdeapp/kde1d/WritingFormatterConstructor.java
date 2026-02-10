@@ -30,7 +30,7 @@ final class WritingFormatterConstructor implements ComponentConstructor<WritingF
     }
 
     /**
-     * @throws InvalidParameterException {@inheritDoc }
+     * @throws NullPointerException {@inheritDoc }
      */
     @Override
     public WritingFormatter construct(ConsoleParameterInterpreter interpreter) {
