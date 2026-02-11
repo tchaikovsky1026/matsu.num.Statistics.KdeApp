@@ -10,10 +10,13 @@
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
+import static matsu.num.statistics.kdeapp.kde1d.command.ArgumentRequiringCommand.*;
+
 import java.io.IOException;
 import java.io.PrintStream;
 
 import matsu.num.statistics.kdeapp.kde1d.command.ConsoleParameterInterpreter;
+import matsu.num.statistics.kdeapp.kde1d.command.rule.CommandAssignmentRule;
 import matsu.num.statistics.kdeapp.kde1d.exception.ApplicationException;
 
 /**
@@ -26,6 +29,16 @@ import matsu.num.statistics.kdeapp.kde1d.exception.ApplicationException;
  * @author Matsuura Y.
  */
 final class Kde1dCliWithStyle020 {
+
+    /**
+     * コマンドの指定に関するルール.
+     */
+    private static final CommandAssignmentRule COMMAND_ASSIGNMENT_RULE;
+
+    static {
+        COMMAND_ASSIGNMENT_RULE =
+                CommandAssignmentRule.singleRequiredRule(INPUT_FILE_PATH);
+    }
 
     /**
      * 唯一のコンストラクタ.
@@ -81,7 +94,7 @@ final class Kde1dCliWithStyle020 {
         out.println("kde1d...");
 
         ConsoleParameterInterpreter interpretation =
-                ConsoleParameterInterpreter.from(args);
+                ConsoleParameterInterpreter.from(args, COMMAND_ASSIGNMENT_RULE);
 
         Kde1dSourceLoader loader =
                 Kde1dSourceLoaderConstructor.INSTANCE.construct(interpretation);

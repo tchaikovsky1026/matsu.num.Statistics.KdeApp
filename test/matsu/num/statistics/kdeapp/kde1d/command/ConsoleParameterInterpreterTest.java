@@ -9,6 +9,7 @@ package matsu.num.statistics.kdeapp.kde1d.command;
 
 import static matsu.num.statistics.kdeapp.kde1d.command.ArgumentRequiringCommand.*;
 import static matsu.num.statistics.kdeapp.kde1d.command.NoArgumentCommand.*;
+import static matsu.num.statistics.kdeapp.kde1d.command.rule.CommandAssignmentRule.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
@@ -53,7 +54,7 @@ final class ConsoleParameterInterpreterTest {
         @Theory
         public void test_正常系の網羅テスト(String[] args) {
             // 例外がスローされなければOK
-            ConsoleParameterInterpreter.from(args);
+            ConsoleParameterInterpreter.from(args, nullRule());
         }
     }
 
@@ -63,14 +64,14 @@ final class ConsoleParameterInterpreterTest {
         public void test_パラメータに重複がある場合は例外_引数有り() {
 
             String[] args = { "-f", "test.txt", "-f", "test.txt" };
-            ConsoleParameterInterpreter.from(args);
+            ConsoleParameterInterpreter.from(args, nullRule());
         }
 
         @Test(expected = InvalidParameterException.class)
         public void test_パラメータに重複がある場合は例外_引数無し() {
 
             String[] args = { "--dummy-no-arg", "--dummy-no-arg" };
-            ConsoleParameterInterpreter.from(args);
+            ConsoleParameterInterpreter.from(args, nullRule());
         }
     }
 
@@ -90,7 +91,7 @@ final class ConsoleParameterInterpreterTest {
             String[] args = {
                     "-f", file, "--dummy-no-arg"
             };
-            interpretation = ConsoleParameterInterpreter.from(args);
+            interpretation = ConsoleParameterInterpreter.from(args, nullRule());
         }
 
         @Test

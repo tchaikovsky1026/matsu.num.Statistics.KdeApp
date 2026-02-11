@@ -17,6 +17,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
+import matsu.num.statistics.kdeapp.kde1d.command.rule.CommandAssignmentRule;
 import matsu.num.statistics.kdeapp.kde1d.exception.InvalidParameterException;
 
 /**
@@ -75,10 +76,31 @@ public final class ConsoleParameterInterpreter {
      * 
      * @param args raw なコンソール引数
      * @return (解釈された) コンソールパラメータ
-     * @throws InvalidParameterException パラメータの形式が不正の場合
+     * @throws InvalidParameterException パラメータの形式が不正の場合, 必須パラメータが登録されなかった場合
      * @throws NullPointerException 引数にnullが含まれる場合
      */
+    @Deprecated
     public static ConsoleParameterInterpreter from(String[] args)
+            throws InvalidParameterException {
+        return from(args, CommandAssignmentRule.nullRule());
+    }
+
+    /**
+     * 与えられた raw なコンソール引数で解釈された, コンソールパラメータ解釈を返す.
+     * 
+     * <p>
+     * オプションコマンドの後続の文字列について, 各コマンドの特性に応じて,
+     * またコマンドの組み合わせ指定に関するルールに基づいてバリデーションされる.
+     * </p>
+     * 
+     * @param args raw なコンソール引数
+     * @param assignmentRule コマンドの組み合わせ指定に関するルール
+     * @return (解釈された) コンソールパラメータ
+     * @throws InvalidParameterException パラメータの形式が不正の場合, 必須パラメータが登録されなかった場合
+     * @throws NullPointerException 引数にnullが含まれる場合
+     */
+    public static ConsoleParameterInterpreter from(
+            String[] args, CommandAssignmentRule assignmentRule)
             throws InvalidParameterException {
 
         /*
@@ -152,6 +174,11 @@ public final class ConsoleParameterInterpreter {
             throw new InvalidParameterException(
                     "unknown command: <" + commandAsString + ">");
         }
+
+        // パラメータの指定に関するルールでバリデーション
+        Set<ConsoleOptionCommand> commandSet = new HashSet<>(noArgCommandSet);
+        commandSet.addAll(argCommandMapper.keySet());
+        assignmentRule.validate(commandSet);
 
         return new ConsoleParameterInterpreter(argCommandMapper, noArgCommandSet);
     }

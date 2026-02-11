@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.6
+ * 2026.2.11
  */
 package matsu.num.statistics.kdeapp.kde1d.command;
 
@@ -52,6 +52,20 @@ public final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand {
      */
     public static final ArgumentRequiringCommand<String> OUTPUT_FORCE_FILE_PATH =
             identifying("OUTPUT_FORCE_FILE_PATH", "--output-force", "-out-f");
+
+    /**
+     * 出力ファイルの指定を表現するシングルトンインスタンス.
+     * 
+     * <p>
+     * 引数はバリデーションされない.
+     * </p>
+     * 
+     * <p>
+     * (まだ, ダミーオプションである)
+     * </p>
+     */
+    public static final ArgumentRequiringCommand<String> OUTPUT_FILE_PATH =
+            identifying("OUTPUT_FILE_PATH", "--output", "-out");
 
     /**
      * 入力のコメント行の prefix の指定を表現するシングルトンインスタンス.
