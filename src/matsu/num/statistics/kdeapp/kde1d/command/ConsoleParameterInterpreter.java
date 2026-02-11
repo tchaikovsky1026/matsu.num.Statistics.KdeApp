@@ -75,7 +75,7 @@ public final class ConsoleParameterInterpreter {
      * 
      * @param args raw なコンソール引数
      * @return (解釈された) コンソールパラメータ
-     * @throws InvalidParameterException パラメータの形式が不正の場合
+     * @throws InvalidParameterException パラメータの形式が不正の場合, 必須パラメータが登録されなかった場合
      * @throws NullPointerException 引数にnullが含まれる場合
      */
     public static ConsoleParameterInterpreter from(String[] args)
