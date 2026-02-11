@@ -68,27 +68,6 @@ public final class ConsoleParameterInterpreter {
      * 与えられた raw なコンソール引数で解釈された, コンソールパラメータ解釈を返す.
      * 
      * <p>
-     * <i>
-     * (設計コメント) <br>
-     * オプションコマンドの後続の文字列について, バリデーションはされていない.
-     * </i>
-     * </p>
-     * 
-     * @param args raw なコンソール引数
-     * @return (解釈された) コンソールパラメータ
-     * @throws InvalidParameterException パラメータの形式が不正の場合, 必須パラメータが登録されなかった場合
-     * @throws NullPointerException 引数にnullが含まれる場合
-     */
-    @Deprecated
-    public static ConsoleParameterInterpreter from(String[] args)
-            throws InvalidParameterException {
-        return from(args, CommandAssignmentRule.nullRule());
-    }
-
-    /**
-     * 与えられた raw なコンソール引数で解釈された, コンソールパラメータ解釈を返す.
-     * 
-     * <p>
      * オプションコマンドの後続の文字列について, 各コマンドの特性に応じて,
      * またコマンドの組み合わせ指定に関するルールに基づいてバリデーションされる.
      * </p>
