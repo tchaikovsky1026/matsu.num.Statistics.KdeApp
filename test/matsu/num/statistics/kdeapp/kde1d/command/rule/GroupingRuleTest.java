@@ -20,21 +20,21 @@ import org.junit.runner.RunWith;
 import matsu.num.statistics.kdeapp.kde1d.exception.InvalidParameterException;
 
 /**
- * {@link RuleElement} のテスト.
+ * {@link GroupingRule} のテスト.
  */
 @RunWith(Enclosed.class)
-final class RuleElementTest {
+final class GroupingRuleTest {
 
     public static class ルール生成のテスト {
 
         @Test(expected = IllegalArgumentException.class)
         public void test_空ルールの生成は例外_singleOptional() {
-            RuleElement.singleOptionalRule();
+            GroupingRule.singleOptionalRule();
         }
 
         @Test(expected = IllegalArgumentException.class)
         public void test_空ルールの生成は例外_singleRequired() {
-            RuleElement.singleRequiredRule();
+            GroupingRule.singleRequiredRule();
         }
     }
 
@@ -45,7 +45,7 @@ final class RuleElementTest {
         @Before
         public void before_ルールを構築() {
             // OUTPUTの2種とする
-            rule = RuleElement.singleOptionalRule(
+            rule = GroupingRule.singleOptionalRule(
                     OUTPUT_FILE_PATH, OUTPUT_FORCE_FILE_PATH);
         }
 
@@ -74,7 +74,7 @@ final class RuleElementTest {
         @Before
         public void before_ルールを構築() {
             // OUTPUT2種とする
-            rule = RuleElement.singleRequiredRule(
+            rule = GroupingRule.singleRequiredRule(
                     OUTPUT_FILE_PATH, OUTPUT_FORCE_FILE_PATH);
         }
 

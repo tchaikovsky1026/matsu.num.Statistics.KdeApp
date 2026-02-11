@@ -20,7 +20,7 @@ import matsu.num.statistics.kdeapp.kde1d.exception.InvalidParameterException;
  * 
  * @author Matsuura Y.
  */
-public sealed interface CommandAssignmentRule permits RuleElement, NullRule, CompositeRule {
+public sealed interface CommandAssignmentRule permits GroupingRule, NullRule, CompositeRule {
 
     /**
      * 指定されたコマンドの集合がルールに合っているかどうかを検証する.
@@ -44,7 +44,7 @@ public sealed interface CommandAssignmentRule permits RuleElement, NullRule, Com
      * @throws NullPointerException 引数にnullが含まれる場合
      */
     public static CommandAssignmentRule singleOptionalRule(ConsoleOptionCommand... managedCommands) {
-        return RuleElement.singleOptionalRule(managedCommands);
+        return GroupingRule.singleOptionalRule(managedCommands);
     }
 
     /**
@@ -56,7 +56,7 @@ public sealed interface CommandAssignmentRule permits RuleElement, NullRule, Com
      * @throws NullPointerException 引数にnullが含まれる場合
      */
     public static CommandAssignmentRule singleRequiredRule(ConsoleOptionCommand... managedCommands) {
-        return RuleElement.singleRequiredRule(managedCommands);
+        return GroupingRule.singleRequiredRule(managedCommands);
     }
 
     /**
