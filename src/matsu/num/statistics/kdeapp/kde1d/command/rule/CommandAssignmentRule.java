@@ -20,7 +20,8 @@ import matsu.num.statistics.kdeapp.kde1d.exception.InvalidParameterException;
  * 
  * @author Matsuura Y.
  */
-public sealed interface CommandAssignmentRule permits RuleElement, NullRule, CompositeRule {
+public sealed interface CommandAssignmentRule
+        permits GroupingRule, NullRule, ProhibitedCommandRule, CompositeRule {
 
     /**
      * 指定されたコマンドの集合がルールに合っているかどうかを検証する.
@@ -44,7 +45,7 @@ public sealed interface CommandAssignmentRule permits RuleElement, NullRule, Com
      * @throws NullPointerException 引数にnullが含まれる場合
      */
     public static CommandAssignmentRule singleOptionalRule(ConsoleOptionCommand... managedCommands) {
-        return RuleElement.singleOptionalRule(managedCommands);
+        return GroupingRule.singleOptionalRule(managedCommands);
     }
 
     /**
@@ -56,7 +57,18 @@ public sealed interface CommandAssignmentRule permits RuleElement, NullRule, Com
      * @throws NullPointerException 引数にnullが含まれる場合
      */
     public static CommandAssignmentRule singleRequiredRule(ConsoleOptionCommand... managedCommands) {
-        return RuleElement.singleRequiredRule(managedCommands);
+        return GroupingRule.singleRequiredRule(managedCommands);
+    }
+
+    /**
+     * 与えたコマンドを禁止するルールを作成する.
+     * 
+     * @param prohibitedCommand 禁止コマンド
+     * @return 禁止コマンドルール
+     * @throws NullPointerException 引数がnullの場合
+     */
+    public static CommandAssignmentRule prohibitedCommandRule(ConsoleOptionCommand prohibitedCommand) {
+        return ProhibitedCommandRule.of(prohibitedCommand);
     }
 
     /**
@@ -67,7 +79,7 @@ public sealed interface CommandAssignmentRule permits RuleElement, NullRule, Com
      * @return 結合したルール
      * @throws NullPointerException nullを含む場合
      */
-    public static CompositeRule composite(
+    public static CommandAssignmentRule composite(
             CommandAssignmentRule one, CommandAssignmentRule... others) {
         return CompositeRule.composite(one, others);
     }

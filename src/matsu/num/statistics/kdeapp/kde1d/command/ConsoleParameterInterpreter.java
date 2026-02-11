@@ -10,6 +10,10 @@
  */
 package matsu.num.statistics.kdeapp.kde1d.command;
 
+import static matsu.num.statistics.kdeapp.kde1d.command.ArgumentRequiringCommand.*;
+import static matsu.num.statistics.kdeapp.kde1d.command.NoArgumentCommand.*;
+import static matsu.num.statistics.kdeapp.kde1d.command.rule.CommandAssignmentRule.*;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -23,9 +27,38 @@ import matsu.num.statistics.kdeapp.kde1d.exception.InvalidParameterException;
 /**
  * コンソールパラメータの解釈器.
  * 
+ * <p>
+ * この解釈器インスタンスは, イミュータブルである. <br>
+ * インスタンスの生成時に raw なコンソールパラメータを与えられ,
+ * 即時に解析される. <br>
+ * 解析時に, 次が検証される.
+ * </p>
+ * 
+ * <ul>
+ * <li>
+ * 各コマンドの引数形式に問題ないか <br>
+ * ({@link ArgumentRequiringCommand#convertArg(String)} で判断)</li>
+ * <li>
+ * コマンドの組み合わせに問題ないか <br>
+ * ({@link CommandAssignmentRule} で判断)</li>
+ * </ul>
+ * 
  * @author Matsuura Y.
  */
 public final class ConsoleParameterInterpreter {
+
+    /**
+     * コマンドの指定に関するルール.
+     */
+    private static final CommandAssignmentRule COMMAND_ASSIGNMENT_RULE;
+
+    static {
+        @SuppressWarnings("deprecation")
+        CommandAssignmentRule rule = composite(
+                singleRequiredRule(INPUT_FILE_PATH),
+                prohibitedCommandRule(DUMMY_NO_ARG));
+        COMMAND_ASSIGNMENT_RULE = rule;
+    }
 
     private final Map<ArgumentRequiringCommand<?>, Object> argCommandMapper;
     private final Set<NoArgumentCommand> noArgCommandSet;
@@ -69,6 +102,26 @@ public final class ConsoleParameterInterpreter {
      * 
      * <p>
      * オプションコマンドの後続の文字列について, 各コマンドの特性に応じて,
+     * また, あらかじめ準備されたコマンドの組み合わせ指定に関するルールに基づいてバリデーションされる.
+     * </p>
+     * 
+     * @param args raw なコンソール引数
+     * @return (解釈された) コンソールパラメータ
+     * @throws InvalidParameterException パラメータの形式が不正の場合, コマンドの組み合わせが不正の場合
+     * @throws NullPointerException 引数にnullが含まれる場合
+     */
+    public static ConsoleParameterInterpreter from(
+            String[] args) {
+
+        return from(args, COMMAND_ASSIGNMENT_RULE);
+    }
+
+    /**
+     * (非公開) 与えられた raw なコンソール引数で解釈された, コンソールパラメータ解釈を返す. <br>
+     * このメソッドは, 公開すべきではない.
+     * 
+     * <p>
+     * オプションコマンドの後続の文字列について, 各コマンドの特性に応じて,
      * またコマンドの組み合わせ指定に関するルールに基づいてバリデーションされる.
      * </p>
      * 
@@ -78,9 +131,8 @@ public final class ConsoleParameterInterpreter {
      * @throws InvalidParameterException パラメータの形式が不正の場合, 必須パラメータが登録されなかった場合
      * @throws NullPointerException 引数にnullが含まれる場合
      */
-    public static ConsoleParameterInterpreter from(
-            String[] args, CommandAssignmentRule assignmentRule)
-            throws InvalidParameterException {
+    static ConsoleParameterInterpreter from(
+            String[] args, CommandAssignmentRule assignmentRule) {
 
         /*
          * パラメータのフォーマットはすべて,

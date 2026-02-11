@@ -19,11 +19,11 @@ import matsu.num.statistics.kdeapp.kde1d.command.ConsoleOptionCommand;
 import matsu.num.statistics.kdeapp.kde1d.exception.InvalidParameterException;
 
 /**
- * {@link CommandAssignmentRule} の基本要素を扱う.
+ * コマンドの集合に対して作用するルールを扱う.
  * 
  * @author Matsuura Y.
  */
-abstract sealed class RuleElement implements CommandAssignmentRule {
+abstract sealed class GroupingRule implements CommandAssignmentRule {
 
     /**
      * コマンドの集合のうち, 0個または1個指定されるべきコマンドであることを要求するルールを作成する.
@@ -33,7 +33,7 @@ abstract sealed class RuleElement implements CommandAssignmentRule {
      * @throws IllegalArgumentException 引数が空の場合
      * @throws NullPointerException 引数にnullが含まれる場合
      */
-    static RuleElement singleOptionalRule(ConsoleOptionCommand... managedCommands) {
+    static GroupingRule singleOptionalRule(ConsoleOptionCommand... managedCommands) {
         return new SingleOptionalRule(managedCommands);
     }
 
@@ -45,7 +45,7 @@ abstract sealed class RuleElement implements CommandAssignmentRule {
      * @throws IllegalArgumentException 引数が空の場合
      * @throws NullPointerException 引数にnullが含まれる場合
      */
-    static RuleElement singleRequiredRule(ConsoleOptionCommand... managedCommands) {
+    static GroupingRule singleRequiredRule(ConsoleOptionCommand... managedCommands) {
         return new SingleRequiredRule(managedCommands);
     }
 
@@ -61,7 +61,7 @@ abstract sealed class RuleElement implements CommandAssignmentRule {
      * @throws IllegalArgumentException 引数が空の場合
      * @throws NullPointerException 引数にnullが含まれる場合
      */
-    private RuleElement(ConsoleOptionCommand... managedCommands) {
+    private GroupingRule(ConsoleOptionCommand... managedCommands) {
         super();
         this.managedCommands = Set.of(managedCommands);
 
@@ -119,7 +119,7 @@ abstract sealed class RuleElement implements CommandAssignmentRule {
     /**
      * 0個または1個指定されるべきルールを表現する.
      */
-    private static final class SingleOptionalRule extends RuleElement {
+    private static final class SingleOptionalRule extends GroupingRule {
 
         /**
          * @throws IllegalArgumentException 引数が空の場合
@@ -144,7 +144,7 @@ abstract sealed class RuleElement implements CommandAssignmentRule {
     /**
      * 1個は必ず指定されるべきルールを表現する.
      */
-    private static final class SingleRequiredRule extends RuleElement {
+    private static final class SingleRequiredRule extends GroupingRule {
 
         /**
          * @throws IllegalArgumentException 引数が空の場合
