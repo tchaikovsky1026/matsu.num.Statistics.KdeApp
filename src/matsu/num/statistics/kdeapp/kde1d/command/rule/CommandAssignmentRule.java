@@ -20,7 +20,8 @@ import matsu.num.statistics.kdeapp.kde1d.exception.InvalidParameterException;
  * 
  * @author Matsuura Y.
  */
-public sealed interface CommandAssignmentRule permits GroupingRule, NullRule, CompositeRule {
+public sealed interface CommandAssignmentRule
+        permits GroupingRule, NullRule, ProhibitedCommandRule, CompositeRule {
 
     /**
      * 指定されたコマンドの集合がルールに合っているかどうかを検証する.
@@ -60,6 +61,17 @@ public sealed interface CommandAssignmentRule permits GroupingRule, NullRule, Co
     }
 
     /**
+     * 与えたコマンドを禁止するルールを作成する.
+     * 
+     * @param prohibitedCommand 禁止コマンド
+     * @return 禁止コマンドルール
+     * @throws NullPointerException 引数がnullの場合
+     */
+    public static CommandAssignmentRule prohibitedCommandRule(ConsoleOptionCommand prohibitedCommand) {
+        return ProhibitedCommandRule.of(prohibitedCommand);
+    }
+
+    /**
      * 与えたルールを結合した新しいルールを返す.
      * 
      * @param one ルールの1つ
@@ -67,7 +79,7 @@ public sealed interface CommandAssignmentRule permits GroupingRule, NullRule, Co
      * @return 結合したルール
      * @throws NullPointerException nullを含む場合
      */
-    public static CompositeRule composite(
+    public static CommandAssignmentRule composite(
             CommandAssignmentRule one, CommandAssignmentRule... others) {
         return CompositeRule.composite(one, others);
     }
