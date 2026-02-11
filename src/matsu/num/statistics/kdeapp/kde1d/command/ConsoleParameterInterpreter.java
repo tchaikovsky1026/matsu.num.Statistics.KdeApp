@@ -23,6 +23,22 @@ import matsu.num.statistics.kdeapp.kde1d.exception.InvalidParameterException;
 /**
  * コンソールパラメータの解釈器.
  * 
+ * <p>
+ * この解釈器インスタンスは, イミュータブルである. <br>
+ * インスタンスの生成時に raw なコンソールパラメータを与えられ,
+ * 即時に解析される. <br>
+ * 解析時に, 次が検証される.
+ * </p>
+ * 
+ * <ul>
+ * <li>
+ * 各コマンドの引数形式に問題ないか <br>
+ * ({@link ArgumentRequiringCommand#convertArg(String)} で判断)</li>
+ * <li>
+ * コマンドの組み合わせに問題ないか <br>
+ * ({@link CommandAssignmentRule} で判断)</li>
+ * </ul>
+ * 
  * @author Matsuura Y.
  */
 public final class ConsoleParameterInterpreter {
