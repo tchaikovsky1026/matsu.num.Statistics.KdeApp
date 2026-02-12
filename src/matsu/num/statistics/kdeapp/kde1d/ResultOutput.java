@@ -24,18 +24,18 @@ import java.util.Objects;
 import matsu.num.statistics.kdeapp.kde1d.exception.OutputException;
 
 /**
- * 結果出力のリソースを扱う.
+ * 結果の外部出力を扱う.
  * 
  * @author Matsuura Y.
  */
-abstract class OutputTarget {
+abstract class ResultOutput {
 
     /**
      * 強制上書きモードによる出力を返す.
      * 
      * @throws NullPointerException 引数がnullを含む場合
      */
-    static OutputTarget forceOutput(String filePath) {
+    static ResultOutput forceOutput(String filePath) {
         return new ForceOutput(filePath);
     }
 
@@ -44,14 +44,14 @@ abstract class OutputTarget {
      * 
      * @throws NullPointerException 引数がnullを含む場合
      */
-    static OutputTarget regularOutput(String filePath) {
+    static ResultOutput regularOutput(String filePath) {
         return new RegularOutput(filePath);
     }
 
     /**
      * null-出力を返す.
      */
-    static OutputTarget nullOutput() {
+    static ResultOutput nullOutput() {
         return NullOutput.INSTANCE;
     }
 
@@ -59,7 +59,7 @@ abstract class OutputTarget {
      * 非公開のコンストラクタ. <br>
      * ネストしたクラスからの継承のみ許可.
      */
-    private OutputTarget() {
+    private ResultOutput() {
 
     }
 
@@ -76,7 +76,7 @@ abstract class OutputTarget {
     /**
      * null-出力.
      */
-    private static final class NullOutput extends OutputTarget {
+    private static final class NullOutput extends ResultOutput {
 
         /**
          * シングルトンインスタンス.
@@ -95,7 +95,7 @@ abstract class OutputTarget {
     /**
      * 強制上書きモードによる出力.
      */
-    private static final class ForceOutput extends OutputTarget {
+    private static final class ForceOutput extends ResultOutput {
 
         private final String filePath;
 
@@ -138,7 +138,7 @@ abstract class OutputTarget {
     /**
      * 強制上書きモードによる出力.
      */
-    private static final class RegularOutput extends OutputTarget {
+    private static final class RegularOutput extends ResultOutput {
 
         private final String filePath;
 

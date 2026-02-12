@@ -15,33 +15,35 @@ import static matsu.num.statistics.kdeapp.kde1d.command.ArgumentRequiringCommand
 import matsu.num.statistics.kdeapp.kde1d.command.ConsoleParameterInterpreter;
 
 /**
- * {@link OutputTarget} の構築器.
+ * {@link ResultOutput} の構築器.
  * 
  * @author Matsuura Y.
  */
-final class OutputTargetsConstructor implements ComponentConstructor<OutputTarget> {
+final class ResultOutputConstructor implements ComponentConstructor<ResultOutput> {
 
-    static final OutputTargetsConstructor INSTANCE = new OutputTargetsConstructor();
-
-    private OutputTargetsConstructor() {
+    /**
+     * 唯一のコンストラクタ.
+     */
+    ResultOutputConstructor() {
     }
 
     /**
      * @throws NullPointerException {@inheritDoc }
      */
     @Override
-    public OutputTarget construct(ConsoleParameterInterpreter interpreter) {
+    public ResultOutput construct(ConsoleParameterInterpreter interpreter) {
 
         /*
          * OUTPUT_FORCE -> forceOutput
          * OUTPUT -> regularOutput
          * empty -> nullOutput
          */
-        
+
         return interpreter.valueOf(OUTPUT_FORCE_FILE_PATH)
-                .map(OutputTarget::forceOutput)
-                .orElse(interpreter.valueOf(OUTPUT_FILE_PATH)
-                        .map(OutputTarget::regularOutput)
-                        .orElse(OutputTarget.nullOutput()));
+                .map(ResultOutput::forceOutput)
+                .orElse(
+                        interpreter.valueOf(OUTPUT_FILE_PATH)
+                                .map(ResultOutput::regularOutput)
+                                .orElse(ResultOutput.nullOutput()));
     }
 }
