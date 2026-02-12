@@ -26,10 +26,9 @@ final class NoArgumentCommandTest {
 
     public static class オプションコマンドの集合生成に関するテスト {
 
-        @SuppressWarnings("deprecation")
         @Test
-        public void test_DUMMY_NO_ARGを含むことを確かめる() {
-            assertThat(values(), containsInRelativeOrder(DUMMY_NO_ARG));
+        public void test_ECHO_OFFを含むことを確かめる() {
+            assertThat(values(), containsInRelativeOrder(ECHO_OFF));
         }
     }
 
@@ -40,12 +39,11 @@ final class NoArgumentCommandTest {
             interpret(null);
         }
 
-        @SuppressWarnings("deprecation")
         @Test
-        public void test_ダミーコマンド() {
+        public void test_echoOff() {
             assertThat(
-                    interpret("--dummy-no-arg").get(),
-                    is(DUMMY_NO_ARG));
+                    interpret("--echo-off").get(),
+                    is(ECHO_OFF));
         }
 
         @Test
