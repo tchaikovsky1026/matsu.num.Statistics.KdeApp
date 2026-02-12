@@ -6,12 +6,11 @@
  */
 
 /*
- * 2026.2.8
+ * 2026.2.12
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
 import java.io.IOException;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -26,27 +25,16 @@ import matsu.num.statistics.kdeapp.kde1d.exception.OutputException;
 /**
  * 結果出力のリソースを扱う.
  * 
- * <p>
- * 標準出力は必ず含むとする.
- * </p>
- * 
  * @author Matsuura Y.
  */
-final class OutputTargets {
-
-    private final PrintStream out;
-    @SuppressWarnings("unused")
-    private final PrintStream err;
+final class OutputTarget {
 
     private final List<String> filePaths;
 
     /**
      * @throws NullPointerException 引数がnullを含む場合
      */
-    OutputTargets(PrintStream out, PrintStream err, List<String> filePaths) {
-        this.out = Objects.requireNonNull(out);
-        this.err = Objects.requireNonNull(err);
-
+    OutputTarget(List<String> filePaths) {
         this.filePaths = List.copyOf(filePaths);
 
         if (this.filePaths.stream().anyMatch(Objects::isNull)) {
@@ -63,11 +51,6 @@ final class OutputTargets {
      * @throws NullPointerException 引数がnull
      */
     void write(WritableKde1dResult result, WritingFormatter writingFormatter) {
-
-        if (result.write(new PrintWriter(out), writingFormatter)) {
-            throw new OutputException("System.out");
-        }
-
         for (String pathStr : filePaths) {
             try {
                 Path path = Paths.get(pathStr);
