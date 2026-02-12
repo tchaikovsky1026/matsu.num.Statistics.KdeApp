@@ -10,7 +10,6 @@
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
-import java.io.IOException;
 import java.io.PrintStream;
 
 import matsu.num.statistics.kdeapp.kde1d.command.ConsoleParameterInterpreter;
@@ -38,33 +37,19 @@ final class Kde1dCliWithStyle020 {
      * ソースとなるファイルパスをコマンドライン引数として受け取り, 標準出力で推定結果を出力する単純実行.
      * 
      * <p>
-     * 入力はファイルパスのみである. <br>
-     * 引数のlengthが1でない場合はerr出力.
+     * 入力ファイルのフォーマットは, {@link Kde1dSourceLoaderConstructor} に従う. <br>
+     * 出力フォーマットは, {@link WritingFormatterConstructor} に従う.
      * </p>
      * 
      * <p>
-     * 入力ファイルのフォーマットは, 次である.
-     * </p>
-     * 
-     * <ul>
-     * <li>エスケープ文字が "#"</li>
-     * <li>ソースの値は 1 column で縦に並べる</li>
-     * <li>ソースの値には inf, NaN を含まず, {@link Double#parseDouble(String)} で解釈可能</li>
-     * </ul>
-     * 
-     * <p>
-     * 出力フォーマットは, ラベル無しのタブ区切り 2 columns である.
-     * </p>
-     * 
-     * <p>
-     * 入力ファイルが見つからない, ファイルフォーマットが不正の場合は例外をスロー.
+     * 発生した例外は, {@link ApplicationException} でラップされてスローされる.
      * </p>
      * 
      * @param args コマンドライン引数
      * @return 終了コード
-     * @throws IOException 入力ファイルが見つからない, フォーマット不正の場合
+     * @throws ApplicationException アプリケーション例外がスローされた場合
      */
-    int run(String[] args) throws IOException {
+    int run(String[] args) {
         return run(args, System.out, System.err);
     }
 
@@ -83,18 +68,18 @@ final class Kde1dCliWithStyle020 {
         ConsoleParameterInterpreter interpretation = ConsoleParameterInterpreter.from(args);
 
         Kde1dSourceLoader loader =
-                Kde1dSourceLoaderConstructor.INSTANCE.construct(interpretation);
+                new Kde1dSourceLoaderConstructor().construct(interpretation);
         WritingFormatter writingFormatter =
-                WritingFormatterConstructor.INSTANCE.construct(interpretation);
-        OutputTarget targets =
-                OutputTargetsConstructor.INSTANCE.construct(interpretation);
+                new WritingFormatterConstructor().construct(interpretation);
+        ResultOutput output =
+                new ResultOutputConstructor().construct(interpretation);
         ResultDisplay stdout =
                 new ResultDisplayConstructor(out, err).construct(interpretation);
 
         double[] source = loader.load();
         WritableKde1dResult result = new GaussianStandardKde1dCalculator().calc(source);
         stdout.write(result, writingFormatter);
-        targets.write(result, writingFormatter);
+        output.write(result, writingFormatter);
 
         out.println("Bye.");
         return 0;

@@ -17,16 +17,24 @@ import matsu.num.statistics.kdeapp.kde1d.command.ConsoleParameterInterpreter;
 /**
  * {@link Kde1dSourceLoader} の構築器.
  * 
+ * <p>
+ * 入力ファイルのフォーマットは, 次である.
+ * </p>
+ * 
+ * <ul>
+ * <li>エスケープ文字はデフォルトが "#" (オプションコマンドで変更される)</li>
+ * <li>ソースの値は 1 column で縦に並べる</li>
+ * <li>ソースの値には inf, NaN を含まず, {@link Double#parseDouble(String)} で解釈可能</li>
+ * </ul>
+ * 
  * @author Matsuura Y.
  */
 final class Kde1dSourceLoaderConstructor implements ComponentConstructor<Kde1dSourceLoader> {
 
-    static final Kde1dSourceLoaderConstructor INSTANCE = new Kde1dSourceLoaderConstructor();
-
     /**
-     * 非公開のコンストラクタ.
+     * 唯一のコンストラクタ.
      */
-    private Kde1dSourceLoaderConstructor() {
+    Kde1dSourceLoaderConstructor() {
     }
 
     /**
