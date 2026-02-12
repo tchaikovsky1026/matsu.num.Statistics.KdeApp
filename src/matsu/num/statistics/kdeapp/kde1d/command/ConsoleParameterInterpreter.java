@@ -11,7 +11,6 @@
 package matsu.num.statistics.kdeapp.kde1d.command;
 
 import static matsu.num.statistics.kdeapp.kde1d.command.ArgumentRequiringCommand.*;
-import static matsu.num.statistics.kdeapp.kde1d.command.NoArgumentCommand.*;
 import static matsu.num.statistics.kdeapp.kde1d.command.rule.CommandAssignmentRule.*;
 
 import java.util.HashMap;
@@ -53,14 +52,9 @@ public final class ConsoleParameterInterpreter {
     private static final CommandAssignmentRule COMMAND_ASSIGNMENT_RULE;
 
     static {
-        // ルールを構築する.
-        // 警告抑制アノテーションのため, ローカル変数を経由
-        @SuppressWarnings("deprecation")
-        CommandAssignmentRule rule = composite(
+        COMMAND_ASSIGNMENT_RULE = composite(
                 singleRequiredRule(INPUT_FILE_PATH),
-                singleOptionalRule(OUTPUT_FILE_PATH, OUTPUT_FORCE_FILE_PATH),
-                prohibitedCommandRule(DUMMY_NO_ARG));
-        COMMAND_ASSIGNMENT_RULE = rule;
+                singleOptionalRule(OUTPUT_FILE_PATH, OUTPUT_FORCE_FILE_PATH));
     }
 
     private final Map<ArgumentRequiringCommand<?>, Object> argCommandMapper;

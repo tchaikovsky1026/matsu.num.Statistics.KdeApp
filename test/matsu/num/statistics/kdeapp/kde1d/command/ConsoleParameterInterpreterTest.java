@@ -46,8 +46,8 @@ final class ConsoleParameterInterpreterTest {
 
             argsList.add(new String[] {});
             argsList.add(new String[] { "-f", "test.txt" });
-            argsList.add(new String[] { "-f", "test.txt", "--dummy-no-arg" });
-            argsList.add(new String[] { "--dummy-no-arg", "-f", "test.txt" });
+            argsList.add(new String[] { "-f", "test.txt", "--echo-off" });
+            argsList.add(new String[] { "--echo-off", "-f", "test.txt" });
             argsList.add(new String[] { "-f", "test.txt", "-sep", "\t" });
         }
 
@@ -89,7 +89,7 @@ final class ConsoleParameterInterpreterTest {
         public void before_解釈の構築() {
             // インプットファイル と dummy-no-arg を設定
             String[] args = {
-                    "-f", file, "--dummy-no-arg"
+                    "-f", file, "--echo-off"
             };
             interpretation = ConsoleParameterInterpreter.from(args, nullRule());
         }
@@ -104,10 +104,9 @@ final class ConsoleParameterInterpreterTest {
             assertThat(interpretation.valueOf(COMMENT_CHAR), is(Optional.empty()));
         }
 
-        @SuppressWarnings("deprecation")
         @Test
-        public void test_dummyNoArgは設定済み() {
-            assertThat(interpretation.contains(DUMMY_NO_ARG), is(true));
+        public void test_echoOffは設定済み() {
+            assertThat(interpretation.contains(ECHO_OFF), is(true));
         }
     }
 }
