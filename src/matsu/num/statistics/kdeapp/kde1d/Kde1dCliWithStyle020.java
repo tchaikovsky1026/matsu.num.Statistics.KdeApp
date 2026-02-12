@@ -88,7 +88,8 @@ final class Kde1dCliWithStyle020 {
                 WritingFormatterConstructor.INSTANCE.construct(interpretation);
         OutputTarget targets =
                 OutputTargetsConstructor.INSTANCE.construct(interpretation);
-        ResultDisplay stdout = ResultDisplay.stdout(out, err);
+        ResultDisplay stdout =
+                new ResultDisplayConstructor(out, err).construct(interpretation);
 
         double[] source = loader.load();
         WritableKde1dResult result = new GaussianStandardKde1dCalculator().calc(source);
