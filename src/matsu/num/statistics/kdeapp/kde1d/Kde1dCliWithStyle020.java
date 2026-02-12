@@ -86,11 +86,13 @@ final class Kde1dCliWithStyle020 {
                 Kde1dSourceLoaderConstructor.INSTANCE.construct(interpretation);
         WritingFormatter writingFormatter =
                 WritingFormatterConstructor.INSTANCE.construct(interpretation);
-        OutputTargets targets =
-                new OutputTargetsConstructor(out, err).construct(interpretation);
+        OutputTarget targets =
+                OutputTargetsConstructor.INSTANCE.construct(interpretation);
+        StandardOutputEcho stdout = new StandardOutputEcho(out, err);
 
         double[] source = loader.load();
         WritableKde1dResult result = new GaussianStandardKde1dCalculator().calc(source);
+        stdout.write(result, writingFormatter);
         targets.write(result, writingFormatter);
 
         out.println("Bye.");

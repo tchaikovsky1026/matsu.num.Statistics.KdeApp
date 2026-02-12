@@ -44,7 +44,7 @@ public final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand {
             identifying("INPUT_FILE_PATH", "--input-file", "-f");
 
     /**
-     * 出力ファイルの指定を表現するシングルトンインスタンス.
+     * 強制上書きモードによる出力ファイルの指定を表現するシングルトンインスタンス.
      * 
      * <p>
      * 引数はバリデーションされない.
@@ -54,14 +54,10 @@ public final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand {
             identifying("OUTPUT_FORCE_FILE_PATH", "--output-force", "-out-f");
 
     /**
-     * 出力ファイルの指定を表現するシングルトンインスタンス.
+     * 上書き禁止モードである出力ファイルの指定を表現するシングルトンインスタンス.
      * 
      * <p>
      * 引数はバリデーションされない.
-     * </p>
-     * 
-     * <p>
-     * (まだ, ダミーオプションである)
      * </p>
      */
     public static final ArgumentRequiringCommand<String> OUTPUT_FILE_PATH =
