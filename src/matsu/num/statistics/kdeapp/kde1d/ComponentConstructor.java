@@ -11,6 +11,7 @@
 package matsu.num.statistics.kdeapp.kde1d;
 
 import matsu.num.statistics.kdeapp.kde1d.command.ConsoleParameterInterpreter;
+import matsu.num.statistics.kdeapp.kde1d.exception.InvalidParameterException;
 
 /**
  * オプションパラメータからインスタンスを構築することを表現するインターフェース.
@@ -23,7 +24,9 @@ interface ComponentConstructor<T> {
      * コンソールパラメータからインスタンスを構築する.
      * 
      * <p>
-     * インスタンスを構築できない場合, {@link InvalidParameterException} をスローする.
+     * (インスタンスを構築できない場合, {@link InvalidParameterException} をスローする.) <br>
+     * TODO: ここで {@link InvalidParameterException} をスローするのは不適切である. <br>
+     * このメソッドは例外をスローしないのが正しい.
      * </p>
      * 
      * @implSpec
@@ -31,7 +34,6 @@ interface ComponentConstructor<T> {
      * 
      * @param interpreter パラメータの解釈
      * @return インスタンス
-     * @throws InvalidParameterException パラメータが不正の場合
      * @throws NullPointerException 引数がnullの場合
      */
     public abstract T construct(ConsoleParameterInterpreter interpreter);

@@ -9,6 +9,7 @@ package matsu.num.statistics.kdeapp.kde1d.command;
 
 import static matsu.num.statistics.kdeapp.kde1d.command.ArgumentRequiringCommand.*;
 import static matsu.num.statistics.kdeapp.kde1d.command.NoArgumentCommand.*;
+import static matsu.num.statistics.kdeapp.kde1d.command.rule.CommandAssignmentRule.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
@@ -25,7 +26,7 @@ import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
-import matsu.num.statistics.kdeapp.kde1d.InvalidParameterException;
+import matsu.num.statistics.kdeapp.kde1d.exception.InvalidParameterException;
 
 /**
  * {@link ConsoleParameterInterpreter} のテスト.
@@ -45,15 +46,15 @@ final class ConsoleParameterInterpreterTest {
 
             argsList.add(new String[] {});
             argsList.add(new String[] { "-f", "test.txt" });
-            argsList.add(new String[] { "-f", "test.txt", "--dummy-no-arg" });
-            argsList.add(new String[] { "--dummy-no-arg", "-f", "test.txt" });
+            argsList.add(new String[] { "-f", "test.txt", "--echo-off" });
+            argsList.add(new String[] { "--echo-off", "-f", "test.txt" });
             argsList.add(new String[] { "-f", "test.txt", "-sep", "\t" });
         }
 
         @Theory
         public void test_正常系の網羅テスト(String[] args) {
             // 例外がスローされなければOK
-            ConsoleParameterInterpreter.from(args);
+            ConsoleParameterInterpreter.from(args, nullRule());
         }
     }
 
@@ -63,14 +64,14 @@ final class ConsoleParameterInterpreterTest {
         public void test_パラメータに重複がある場合は例外_引数有り() {
 
             String[] args = { "-f", "test.txt", "-f", "test.txt" };
-            ConsoleParameterInterpreter.from(args);
+            ConsoleParameterInterpreter.from(args, nullRule());
         }
 
         @Test(expected = InvalidParameterException.class)
         public void test_パラメータに重複がある場合は例外_引数無し() {
 
             String[] args = { "--dummy-no-arg", "--dummy-no-arg" };
-            ConsoleParameterInterpreter.from(args);
+            ConsoleParameterInterpreter.from(args, nullRule());
         }
     }
 
@@ -88,9 +89,9 @@ final class ConsoleParameterInterpreterTest {
         public void before_解釈の構築() {
             // インプットファイル と dummy-no-arg を設定
             String[] args = {
-                    "-f", file, "--dummy-no-arg"
+                    "-f", file, "--echo-off"
             };
-            interpretation = ConsoleParameterInterpreter.from(args);
+            interpretation = ConsoleParameterInterpreter.from(args, nullRule());
         }
 
         @Test
@@ -103,10 +104,9 @@ final class ConsoleParameterInterpreterTest {
             assertThat(interpretation.valueOf(COMMENT_CHAR), is(Optional.empty()));
         }
 
-        @SuppressWarnings("deprecation")
         @Test
-        public void test_dummyNoArgは設定済み() {
-            assertThat(interpretation.contains(DUMMY_NO_ARG), is(true));
+        public void test_echoOffは設定済み() {
+            assertThat(interpretation.contains(ECHO_OFF), is(true));
         }
     }
 }

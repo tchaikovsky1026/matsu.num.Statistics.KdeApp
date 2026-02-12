@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.6
+ * 2026.2.11
  */
 package matsu.num.statistics.kdeapp.kde1d.command;
 
@@ -22,7 +22,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
-import matsu.num.statistics.kdeapp.kde1d.InvalidParameterException;
+import matsu.num.statistics.kdeapp.kde1d.exception.InvalidParameterException;
 
 /**
  * 引数をとるコマンドを扱うクラス.
@@ -44,7 +44,7 @@ public final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand {
             identifying("INPUT_FILE_PATH", "--input-file", "-f");
 
     /**
-     * 出力ファイルの指定を表現するシングルトンインスタンス.
+     * 強制上書きモードによる出力ファイルの指定を表現するシングルトンインスタンス.
      * 
      * <p>
      * 引数はバリデーションされない.
@@ -52,6 +52,16 @@ public final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand {
      */
     public static final ArgumentRequiringCommand<String> OUTPUT_FORCE_FILE_PATH =
             identifying("OUTPUT_FORCE_FILE_PATH", "--output-force", "-out-f");
+
+    /**
+     * 上書き禁止モードである出力ファイルの指定を表現するシングルトンインスタンス.
+     * 
+     * <p>
+     * 引数はバリデーションされない.
+     * </p>
+     */
+    public static final ArgumentRequiringCommand<String> OUTPUT_FILE_PATH =
+            identifying("OUTPUT_FILE_PATH", "--output", "-out");
 
     /**
      * 入力のコメント行の prefix の指定を表現するシングルトンインスタンス.
