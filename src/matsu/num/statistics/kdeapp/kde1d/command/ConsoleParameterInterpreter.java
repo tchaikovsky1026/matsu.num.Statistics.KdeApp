@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.6
+ * 2026.2.12
  */
 package matsu.num.statistics.kdeapp.kde1d.command;
 
@@ -53,9 +53,12 @@ public final class ConsoleParameterInterpreter {
     private static final CommandAssignmentRule COMMAND_ASSIGNMENT_RULE;
 
     static {
+        // ルールを構築する.
+        // 警告抑制アノテーションのため, ローカル変数を経由
         @SuppressWarnings("deprecation")
         CommandAssignmentRule rule = composite(
                 singleRequiredRule(INPUT_FILE_PATH),
+                singleOptionalRule(OUTPUT_FILE_PATH, OUTPUT_FORCE_FILE_PATH),
                 prohibitedCommandRule(DUMMY_NO_ARG));
         COMMAND_ASSIGNMENT_RULE = rule;
     }
