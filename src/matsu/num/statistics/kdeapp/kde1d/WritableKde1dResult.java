@@ -44,17 +44,20 @@ final class WritableKde1dResult {
      * <p>
      * 結果出力フォーマットは, 2 columns であり,
      * 与えたフォーマッターにより成形される. <br>
-     * メソッド終了時に, PrintWriter はフラッシュされる.
+     * メソッド終了時に, PrintWriter はフラッシュされる. <br>
+     * 戻り値により例外が発生したかどうかを報告する
+     * (例外が発生した場合は {@code true})
      * </p>
      * 
      * @param pw 出力となる PrintWriter
      * @param formatter フォーマッター
+     * @return 書き込み処理で例外が発生した場合はtrue
      * @throws NullPointerException 引数にnullが含まれる場合
      */
-    void write(PrintWriter pw, WritingFormatter formatter) {
+    boolean write(PrintWriter pw, WritingFormatter formatter) {
         for (String s : formatter.format(kde1dResult)) {
             pw.println(s);
         }
-        pw.flush();
+        return pw.checkError();
     }
 }

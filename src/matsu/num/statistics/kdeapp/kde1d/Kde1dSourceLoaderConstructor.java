@@ -30,14 +30,13 @@ final class Kde1dSourceLoaderConstructor implements ComponentConstructor<Kde1dSo
     }
 
     /**
-     * @throws InvalidParameterException {@inheritDoc }
      * @throws NullPointerException {@inheritDoc }
      */
     @Override
     public Kde1dSourceLoader construct(ConsoleParameterInterpreter interpreter) {
 
         String pathString = interpreter.valueOf(INPUT_FILE_PATH)
-                .orElseThrow(() -> new InvalidParameterException("lack parameter: " + INPUT_FILE_PATH.commandString()));
+                .orElseThrow(() -> new AssertionError("unreachable"));
 
         String escape = interpreter.valueOf(COMMENT_CHAR)
                 .orElse("#");

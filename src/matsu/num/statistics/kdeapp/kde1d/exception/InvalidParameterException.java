@@ -8,14 +8,14 @@
 /*
  * 2026.2.6
  */
-package matsu.num.statistics.kdeapp.kde1d;
+package matsu.num.statistics.kdeapp.kde1d.exception;
 
 /**
  * パラメータ不正であることを表現する例外クラス.
  * 
  * @author Matsuura Y.
  */
-public final class InvalidParameterException extends IllegalArgumentException {
+public class InvalidParameterException extends ApplicationException {
 
     private static final long serialVersionUID = 1L;
 
@@ -27,28 +27,28 @@ public final class InvalidParameterException extends IllegalArgumentException {
     }
 
     /**
-     * 文字列を指定するコンストラクタ.
+     * メッセージを与えるコンストラクタ.
      * 
-     * @param s 文字列
+     * @param message message
      */
-    public InvalidParameterException(String s) {
-        super(s);
+    public InvalidParameterException(String message) {
+        super(message);
     }
 
     /**
-     * 原因を指定するコンストラクタ.
+     * 原因を与えるコンストラクタ.
      * 
-     * @param cause 原因
+     * @param cause cause
      */
     public InvalidParameterException(Throwable cause) {
         super(cause);
     }
 
     /**
-     * メッセージと原因を指定するコンストラクタ.
+     * メッセージと原因を与えるコンストラクタ.
      * 
-     * @param message メッセージ
-     * @param cause 原因
+     * @param message message
+     * @param cause cause
      */
     public InvalidParameterException(String message, Throwable cause) {
         super(message, cause);

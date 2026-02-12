@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 import matsu.num.statistics.kdeapp.kde1d.command.ConsoleParameterInterpreter;
+import matsu.num.statistics.kdeapp.kde1d.exception.ApplicationException;
 
 /**
  * 最も単純な1次元カーネル密度推定を実行するクラス.
@@ -73,23 +74,25 @@ final class Kde1dCliWithStyle020 {
      * 
      * @param out System.out
      * @param err System.err
+     * @throws ApplicationException アプリケーション例外がスローされた場合
      */
-    int run(String[] args, PrintStream out, PrintStream err) throws IOException {
+    int run(String[] args, PrintStream out, PrintStream err) {
 
         out.println("kde1d...");
 
-        ConsoleParameterInterpreter interpretation =
-                ConsoleParameterInterpreter.from(args);
+        ConsoleParameterInterpreter interpretation = ConsoleParameterInterpreter.from(args);
 
         Kde1dSourceLoader loader =
                 Kde1dSourceLoaderConstructor.INSTANCE.construct(interpretation);
         WritingFormatter writingFormatter =
                 WritingFormatterConstructor.INSTANCE.construct(interpretation);
-        OutputTargets targets =
-                new OutputTargetsConstructor(out, err).construct(interpretation);
+        OutputTarget targets =
+                OutputTargetsConstructor.INSTANCE.construct(interpretation);
+        StandardOutputEcho stdout = new StandardOutputEcho(out, err);
 
         double[] source = loader.load();
         WritableKde1dResult result = new GaussianStandardKde1dCalculator().calc(source);
+        stdout.write(result, writingFormatter);
         targets.write(result, writingFormatter);
 
         out.println("Bye.");

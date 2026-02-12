@@ -12,6 +12,7 @@ package matsu.num.statistics.kdeapp.kde1d;
 
 import java.util.Arrays;
 
+import matsu.num.statistics.kdeapp.kde1d.exception.CalculationException;
 import matsu.num.statistics.kerneldensity.GaussianKd1D;
 import matsu.num.statistics.kerneldensity.KernelDensity1D;
 import matsu.num.statistics.kerneldensity.Range;
@@ -43,17 +44,17 @@ final class GaussianStandardKde1dCalculator {
      * </p>
      * 
      * @param source 入力ソース
-     * @throws IllegalArgumentException ソースが空の場合, infやNaNを含む場合
+     * @throws CalculationException ソースが空の場合, infやNaNを含む場合
      * @throws NullPointerException 引数にnullが含まれる場合
      */
     WritableKde1dResult calc(double[] source) {
         // 暫定的に, 描画区間を自動で定めるとする
         if (source.length == 0) {
-            throw new IllegalArgumentException("source is empty");
+            throw new CalculationException("source is empty");
         }
         if (Arrays.stream(source)
                 .anyMatch(d -> !Double.isFinite(d))) {
-            throw new IllegalArgumentException("source includes inf or NaN");
+            throw new CalculationException("source includes inf or NaN");
         }
 
         double min = Arrays.stream(source).min().getAsDouble();
