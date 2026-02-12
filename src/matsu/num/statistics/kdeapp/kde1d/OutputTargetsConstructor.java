@@ -12,9 +12,6 @@ package matsu.num.statistics.kdeapp.kde1d;
 
 import static matsu.num.statistics.kdeapp.kde1d.command.ArgumentRequiringCommand.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import matsu.num.statistics.kdeapp.kde1d.command.ConsoleParameterInterpreter;
 
 /**
@@ -34,10 +31,17 @@ final class OutputTargetsConstructor implements ComponentConstructor<OutputTarge
      */
     @Override
     public OutputTarget construct(ConsoleParameterInterpreter interpreter) {
-        List<String> filePaths = new ArrayList<>();
-        interpreter.valueOf(OUTPUT_FORCE_FILE_PATH)
-                .ifPresent(filePaths::add);
 
-        return new OutputTarget(filePaths);
+        /*
+         * OUTPUT_FORCE -> forceOutput
+         * OUTPUT -> regularOutput
+         * empty -> nullOutput
+         */
+        
+        return interpreter.valueOf(OUTPUT_FORCE_FILE_PATH)
+                .map(OutputTarget::forceOutput)
+                .orElse(interpreter.valueOf(OUTPUT_FILE_PATH)
+                        .map(OutputTarget::regularOutput)
+                        .orElse(OutputTarget.nullOutput()));
     }
 }
