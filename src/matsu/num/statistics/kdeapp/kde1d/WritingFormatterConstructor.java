@@ -17,16 +17,20 @@ import matsu.num.statistics.kdeapp.kde1d.command.ConsoleParameterInterpreter;
 /**
  * {@link WritingFormatter} の構築器.
  * 
+ * <p>
+ * 出力フォーマットは, 2 columns である. <br>
+ * デフォルトは区切り文字が tab だが, オプションで変更可能. <br>
+ * デフォルトはラベル無しだが, オプションで変更可能.
+ * </p>
+ * 
  * @author Matsuura Y.
  */
 final class WritingFormatterConstructor implements ComponentConstructor<WritingFormatter> {
 
-    static final WritingFormatterConstructor INSTANCE = new WritingFormatterConstructor();
-
     /**
-     * 非公開のコンストラクタ.
+     * 唯一のコンストラクタ.
      */
-    private WritingFormatterConstructor() {
+    WritingFormatterConstructor() {
     }
 
     /**
