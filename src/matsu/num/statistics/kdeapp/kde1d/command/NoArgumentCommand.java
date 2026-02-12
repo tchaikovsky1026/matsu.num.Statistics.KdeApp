@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.6
+ * 2026.2.12
  */
 package matsu.num.statistics.kdeapp.kde1d.command;
 
@@ -30,14 +30,10 @@ import java.util.Optional;
 public final class NoArgumentCommand extends ConsoleOptionCommand {
 
     /**
-     * 引数をとらないダミーオプション, シングルトンインスタンス. <br>
-     * 引数をとらないオプションが導入されたら, このオプションは削除する.
-     * 
-     * @deprecated ダミーオプション, プロダクトコードから参照してはいけない.
+     * 結果を標準出力しないことを表現するシングルトンインスタンス.
      */
-    @Deprecated
-    public static final NoArgumentCommand DUMMY_NO_ARG =
-            new NoArgumentCommand("DUMMY_NO_ARG", "--dummy-no-arg");
+    public static final NoArgumentCommand ECHO_OFF =
+            new NoArgumentCommand("ECHO_OFF", "--echo-off");
 
     /**
      * 内部から呼ばれる唯一のコンストラクタ.

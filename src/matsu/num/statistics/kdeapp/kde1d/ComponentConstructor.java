@@ -34,7 +34,6 @@ interface ComponentConstructor<T> {
      * 
      * @param interpreter パラメータの解釈
      * @return インスタンス
-     * @throws InvalidParameterException パラメータが不正の場合
      * @throws NullPointerException 引数がnullの場合
      */
     public abstract T construct(ConsoleParameterInterpreter interpreter);
