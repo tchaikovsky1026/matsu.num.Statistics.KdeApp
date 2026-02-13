@@ -117,7 +117,7 @@ abstract class ResultOutput {
 
                 // 出力ディレクトリの構築
                 Path parent = path.getParent();
-                if (Objects.nonNull(path)) {
+                if (Objects.nonNull(parent)) {
                     Files.createDirectories(parent);
                 }
 
@@ -160,7 +160,7 @@ abstract class ResultOutput {
 
                 // 出力ディレクトリの構築
                 Path parent = path.getParent();
-                if (Objects.nonNull(path)) {
+                if (Objects.nonNull(parent)) {
                     Files.createDirectories(parent);
                 }
 
