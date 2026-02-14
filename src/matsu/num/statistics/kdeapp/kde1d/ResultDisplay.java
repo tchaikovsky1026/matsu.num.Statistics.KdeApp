@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.12
+ * 2026.2.15
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -24,6 +24,17 @@ import matsu.num.statistics.kdeapp.kde1d.exception.OutputException;
 abstract class ResultDisplay {
 
     /**
+     * null-ディスプレイ出力を表すシングルトンインスタンス.
+     */
+    private static final ResultDisplay nullDisplay = new ResultDisplay() {
+
+        @Override
+        void write(WritableKde1dResult result, WritingFormatter writingFormatter) {
+            // 何もしない.
+        }
+    };
+
+    /**
      * 標準出力によるディスプレイ出力を返す.
      * 
      * @param out System.out
@@ -38,7 +49,7 @@ abstract class ResultDisplay {
      * null-ディスプレイ出力を返す.
      */
     static ResultDisplay nullDisplay() {
-        return NullDisplay.INSTANCE;
+        return nullDisplay;
     }
 
     /**
@@ -58,25 +69,6 @@ abstract class ResultDisplay {
      * @throws NullPointerException 引数がnull (スローされない場合がある)
      */
     abstract void write(WritableKde1dResult result, WritingFormatter writingFormatter);
-
-    /**
-     * null-出力.
-     */
-    private static final class NullDisplay extends ResultDisplay {
-
-        /**
-         * シングルトンインスタンス.
-         */
-        static final NullDisplay INSTANCE = new NullDisplay();
-
-        private NullDisplay() {
-        }
-
-        @Override
-        void write(WritableKde1dResult result, WritingFormatter writingFormatter) {
-            // 何もしない.
-        }
-    }
 
     /**
      * 標準出力.
