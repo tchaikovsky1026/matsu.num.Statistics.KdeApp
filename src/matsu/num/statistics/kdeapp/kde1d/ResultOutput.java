@@ -6,17 +6,17 @@
  */
 
 /*
- * 2026.2.12
+ * 2026.2.15
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
-import static java.nio.charset.StandardCharsets.*;
 import static java.nio.file.StandardOpenOption.*;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
+import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
@@ -31,12 +31,23 @@ import matsu.num.statistics.kdeapp.kde1d.exception.OutputException;
 abstract class ResultOutput {
 
     /**
+     * null-出力を表すシングルトンインスタンス.
+     */
+    private static final ResultOutput nullOutput = new ResultOutput() {
+
+        @Override
+        void write(WritableKde1dResult result, WritingFormatter writingFormatter) {
+            // 何もしない.
+        }
+    };
+
+    /**
      * 強制上書きモードによる出力を返す.
      * 
      * @throws NullPointerException 引数がnullを含む場合
      */
     static ResultOutput forceOutput(String filePath) {
-        return new ForceOutput(filePath);
+        return new FileOutput(filePath, FileOutput.OverwriteOption.FORCE);
     }
 
     /**
@@ -45,14 +56,14 @@ abstract class ResultOutput {
      * @throws NullPointerException 引数がnullを含む場合
      */
     static ResultOutput regularOutput(String filePath) {
-        return new RegularOutput(filePath);
+        return new FileOutput(filePath, FileOutput.OverwriteOption.REGULAR);
     }
 
     /**
      * null-出力を返す.
      */
     static ResultOutput nullOutput() {
-        return NullOutput.INSTANCE;
+        return nullOutput;
     }
 
     /**
@@ -74,36 +85,20 @@ abstract class ResultOutput {
     abstract void write(WritableKde1dResult result, WritingFormatter writingFormatter);
 
     /**
-     * null-出力.
+     * ファイルへの出力.
      */
-    private static final class NullOutput extends ResultOutput {
+    private static final class FileOutput extends ResultOutput {
 
-        /**
-         * シングルトンインスタンス.
-         */
-        static final NullOutput INSTANCE = new NullOutput();
-
-        private NullOutput() {
-        }
-
-        @Override
-        void write(WritableKde1dResult result, WritingFormatter writingFormatter) {
-            // 何もしない.
-        }
-    }
-
-    /**
-     * 強制上書きモードによる出力.
-     */
-    private static final class ForceOutput extends ResultOutput {
-
+        private final OverwriteOption outputOption;
         private final String filePath;
 
         /**
+         * @param forceOverwrite 強制上書きするかどうかに関するオプション
          * @throws NullPointerException 引数がnullを含む場合
          */
-        ForceOutput(String filePath) {
+        FileOutput(String filePath, OverwriteOption outputOption) {
             this.filePath = Objects.requireNonNull(filePath);
+            this.outputOption = Objects.requireNonNull(outputOption);
         }
 
         /**
@@ -123,7 +118,7 @@ abstract class ResultOutput {
 
                 // 結果の出力
                 try (PrintWriter output = new PrintWriter(
-                        Files.newBufferedWriter(path, UTF_8))) {
+                        Files.newBufferedWriter(path, outputOption.openOption))) {
                     if (result.write(output, writingFormatter)) {
                         throw new IOException("write to " + path.toString());
                     }
@@ -133,47 +128,26 @@ abstract class ResultOutput {
                         e.getClass().getSimpleName() + ": " + e.getMessage());
             }
         }
-    }
-
-    /**
-     * 強制上書きモードによる出力.
-     */
-    private static final class RegularOutput extends ResultOutput {
-
-        private final String filePath;
 
         /**
-         * @throws NullPointerException 引数がnullを含む場合
+         * 出力の上書きに関するオプション.
          */
-        RegularOutput(String filePath) {
-            this.filePath = Objects.requireNonNull(filePath);
-        }
+        private static enum OverwriteOption {
 
-        /**
-         * @throws OutputException {@inheritDoc}
-         * @throws NullPointerException {@inheritDoc}
-         */
-        @Override
-        void write(WritableKde1dResult result, WritingFormatter writingFormatter) {
-            try {
-                Path path = Paths.get(filePath);
+            /**
+             * 上書き禁止モードによる出力.
+             */
+            REGULAR(CREATE_NEW),
 
-                // 出力ディレクトリの構築
-                Path parent = path.getParent();
-                if (Objects.nonNull(parent)) {
-                    Files.createDirectories(parent);
-                }
+            /**
+             * 強制上書きモードによる出力.
+             */
+            FORCE(CREATE);
 
-                // 結果の出力
-                try (PrintWriter output = new PrintWriter(
-                        Files.newBufferedWriter(path, UTF_8, CREATE_NEW))) {
-                    if (result.write(output, writingFormatter)) {
-                        throw new IOException("write to " + path.toString());
-                    }
-                }
-            } catch (InvalidPathException | IOException e) {
-                throw new OutputException(
-                        e.getClass().getSimpleName() + ": " + e.getMessage());
+            private final OpenOption openOption;
+
+            private OverwriteOption(OpenOption openOption) {
+                this.openOption = openOption;
             }
         }
     }
