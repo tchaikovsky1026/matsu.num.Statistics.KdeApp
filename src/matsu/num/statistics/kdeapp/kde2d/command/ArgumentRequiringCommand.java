@@ -74,7 +74,7 @@ public final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand {
             identifying("COMMENT_CHAR", "--comment-char");
 
     /**
-     * 区切り文字の指定を表現するシングルトンインスタンス.
+     * 入力ファイルの区切り文字の指定を表現するシングルトンインスタンス.
      * 
      * <p>
      * 引数はバリデーションされたうえで, {@code char} に変換される. <br>
@@ -88,11 +88,33 @@ public final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand {
      * <li>エスケープシーケンス</li>
      * </ul>
      */
-    public static final ArgumentRequiringCommand<Character> SEPARATOR =
+    public static final ArgumentRequiringCommand<Character> SEPARATOR_INPUT =
             new ArgumentRequiringCommand<>(
-                    "SEPARATOR", Character.class,
+                    "SEPARATOR_INPUT", Character.class,
                     SeparatorInterpreter::from,
-                    "--separator", "-sep");
+                    "--separator-in", "-sep-i");
+    
+
+    /**
+     * 出力ファイルの区切り文字の指定を表現するシングルトンインスタンス.
+     * 
+     * <p>
+     * 引数はバリデーションされたうえで, {@code char} に変換される. <br>
+     * 区切り文字の正当性ルールは次の通りである. <br>
+     * (エスケープシーケンスは, 列挙定数で用意されている,
+     * 自動テストで文字列出力される.)
+     * </p>
+     * 
+     * <ul>
+     * <li>ASCII 1文字</li>
+     * <li>エスケープシーケンス</li>
+     * </ul>
+     */
+    public static final ArgumentRequiringCommand<Character> SEPARATOR_OUTPUT =
+            new ArgumentRequiringCommand<>(
+                    "SEPARATOR_OUTPUT", Character.class,
+                    SeparatorInterpreter::from,
+                    "--separator-out", "-sep-o");
 
     /**
      * 出力のラベルに付与する prefix の指定を表現するシングルトンインスタンス.

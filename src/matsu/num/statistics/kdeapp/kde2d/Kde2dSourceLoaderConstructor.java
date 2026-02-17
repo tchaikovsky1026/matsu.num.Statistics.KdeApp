@@ -48,7 +48,7 @@ final class Kde2dSourceLoaderConstructor implements ComponentConstructor<Kde2dSo
 
         String escape = interpreter.valueOf(COMMENT_CHAR)
                 .orElse("#");
-        char separator = interpreter.valueOf(SEPARATOR)
+        char separator = interpreter.valueOf(SEPARATOR_INPUT)
                 .orElse('\t');
         return new Kde2dSourceLoader(pathString, separator, escape);
     }

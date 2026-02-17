@@ -43,11 +43,11 @@ final class ArgumentRequiringCommandTest {
         @Test
         public void test_セパレータコマンド() {
             assertThat(
-                    interpret("--separator").get(),
-                    is(SEPARATOR));
+                    interpret("--separator-in").get(),
+                    is(SEPARATOR_INPUT));
             assertThat(
-                    interpret("-sep").get(),
-                    is(SEPARATOR));
+                    interpret("-sep-i").get(),
+                    is(SEPARATOR_INPUT));
         }
 
         @Test
@@ -61,8 +61,13 @@ final class ArgumentRequiringCommandTest {
     public static class オプションコマンドのコンバータのバリデーションテスト {
 
         @Test(expected = InvalidParameterException.class)
-        public void test_セパレータは空文字は不可() {
-            SEPARATOR.convertArg("");
+        public void test_セパレータinは空文字は不可() {
+            SEPARATOR_INPUT.convertArg("");
+        }
+
+        @Test(expected = InvalidParameterException.class)
+        public void test_セパレータoutは空文字は不可() {
+            SEPARATOR_OUTPUT.convertArg("");
         }
     }
 }
