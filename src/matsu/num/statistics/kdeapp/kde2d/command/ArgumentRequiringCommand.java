@@ -22,6 +22,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
+import matsu.num.statistics.kdeapp.command.util.SeparatorInterpreter;
 import matsu.num.statistics.kdeapp.exception.IllegalParameterException;
 
 /**
@@ -91,9 +92,20 @@ public final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand {
     public static final ArgumentRequiringCommand<Character> SEPARATOR_INPUT =
             new ArgumentRequiringCommand<>(
                     "SEPARATOR_INPUT", Character.class,
-                    SeparatorInterpreter::from,
+                    s -> interpretSeparator(s),
                     "--separator-in", "-sep-i");
-    
+
+    /**
+     * {@link SeparatorInterpreter#from(String)} を使用して文字列を char に変換する. <br>
+     * 元のメソッドは例外をスローするが, それをnullを返すように翻訳する.
+     */
+    private static Character interpretSeparator(String s) {
+        try {
+            return SeparatorInterpreter.from(s);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
 
     /**
      * 出力ファイルの区切り文字の指定を表現するシングルトンインスタンス.
