@@ -8,14 +8,17 @@
 package matsu.num.statistics.kdeapp.kde1d.command;
 
 import static matsu.num.statistics.kdeapp.kde1d.command.NoArgumentCommand.*;
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
+import java.util.Collection;
 import java.util.Optional;
 
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
+import org.junit.experimental.theories.DataPoints;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
 /**
@@ -24,26 +27,45 @@ import org.junit.runner.RunWith;
 @RunWith(Enclosed.class)
 final class NoArgumentCommandTest {
 
+    public static final Class<?> TEST_CLASS = NoArgumentCommand.class;
+
     public static class オプションコマンドの集合生成に関するテスト {
 
         @Test
-        public void test_ECHO_OFFを含むことを確かめる() {
-            assertThat(values(), containsInRelativeOrder(ECHO_OFF));
+        public void test_サイズが1以上を確かめ文字列列挙() {
+            assertThat(values().size(), is(greaterThan(0)));
+
+            System.out.println(TEST_CLASS.getName());
+            values().stream()
+                    .forEach(System.out::println);
+            System.out.println();
         }
     }
 
-    public static class オプションコマンドの文字列解釈のテスト {
+    @RunWith(Theories.class)
+    public static class オプションコマンドの文字列解釈の正常系テスト {
+
+        @DataPoints
+        public static Collection<NoArgumentCommand> commands = values();
+
+        @Theory
+        public void test_各コマンドについて解釈を実行(NoArgumentCommand command) {
+            assertThat(
+                    interpret(command.commandString()).get(),
+                    is(command));
+            for (String commandStr : command.expressions()) {
+                assertThat(
+                        interpret(commandStr).get(),
+                        is(command));
+            }
+        }
+    }
+
+    public static class オプションコマンドの文字列解釈の異常系テスト {
 
         @Test(expected = NullPointerException.class)
-        public void test_nullは不可() {
+        public void test_nullの場合() {
             interpret(null);
-        }
-
-        @Test
-        public void test_echoOff() {
-            assertThat(
-                    interpret("--echo-off").get(),
-                    is(ECHO_OFF));
         }
 
         @Test
