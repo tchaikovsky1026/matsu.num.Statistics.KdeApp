@@ -7,6 +7,7 @@
 
 package matsu.num.statistics.kdeapp.kde2d;
 
+import static matsu.num.statistics.kdeapp.kde2d.command.ArgumentRequiringCommand.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
@@ -39,7 +40,7 @@ final class Kde2dCliWithStyle050Test {
         private final Path outputFile = outputDir.resolve("kde2d result.txt");
 
         @Before
-        public void before_ハッピーパスの準備() throws IOException{
+        public void before_ハッピーパスの準備() throws IOException {
             // アウトプットファイルが含まれるディレクトリの削除
             deleteDir(outputDir);
         }
@@ -56,8 +57,9 @@ final class Kde2dCliWithStyle050Test {
             assertThat(
                     new Kde2dCliWithStyle050().run(
                             new String[] {
-                                    "-f", inputFile.toString(), "-out-f", outputFile.toString(),
-                                    "-sep-i", ","
+                                    INPUT_FILE_PATH.commandString(), inputFile.toString(),
+                                    OUTPUT_FORCE_FILE_PATH.commandString(), outputFile.toString(),
+                                    SEPARATOR_INPUT.commandString(), ","
                             }, out, err),
                     is(0));
         }
@@ -70,7 +72,7 @@ final class Kde2dCliWithStyle050Test {
             System.out.println(TEST_CLASS.getName() + ":");
             try {
                 // ファイルがないパターン
-                new Kde2dCliWithStyle050().run(new String[] { "-f", "dummy.txt" });
+                new Kde2dCliWithStyle050().run(new String[] { INPUT_FILE_PATH.commandString(), "dummy.txt" });
             } catch (Exception e) {
                 System.out.println(errorMessage(e));
             }

@@ -7,8 +7,8 @@
 
 package matsu.num.statistics.kdeapp.kde1d;
 
-import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.Matchers.*;
 
 import java.util.List;
 import java.util.OptionalDouble;
@@ -66,7 +66,7 @@ final class DoubleLineParserTest {
         public void test_値の取得に失敗_null() {
             parser.parse(null);
         }
-        
+
         @Test(expected = NumberFormatException.class)
         public void test_値の取得に失敗() {
             parser.parse(" dummy ");
