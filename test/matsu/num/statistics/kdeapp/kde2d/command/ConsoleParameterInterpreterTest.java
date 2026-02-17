@@ -45,10 +45,21 @@ final class ConsoleParameterInterpreterTest {
             argsList = new ArrayList<>();
 
             argsList.add(new String[] {});
-            argsList.add(new String[] { "-f", "test.txt" });
-            argsList.add(new String[] { "-f", "test.txt", "--echo-off" });
-            argsList.add(new String[] { "--echo-off", "-f", "test.txt" });
-            argsList.add(new String[] { "-f", "test.txt", "-sep-i", "\t" });
+            argsList.add(
+                    new String[] {
+                            INPUT_FILE_PATH.commandString(), "test.txt" });
+            argsList.add(
+                    new String[] {
+                            INPUT_FILE_PATH.commandString(), "test.txt",
+                            ECHO_OFF.commandString() });
+            argsList.add(
+                    new String[] {
+                            ECHO_OFF.commandString(),
+                            INPUT_FILE_PATH.commandString(), "test.txt" });
+            argsList.add(
+                    new String[] {
+                            INPUT_FILE_PATH.commandString(), "test.txt",
+                            SEPARATOR_INPUT.commandString(), "\t" });
         }
 
         @Theory
@@ -63,14 +74,16 @@ final class ConsoleParameterInterpreterTest {
         @Test(expected = InvalidParameterException.class)
         public void test_パラメータに重複がある場合は例外_引数有り() {
 
-            String[] args = { "-f", "test.txt", "-f", "test.txt" };
+            String[] args = {
+                    INPUT_FILE_PATH.commandString(), "test.txt",
+                    INPUT_FILE_PATH.commandString(), "test.txt" };
             ConsoleParameterInterpreter.from(args, nullRule());
         }
 
         @Test(expected = InvalidParameterException.class)
         public void test_パラメータに重複がある場合は例外_引数無し() {
 
-            String[] args = { "--echo-off", "--echo-off" };
+            String[] args = { ECHO_OFF.commandString(), ECHO_OFF.commandString() };
             ConsoleParameterInterpreter.from(args, nullRule());
         }
     }
@@ -89,7 +102,7 @@ final class ConsoleParameterInterpreterTest {
         public void before_解釈の構築() {
             // インプットファイル と dummy-no-arg を設定
             String[] args = {
-                    "-f", file, "--echo-off"
+                    INPUT_FILE_PATH.commandString(), file, ECHO_OFF.commandString()
             };
             interpretation = ConsoleParameterInterpreter.from(args, nullRule());
         }
