@@ -6,12 +6,12 @@
  */
 
 /*
- * 2026.2.2
+ * 2026.2.17
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
+import matsu.num.statistics.kdeapp.exception.IllegalParameterException;
 import matsu.num.statistics.kdeapp.kde1d.command.ConsoleParameterInterpreter;
-import matsu.num.statistics.kdeapp.kde1d.exception.InvalidParameterException;
 
 /**
  * オプションパラメータからインスタンスを構築することを表現するインターフェース.
@@ -24,8 +24,8 @@ interface ComponentConstructor<T> {
      * コンソールパラメータからインスタンスを構築する.
      * 
      * <p>
-     * (インスタンスを構築できない場合, {@link InvalidParameterException} をスローする.) <br>
-     * TODO: ここで {@link InvalidParameterException} をスローするのは不適切である. <br>
+     * (インスタンスを構築できない場合, {@link IllegalParameterException} をスローする.) <br>
+     * TODO: ここで {@link IllegalParameterException} をスローするのは不適切である. <br>
      * このメソッドは例外をスローしないのが正しい.
      * </p>
      * 

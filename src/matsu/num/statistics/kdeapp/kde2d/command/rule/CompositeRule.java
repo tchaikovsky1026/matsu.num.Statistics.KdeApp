@@ -16,8 +16,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import matsu.num.statistics.kdeapp.exception.IllegalParameterException;
 import matsu.num.statistics.kdeapp.kde2d.command.ConsoleOptionCommand;
-import matsu.num.statistics.kdeapp.kde2d.exception.InvalidParameterException;
 
 /**
  * kde2dの複数のルールを結合した (バリデーションを "and" でつないだ) ルールを表現する.
@@ -42,7 +42,7 @@ final class CompositeRule implements CommandAssignmentRule {
     }
 
     /**
-     * @throws InvalidParameterException {@inheritDoc}
+     * @throws IllegalParameterException {@inheritDoc}
      * @throws NullPointerException {@inheritDoc}
      */
     @Override

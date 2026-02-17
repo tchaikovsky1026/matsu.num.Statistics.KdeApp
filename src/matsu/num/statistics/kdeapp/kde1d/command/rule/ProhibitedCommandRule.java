@@ -6,15 +6,15 @@
  */
 
 /*
- * 2026.2.11
+ * 2026.2.17
  */
 package matsu.num.statistics.kdeapp.kde1d.command.rule;
 
 import java.util.Objects;
 import java.util.Set;
 
+import matsu.num.statistics.kdeapp.exception.IllegalParameterException;
 import matsu.num.statistics.kdeapp.kde1d.command.ConsoleOptionCommand;
-import matsu.num.statistics.kdeapp.kde1d.exception.InvalidParameterException;
 
 /**
  * 禁止されたコマンドを表現するルール.
@@ -38,13 +38,13 @@ final class ProhibitedCommandRule implements CommandAssignmentRule {
     }
 
     /**
-     * @throws InvalidParameterException {@inheritDoc }
+     * @throws IllegalParameterException {@inheritDoc }
      * @throws NullPointerException {@inheritDoc }
      */
     @Override
     public void validate(Set<ConsoleOptionCommand> allCommands) {
         if (allCommands.contains(prohibitedCommand)) {
-            throw new InvalidParameterException(
+            throw new IllegalParameterException(
                     "prohibited command: " + prohibitedCommand.commandString());
         }
     }

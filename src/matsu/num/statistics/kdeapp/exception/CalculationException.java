@@ -6,22 +6,23 @@
  */
 
 /*
- * 2026.2.10
+ * 2026.2.17
  */
-package matsu.num.statistics.kdeapp.kde1d.exception;
+package matsu.num.statistics.kdeapp.exception;
 
 /**
- * 読み込みに係る例外を表現する.
+ * 計算に係る例外を表現する.
  * 
  * @author Matsuura Y.
  */
-public class InputException extends ApplicationException {
+public class CalculationException extends ApplicationException {
 
     private static final long serialVersionUID = 1L;
+
     /**
      * 引数なしコンストラクタ.
      */
-    public InputException() {
+    public CalculationException() {
         super();
     }
 
@@ -30,7 +31,7 @@ public class InputException extends ApplicationException {
      * 
      * @param message message
      */
-    public InputException(String message) {
+    public CalculationException(String message) {
         super(message);
     }
 
@@ -39,7 +40,7 @@ public class InputException extends ApplicationException {
      * 
      * @param cause cause
      */
-    public InputException(Throwable cause) {
+    public CalculationException(Throwable cause) {
         super(cause);
     }
 
@@ -49,7 +50,7 @@ public class InputException extends ApplicationException {
      * @param message message
      * @param cause cause
      */
-    public InputException(String message, Throwable cause) {
+    public CalculationException(String message, Throwable cause) {
         super(message, cause);
     }
 }

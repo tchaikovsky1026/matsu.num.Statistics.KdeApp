@@ -22,7 +22,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
-import matsu.num.statistics.kdeapp.kde2d.exception.InvalidParameterException;
+import matsu.num.statistics.kdeapp.exception.IllegalParameterException;
 
 /**
  * kde2dの, 引数をとるコマンドを扱うクラス.
@@ -183,13 +183,13 @@ public final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand {
      * 
      * @param arg 文字列
      * @return 変換後の値
-     * @throws InvalidParameterException パラメータ不正の場合
+     * @throws IllegalParameterException パラメータ不正の場合
      * @throws NullPointerException 引数がnullの場合(必ず)
      */
     final T convertArg(String arg) {
         T out = converter.apply(Objects.requireNonNull(arg));
         if (Objects.isNull(out)) {
-            throw new InvalidParameterException(
+            throw new IllegalParameterException(
                     "invalid-arg for <" + this.commandString() + ">: \"" + arg + "\"");
         }
         return out;

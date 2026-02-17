@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.15
+ * 2026.2.17
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -21,7 +21,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
 
-import matsu.num.statistics.kdeapp.kde1d.exception.OutputException;
+import matsu.num.statistics.kdeapp.exception.OutputException;
 
 /**
  * 結果の外部出力を扱う.
