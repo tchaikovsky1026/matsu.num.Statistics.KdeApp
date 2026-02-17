@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.2
+ * 2026.2.17
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -17,7 +17,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 
-import matsu.num.statistics.kdeapp.kde1d.exception.InputException;
+import matsu.num.statistics.kdeapp.exception.InputException;
 
 /**
  * 1次元のカーネル密度推定に使うデータソースのローダー.

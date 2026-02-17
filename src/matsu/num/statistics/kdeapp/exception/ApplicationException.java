@@ -6,23 +6,23 @@
  */
 
 /*
- * 2026.2.6
+ * 2026.2.17
  */
-package matsu.num.statistics.kdeapp.kde1d.exception;
+package matsu.num.statistics.kdeapp.exception;
 
 /**
- * パラメータ不正であることを表現する例外クラス.
+ * アプリケーションに係る例外を扱うパッケージ.
  * 
  * @author Matsuura Y.
  */
-public class InvalidParameterException extends ApplicationException {
+public class ApplicationException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * 引数なしコンストラクタ.
      */
-    public InvalidParameterException() {
+    public ApplicationException() {
         super();
     }
 
@@ -31,7 +31,7 @@ public class InvalidParameterException extends ApplicationException {
      * 
      * @param message message
      */
-    public InvalidParameterException(String message) {
+    public ApplicationException(String message) {
         super(message);
     }
 
@@ -40,7 +40,7 @@ public class InvalidParameterException extends ApplicationException {
      * 
      * @param cause cause
      */
-    public InvalidParameterException(Throwable cause) {
+    public ApplicationException(Throwable cause) {
         super(cause);
     }
 
@@ -50,7 +50,7 @@ public class InvalidParameterException extends ApplicationException {
      * @param message message
      * @param cause cause
      */
-    public InvalidParameterException(String message, Throwable cause) {
+    public ApplicationException(String message, Throwable cause) {
         super(message, cause);
     }
 }

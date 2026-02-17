@@ -8,21 +8,20 @@
 /*
  * 2026.2.17
  */
-package matsu.num.statistics.kdeapp.kde2d.exception;
+package matsu.num.statistics.kdeapp.exception;
 
 /**
- * kde2dのパラメータ不正であることを表現する例外クラス.
+ * 出力に係る例外を表現する.
  * 
  * @author Matsuura Y.
  */
-public class InvalidParameterException extends ApplicationException {
+public class OutputException extends ApplicationException {
 
     private static final long serialVersionUID = 1L;
-
     /**
      * 引数なしコンストラクタ.
      */
-    public InvalidParameterException() {
+    public OutputException() {
         super();
     }
 
@@ -31,7 +30,7 @@ public class InvalidParameterException extends ApplicationException {
      * 
      * @param message message
      */
-    public InvalidParameterException(String message) {
+    public OutputException(String message) {
         super(message);
     }
 
@@ -40,7 +39,7 @@ public class InvalidParameterException extends ApplicationException {
      * 
      * @param cause cause
      */
-    public InvalidParameterException(Throwable cause) {
+    public OutputException(Throwable cause) {
         super(cause);
     }
 
@@ -50,7 +49,7 @@ public class InvalidParameterException extends ApplicationException {
      * @param message message
      * @param cause cause
      */
-    public InvalidParameterException(String message, Throwable cause) {
+    public OutputException(String message, Throwable cause) {
         super(message, cause);
     }
 }

@@ -17,7 +17,7 @@ import org.junit.Test.None;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 
-import matsu.num.statistics.kdeapp.kde2d.exception.InvalidParameterException;
+import matsu.num.statistics.kdeapp.exception.IllegalParameterException;
 
 /**
  * {@link ProhibitedCommandRule} のテスト.
@@ -41,7 +41,7 @@ final class ProhibitedCommandRuleTest {
             rule.validate(Set.of());
         }
 
-        @Test(expected = InvalidParameterException.class)
+        @Test(expected = IllegalParameterException.class)
         public void test_含む場合は例外() {
             rule.validate(Set.of(LABEL_HEADER, OUTPUT_FORCE_FILE_PATH));
         }

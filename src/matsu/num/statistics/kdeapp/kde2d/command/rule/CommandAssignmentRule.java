@@ -12,8 +12,8 @@ package matsu.num.statistics.kdeapp.kde2d.command.rule;
 
 import java.util.Set;
 
+import matsu.num.statistics.kdeapp.exception.IllegalParameterException;
 import matsu.num.statistics.kdeapp.kde2d.command.ConsoleOptionCommand;
-import matsu.num.statistics.kdeapp.kde2d.exception.InvalidParameterException;
 
 /**
  * kde2dのオプションコマンドの指定に関するルールを表現する.
@@ -31,7 +31,7 @@ public sealed interface CommandAssignmentRule
      * </p>
      * 
      * @param allCommands 指定されたコマンドの全体
-     * @throws InvalidParameterException パラメータが不正であった場合
+     * @throws IllegalParameterException パラメータが不正であった場合
      * @throws NullPointerException 引数にnullが含まれる場合 (スローされない場合もある)
      */
     public abstract void validate(Set<ConsoleOptionCommand> allCommands);

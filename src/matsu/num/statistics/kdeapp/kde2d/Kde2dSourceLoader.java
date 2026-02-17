@@ -17,7 +17,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 
-import matsu.num.statistics.kdeapp.kde2d.exception.InputException;
+import matsu.num.statistics.kdeapp.exception.InputException;
 
 /**
  * 2次元のカーネル密度推定に使うデータソースのローダー.

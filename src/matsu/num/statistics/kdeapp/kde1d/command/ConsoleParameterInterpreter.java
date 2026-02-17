@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.12
+ * 2026.2.17
  */
 package matsu.num.statistics.kdeapp.kde1d.command;
 
@@ -20,8 +20,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
+import matsu.num.statistics.kdeapp.exception.IllegalParameterException;
 import matsu.num.statistics.kdeapp.kde1d.command.rule.CommandAssignmentRule;
-import matsu.num.statistics.kdeapp.kde1d.exception.InvalidParameterException;
 
 /**
  * コンソールパラメータの解釈器.
@@ -104,7 +104,7 @@ public final class ConsoleParameterInterpreter {
      * 
      * @param args raw なコンソール引数
      * @return (解釈された) コンソールパラメータ
-     * @throws InvalidParameterException パラメータの形式が不正の場合, コマンドの組み合わせが不正の場合
+     * @throws IllegalParameterException パラメータの形式が不正の場合, コマンドの組み合わせが不正の場合
      * @throws NullPointerException 引数にnullが含まれる場合
      */
     public static ConsoleParameterInterpreter from(
@@ -125,7 +125,7 @@ public final class ConsoleParameterInterpreter {
      * @param args raw なコンソール引数
      * @param assignmentRule コマンドの組み合わせ指定に関するルール
      * @return (解釈された) コンソールパラメータ
-     * @throws InvalidParameterException パラメータの形式が不正の場合, 必須パラメータが登録されなかった場合
+     * @throws IllegalParameterException パラメータの形式が不正の場合, 必須パラメータが登録されなかった場合
      * @throws NullPointerException 引数にnullが含まれる場合
      */
     static ConsoleParameterInterpreter from(
@@ -161,7 +161,7 @@ public final class ConsoleParameterInterpreter {
 
                     // すでにコマンドが登録されていたら例外スロー
                     if (!noArgCommandSet.add(command)) {
-                        throw new InvalidParameterException(
+                        throw new IllegalParameterException(
                                 "duplicate: <" + command.commandString() + ">");
                     }
 
@@ -179,7 +179,7 @@ public final class ConsoleParameterInterpreter {
 
                     // 後続のパラメータが必要な場合, 存在しているかを確かめる
                     if (cursor >= size) {
-                        throw new InvalidParameterException(
+                        throw new IllegalParameterException(
                                 "args lack for <" + command.commandString() + ">");
                     }
 
@@ -189,7 +189,7 @@ public final class ConsoleParameterInterpreter {
                             argCommandMapper.put(
                                     command,
                                     command.convertArg(Objects.requireNonNull(args[cursor]))))) {
-                        throw new InvalidParameterException(
+                        throw new IllegalParameterException(
                                 "duplicate: <" + command.commandString() + ">");
                     }
                     cursor++;
@@ -199,7 +199,7 @@ public final class ConsoleParameterInterpreter {
             }
 
             // オプションが不明である場合は例外をスローする
-            throw new InvalidParameterException(
+            throw new IllegalParameterException(
                     "unknown command: <" + commandAsString + ">");
         }
 

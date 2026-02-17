@@ -6,14 +6,14 @@
  */
 
 /*
- * 2026.2.2
+ * 2026.2.17
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
 import java.io.PrintStream;
 
+import matsu.num.statistics.kdeapp.exception.ApplicationException;
 import matsu.num.statistics.kdeapp.kde1d.command.ConsoleParameterInterpreter;
-import matsu.num.statistics.kdeapp.kde1d.exception.ApplicationException;
 
 /**
  * 最も単純な1次元カーネル密度推定を実行するクラス.

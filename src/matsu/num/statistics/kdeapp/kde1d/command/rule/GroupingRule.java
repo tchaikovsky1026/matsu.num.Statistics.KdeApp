@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.11
+ * 2026.2.17
  */
 package matsu.num.statistics.kdeapp.kde1d.command.rule;
 
@@ -15,8 +15,8 @@ import static java.util.stream.Collectors.*;
 import java.util.Objects;
 import java.util.Set;
 
+import matsu.num.statistics.kdeapp.exception.IllegalParameterException;
 import matsu.num.statistics.kdeapp.kde1d.command.ConsoleOptionCommand;
-import matsu.num.statistics.kdeapp.kde1d.exception.InvalidParameterException;
 
 /**
  * コマンドの集合に対して作用するルールを扱う.
@@ -74,7 +74,7 @@ abstract sealed class GroupingRule implements CommandAssignmentRule {
     }
 
     /**
-     * @throws InvalidParameterException {@inheritDoc }
+     * @throws IllegalParameterException {@inheritDoc }
      * @throws NullPointerException {@inheritDoc }
      */
     @Override
@@ -98,10 +98,10 @@ abstract sealed class GroupingRule implements CommandAssignmentRule {
      * 
      * @implSpec
      *               バリデーションの結果, 不正であった場合は,
-     *               {@linkplain InvalidParameterException} をスローする.
+     *               {@linkplain IllegalParameterException} をスローする.
      * 
      * @param interestedCommands オプションで指定されたうちの, 興味あるコマンド
-     * @throws InvalidParameterException パラメータが不正であった場合
+     * @throws IllegalParameterException パラメータが不正であった場合
      */
     abstract void validateConcrete(Set<ConsoleOptionCommand> interestedCommands);
 
@@ -130,12 +130,12 @@ abstract sealed class GroupingRule implements CommandAssignmentRule {
         }
 
         /**
-         * @throws InvalidParameterException {@inheritDoc }
+         * @throws IllegalParameterException {@inheritDoc }
          */
         @Override
         void validateConcrete(Set<ConsoleOptionCommand> interestedCommands) {
             if (interestedCommands.size() >= 2) {
-                throw new InvalidParameterException(
+                throw new IllegalParameterException(
                         "exclusive commands: " + managedCommands());
             }
         }
@@ -155,12 +155,12 @@ abstract sealed class GroupingRule implements CommandAssignmentRule {
         }
 
         /**
-         * @throws InvalidParameterException {@inheritDoc }
+         * @throws IllegalParameterException {@inheritDoc }
          */
         @Override
         void validateConcrete(Set<ConsoleOptionCommand> interestedCommands) {
             if (interestedCommands.size() != 1) {
-                throw new InvalidParameterException(
+                throw new IllegalParameterException(
                         "required and exclusive commands: " + managedCommands());
             }
         }

@@ -26,7 +26,7 @@ import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
-import matsu.num.statistics.kdeapp.kde1d.exception.InvalidParameterException;
+import matsu.num.statistics.kdeapp.exception.IllegalParameterException;
 
 /**
  * {@link ConsoleParameterInterpreter} のテスト.
@@ -71,7 +71,7 @@ final class ConsoleParameterInterpreterTest {
 
     public static class 解釈生成の異常系に関するテスト {
 
-        @Test(expected = InvalidParameterException.class)
+        @Test(expected = IllegalParameterException.class)
         public void test_パラメータに重複がある場合は例外_引数有り() {
 
             String[] args = {
@@ -80,7 +80,7 @@ final class ConsoleParameterInterpreterTest {
             ConsoleParameterInterpreter.from(args, nullRule());
         }
 
-        @Test(expected = InvalidParameterException.class)
+        @Test(expected = IllegalParameterException.class)
         public void test_パラメータに重複がある場合は例外_引数無し() {
 
             String[] args = { ECHO_OFF.commandString(), ECHO_OFF.commandString() };

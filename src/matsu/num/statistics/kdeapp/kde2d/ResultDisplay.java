@@ -14,7 +14,7 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.Objects;
 
-import matsu.num.statistics.kdeapp.kde2d.exception.OutputException;
+import matsu.num.statistics.kdeapp.exception.OutputException;
 
 /**
  * 結果のディスプレイ出力を扱う.

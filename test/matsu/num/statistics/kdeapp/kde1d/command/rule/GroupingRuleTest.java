@@ -17,7 +17,7 @@ import org.junit.Test.None;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 
-import matsu.num.statistics.kdeapp.kde1d.exception.InvalidParameterException;
+import matsu.num.statistics.kdeapp.exception.IllegalParameterException;
 
 /**
  * {@link GroupingRule} のテスト.
@@ -61,7 +61,7 @@ final class GroupingRuleTest {
             rule.validate(Set.of(OUTPUT_FORCE_FILE_PATH));
         }
 
-        @Test(expected = InvalidParameterException.class)
+        @Test(expected = IllegalParameterException.class)
         public void test_両方の指定は例外() {
             rule.validate(Set.of(OUTPUT_FILE_PATH, OUTPUT_FORCE_FILE_PATH));
         }
@@ -78,7 +78,7 @@ final class GroupingRuleTest {
                     OUTPUT_FILE_PATH, OUTPUT_FORCE_FILE_PATH);
         }
 
-        @Test(expected = InvalidParameterException.class)
+        @Test(expected = IllegalParameterException.class)
         public void test_指定されない場合は例外() {
             rule.validate(Set.of());
         }
@@ -88,7 +88,7 @@ final class GroupingRuleTest {
             rule.validate(Set.of(OUTPUT_FILE_PATH));
         }
 
-        @Test(expected = InvalidParameterException.class)
+        @Test(expected = IllegalParameterException.class)
         public void test_両方指定されれば例外() {
             rule.validate(Set.of(OUTPUT_FILE_PATH, OUTPUT_FORCE_FILE_PATH));
         }

@@ -8,21 +8,21 @@
 /*
  * 2026.2.17
  */
-package matsu.num.statistics.kdeapp.kde2d.exception;
+package matsu.num.statistics.kdeapp.exception;
 
 /**
- * kde2dの計算に係る例外を表現する.
+ * パラメータ不正であることを表現する例外クラス.
  * 
  * @author Matsuura Y.
  */
-public class CalculationException extends ApplicationException {
+public class IllegalParameterException extends ApplicationException {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * 引数なしコンストラクタ.
      */
-    public CalculationException() {
+    public IllegalParameterException() {
         super();
     }
 
@@ -31,7 +31,7 @@ public class CalculationException extends ApplicationException {
      * 
      * @param message message
      */
-    public CalculationException(String message) {
+    public IllegalParameterException(String message) {
         super(message);
     }
 
@@ -40,7 +40,7 @@ public class CalculationException extends ApplicationException {
      * 
      * @param cause cause
      */
-    public CalculationException(Throwable cause) {
+    public IllegalParameterException(Throwable cause) {
         super(cause);
     }
 
@@ -50,7 +50,7 @@ public class CalculationException extends ApplicationException {
      * @param message message
      * @param cause cause
      */
-    public CalculationException(String message, Throwable cause) {
+    public IllegalParameterException(String message, Throwable cause) {
         super(message, cause);
     }
 }

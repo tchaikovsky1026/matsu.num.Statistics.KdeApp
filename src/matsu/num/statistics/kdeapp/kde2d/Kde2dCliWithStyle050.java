@@ -12,8 +12,8 @@ package matsu.num.statistics.kdeapp.kde2d;
 
 import java.io.PrintStream;
 
+import matsu.num.statistics.kdeapp.exception.ApplicationException;
 import matsu.num.statistics.kdeapp.kde2d.command.ConsoleParameterInterpreter;
-import matsu.num.statistics.kdeapp.kde2d.exception.ApplicationException;
 
 /**
  * 最も単純な2次元カーネル密度推定を実行するクラス.

@@ -8,10 +8,10 @@
 /*
  * 2026.2.17
  */
-package matsu.num.statistics.kdeapp.kde2d.exception;
+package matsu.num.statistics.kdeapp.exception;
 
 /**
- * kde2dの読み込みに係る例外を表現する.
+ * 読み込みに係る例外を表現する.
  * 
  * @author Matsuura Y.
  */
