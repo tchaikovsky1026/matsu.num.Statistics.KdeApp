@@ -6,12 +6,12 @@
  */
 
 /*
- * 2026.2.6
+ * 2026.2.17
  */
 package matsu.num.statistics.kdeapp.kde2d.exception;
 
 /**
- * パラメータ不正であることを表現する例外クラス.
+ * kde2dのパラメータ不正であることを表現する例外クラス.
  * 
  * @author Matsuura Y.
  */
