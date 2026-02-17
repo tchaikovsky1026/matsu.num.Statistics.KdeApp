@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.15
+ * 2026.2.17
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
@@ -36,7 +36,7 @@ abstract class ResultOutput {
     private static final ResultOutput nullOutput = new ResultOutput() {
 
         @Override
-        void write(WritableKde1dResult result, WritingFormatter writingFormatter) {
+        void write(WritableKde2dResult result, WritingFormatter writingFormatter) {
             // 何もしない.
         }
     };
@@ -82,7 +82,7 @@ abstract class ResultOutput {
      * @throws OutputException 例外が発生した場合
      * @throws NullPointerException 引数がnull (スローされない場合がある)
      */
-    abstract void write(WritableKde1dResult result, WritingFormatter writingFormatter);
+    abstract void write(WritableKde2dResult result, WritingFormatter writingFormatter);
 
     /**
      * ファイルへの出力.
@@ -106,7 +106,7 @@ abstract class ResultOutput {
          * @throws NullPointerException {@inheritDoc}
          */
         @Override
-        void write(WritableKde1dResult result, WritingFormatter writingFormatter) {
+        void write(WritableKde2dResult result, WritingFormatter writingFormatter) {
             try {
                 Path path = Paths.get(filePath);
 

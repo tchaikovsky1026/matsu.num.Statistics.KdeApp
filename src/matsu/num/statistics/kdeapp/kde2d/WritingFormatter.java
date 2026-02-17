@@ -6,17 +6,17 @@
  */
 
 /*
- * 2026.1.25
+ * 2026.2.17
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
 import java.util.Objects;
 
-import matsu.num.statistics.kerneldensity.output.FormattableKdeResult1D;
-import matsu.num.statistics.kerneldensity.output.Kde1dCharSVTextFormatter;
+import matsu.num.statistics.kerneldensity.output.FormattableKdeResult2D;
+import matsu.num.statistics.kerneldensity.output.Kde2dCharSVTextFormatter;
 
 /**
- * kde1dの結果出力のフォーマッターを扱う.
+ * kde2dの結果出力のフォーマッターを扱う.
  * 
  * @author Matsuura Y.
  */
@@ -25,7 +25,7 @@ final class WritingFormatter {
     private final char separator;
     private final String labelHeader;
 
-    private final Kde1dCharSVTextFormatter formatter;
+    private final Kde2dCharSVTextFormatter formatter;
 
     /**
      * ビルダから呼ばれる.
@@ -42,20 +42,20 @@ final class WritingFormatter {
     /**
      * この書き込みパラメータからフォーマッターを構築する.
      */
-    private Kde1dCharSVTextFormatter createFormatter() {
+    private Kde2dCharSVTextFormatter createFormatter() {
         return Objects.isNull(labelHeader)
-                ? Kde1dCharSVTextFormatter.labelless(separator)
-                : Kde1dCharSVTextFormatter.withLabelEscaped(separator, labelHeader);
+                ? Kde2dCharSVTextFormatter.labelless(separator)
+                : Kde2dCharSVTextFormatter.withLabelEscaped(separator, labelHeader);
     }
 
     /**
-     * kde1dの計算結果をフォーマットして文字列の形で返す.
+     * kde2dの計算結果をフォーマットして文字列の形で返す.
      * 
-     * @param kde1dResult 計算結果
+     * @param kde2dResult 計算結果
      * @return 文字列変換後
      */
-    Iterable<String> format(FormattableKdeResult1D kde1dResult) {
-        return kde1dResult.formatted(formatter);
+    Iterable<String> format(FormattableKdeResult2D kde2dResult) {
+        return kde2dResult.formatted(formatter);
     }
 
     /**

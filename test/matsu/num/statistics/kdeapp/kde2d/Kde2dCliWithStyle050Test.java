@@ -25,18 +25,18 @@ import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 
 /**
- * {@link Kde1dCliWithStyle020} のテスト.
+ * {@link Kde2dCliWithStyle050} のテスト.
  */
 @RunWith(Enclosed.class)
-final class Kde1dCliWithStyle020Test {
+final class Kde2dCliWithStyle050Test {
 
-    public static final Class<?> TEST_CLASS = Kde1dCliWithStyle020.class;
+    public static final Class<?> TEST_CLASS = Kde2dCliWithStyle050.class;
 
     public static class 処理の実行のテスト {
 
-        private final Path inputFile = Path.of("test/resources/kde1d test.txt");
+        private final Path inputFile = Path.of("test/resources/kde2d test.txt");
         private final Path outputDir = Path.of("test/output");
-        private final Path outputFile = outputDir.resolve("kde1d result.txt");
+        private final Path outputFile = outputDir.resolve("kde2d result.txt");
 
         @Before
         public void before_ハッピーパスの準備() throws IOException{
@@ -54,9 +54,10 @@ final class Kde1dCliWithStyle020Test {
             PrintStream err = new PrintStream(OutputStream.nullOutputStream());
 
             assertThat(
-                    new Kde1dCliWithStyle020().run(
+                    new Kde2dCliWithStyle050().run(
                             new String[] {
-                                    "-f", inputFile.toString(), "-out-f", outputFile.toString()
+                                    "-f", inputFile.toString(), "-out-f", outputFile.toString(),
+                                    "-sep", ","
                             }, out, err),
                     is(0));
         }
@@ -69,7 +70,7 @@ final class Kde1dCliWithStyle020Test {
             System.out.println(TEST_CLASS.getName() + ":");
             try {
                 // ファイルがないパターン
-                new Kde1dCliWithStyle020().run(new String[] { "-f", "dummy.txt" });
+                new Kde2dCliWithStyle050().run(new String[] { "-f", "dummy.txt" });
             } catch (Exception e) {
                 System.out.println(errorMessage(e));
             }

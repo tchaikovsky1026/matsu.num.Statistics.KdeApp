@@ -6,18 +6,18 @@
  */
 
 /*
- * 2026.2.2
+ * 2026.2.17
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
 /**
- * 1次元カーネル密度推定のエントリーポイント.
+ * 2次元カーネル密度推定のエントリーポイント.
  * 
  * @author Matsuura Y.
  */
-public final class Kde1dCliEntryPoint {
+public final class Kde2dCliEntryPoint {
 
-    private Kde1dCliEntryPoint() {
+    private Kde2dCliEntryPoint() {
         // インスタンス化不可
         throw new AssertionError();
     }
@@ -29,6 +29,6 @@ public final class Kde1dCliEntryPoint {
      * @throws Exception 例外スロー時
      */
     public static void main(String[] args) throws Exception {
-        System.exit(new Kde1dCliWithStyle020().run(args));
+        System.exit(new Kde2dCliWithStyle050().run(args));
     }
 }

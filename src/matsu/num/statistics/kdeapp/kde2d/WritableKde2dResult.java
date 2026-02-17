@@ -6,33 +6,33 @@
  */
 
 /*
- * 2026.1.25
+ * 2026.2.17
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
 import java.io.PrintWriter;
 import java.util.Objects;
 
-import matsu.num.statistics.kerneldensity.output.FormattableKdeResult1D;
+import matsu.num.statistics.kerneldensity.output.FormattableKdeResult2D;
 
 /**
- * 1次元のカーネル密度推定結果を扱うクラス.
+ * 2次元のカーネル密度推定結果を扱うクラス.
  * 
  * @author Matsuura Y.
  */
-final class WritableKde1dResult {
+final class WritableKde2dResult {
 
-    private final FormattableKdeResult1D kde1dResult;
+    private final FormattableKdeResult2D kde1dResult;
 
     /**
      * パッケージ内にのみ公開されたコンストラクタ.
      * 
      * <p>
-     * {@link FormattableKdeResult1D} を生成する計算器から呼ばれることを想定している. <br>
+     * {@link FormattableKdeResult2D} を生成する計算器から呼ばれることを想定している. <br>
      * それ以外の呼ばれ方は不適当である.
      * </p>
      */
-    WritableKde1dResult(FormattableKdeResult1D kde1dResult) {
+    WritableKde2dResult(FormattableKdeResult2D kde1dResult) {
         super();
         assert Objects.nonNull(kde1dResult) : " arg is null";
         this.kde1dResult = kde1dResult;
@@ -42,7 +42,7 @@ final class WritableKde1dResult {
      * 結果を出力する.
      * 
      * <p>
-     * 結果出力フォーマットは, 2 columns であり,
+     * 結果出力フォーマットは, 3 columns であり,
      * 与えたフォーマッターにより成形される. <br>
      * メソッド終了時に, PrintWriter はフラッシュされる. <br>
      * 戻り値により例外が発生したかどうかを報告する

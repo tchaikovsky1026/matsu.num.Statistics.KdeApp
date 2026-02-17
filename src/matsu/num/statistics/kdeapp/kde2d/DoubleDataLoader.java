@@ -6,13 +6,15 @@
  */
 
 /*
- * 2026.1.21
+ * 2026.2.17
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.OptionalDouble;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -22,7 +24,7 @@ import java.util.stream.Stream;
  */
 final class DoubleDataLoader {
 
-    private final DoubleLineParser parser;
+    private final DoubleColumnDoubleLineParser parser;
 
     /**
      * 文字列を {@code double} 値に変換するパーサーを与えて,
@@ -31,14 +33,15 @@ final class DoubleDataLoader {
      * @param parser パーサー
      * @throws NullPointerException 引数がnull
      */
-    DoubleDataLoader(DoubleLineParser parser) {
+    DoubleDataLoader(DoubleColumnDoubleLineParser parser) {
         super();
         this.parser = Objects.requireNonNull(parser);
     }
 
     /**
-     * 1行ごとの文字列ストリームから, {@code double} 値を解析し,
-     * 配列として返す.
+     * 2カラムの数値データである文字列についての, 1行ごとの文字列ストリームから,
+     * {@code double} 値を解析し, 2次元配列として返す. <br>
+     * 結果は, 列優先 (double[2][recordSize]) の形式である.
      * 
      * <p>
      * 実行には, ストリームのサプライヤ ({@link IOSupplier}) を渡す. <br>
@@ -57,14 +60,24 @@ final class DoubleDataLoader {
      *             文字列フォーマットが不正の場合
      * @throws NullPointerException 引数やストリームの要素にnullを含む場合
      */
-    public double[] load(IOSupplier<Stream<String>> linesSupplier) throws IOException {
+    public double[][] load(IOSupplier<Stream<String>> linesSupplier) throws IOException {
         try (Stream<String> lines = linesSupplier.get()) {
-            return lines
-                    .map(s -> parser.parse(s))
-                    .flatMapToDouble(OptionalDouble::stream)
-                    .toArray();
+            List<Double> formerColumn = new ArrayList<>();
+            List<Double> latterColumn = new ArrayList<>();
+
+            // データの方向を転置するための処理
+            lines.map(s -> parser.parse(s))
+                    .flatMap(Optional::stream)
+                    .forEach(d -> {
+                        formerColumn.add(d[0]);
+                        latterColumn.add(d[1]);
+                    });
+            return new double[][] {
+                    formerColumn.stream().mapToDouble(Double::doubleValue).toArray(),
+                    latterColumn.stream().mapToDouble(Double::doubleValue).toArray()
+            };
         } catch (NumberFormatException e) {
-            throw new IOException("illegal number format: " + e.getMessage());
+            throw new IOException("illegal format: " + e.getMessage());
         }
     }
 }
