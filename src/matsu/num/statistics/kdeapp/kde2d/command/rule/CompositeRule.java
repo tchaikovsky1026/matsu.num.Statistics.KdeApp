@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.11
+ * 2026.2.17
  */
 package matsu.num.statistics.kdeapp.kde2d.command.rule;
 
@@ -20,7 +20,7 @@ import matsu.num.statistics.kdeapp.kde2d.command.ConsoleOptionCommand;
 import matsu.num.statistics.kdeapp.kde2d.exception.InvalidParameterException;
 
 /**
- * 複数のルールを結合した (バリデーションを "and" でつないだ) ルールを表現する.
+ * kde2dの複数のルールを結合した (バリデーションを "and" でつないだ) ルールを表現する.
  * 
  * @author Matsuura Y.
  */

@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.11
+ * 2026.2.17
  */
 package matsu.num.statistics.kdeapp.kde2d.command.rule;
 
@@ -15,7 +15,7 @@ import java.util.Set;
 import matsu.num.statistics.kdeapp.kde2d.command.ConsoleOptionCommand;
 
 /**
- * null-ルール (バリデーションしないルール) を表現する.
+ * kde2dのnull-ルール (バリデーションしないルール) を表現する.
  * 
  * @author Matsuura Y.
  */

@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.12
+ * 2026.2.17
  */
 package matsu.num.statistics.kdeapp.kde2d.command;
 
@@ -22,7 +22,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * 引数をとらないコマンドを扱うクラス.
+ * kde2dの, 引数をとらないコマンドを扱うクラス.
  * 各インスタンスはシングルトンで表現される.
  * 
  * @author Matsuura Y.

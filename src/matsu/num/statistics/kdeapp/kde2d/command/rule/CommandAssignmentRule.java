@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.11
+ * 2026.2.17
  */
 package matsu.num.statistics.kdeapp.kde2d.command.rule;
 
@@ -16,7 +16,7 @@ import matsu.num.statistics.kdeapp.kde2d.command.ConsoleOptionCommand;
 import matsu.num.statistics.kdeapp.kde2d.exception.InvalidParameterException;
 
 /**
- * オプションコマンドの指定に関するルールを表現する.
+ * kde2dのオプションコマンドの指定に関するルールを表現する.
  * 
  * @author Matsuura Y.
  */

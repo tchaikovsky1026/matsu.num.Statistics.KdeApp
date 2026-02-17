@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.6
+ * 2026.2.17
  */
 package matsu.num.statistics.kdeapp.kde2d.command;
 
@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * 区切り文字の解釈を行うクラス.
+ * kde2dの区切り文字の解釈を行うクラス.
  * 
  * <p>
  * ルールは次の通りである. <br>

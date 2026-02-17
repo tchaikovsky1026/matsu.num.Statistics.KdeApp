@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.11
+ * 2026.2.17
  */
 package matsu.num.statistics.kdeapp.kde2d.command;
 
@@ -25,7 +25,7 @@ import java.util.function.Function;
 import matsu.num.statistics.kdeapp.kde2d.exception.InvalidParameterException;
 
 /**
- * 引数をとるコマンドを扱うクラス.
+ * kde2dの, 引数をとるコマンドを扱うクラス.
  * 各インスタンスはシングルトンで表現される.
  * 
  * @author Matsuura Y.

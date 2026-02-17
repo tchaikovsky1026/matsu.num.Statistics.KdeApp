@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.12
+ * 2026.2.17
  */
 package matsu.num.statistics.kdeapp.kde2d.command;
 
@@ -24,7 +24,7 @@ import matsu.num.statistics.kdeapp.kde2d.command.rule.CommandAssignmentRule;
 import matsu.num.statistics.kdeapp.kde2d.exception.InvalidParameterException;
 
 /**
- * コンソールパラメータの解釈器.
+ * kde2dに関するコンソールパラメータの解釈器.
  * 
  * <p>
  * この解釈器インスタンスは, イミュータブルである. <br>

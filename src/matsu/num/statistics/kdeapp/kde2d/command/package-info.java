@@ -6,6 +6,6 @@
  */
 
 /**
- * kde1d のオプションコマンドに関わるパッケージ.
+ * kde2dのオプションコマンドに関わるパッケージ.
  */
 package matsu.num.statistics.kdeapp.kde2d.command;

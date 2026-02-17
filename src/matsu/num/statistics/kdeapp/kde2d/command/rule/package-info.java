@@ -6,6 +6,6 @@
  */
 
 /**
- * オプションコマンドに関するルールを扱うパッケージ.
+ * kde2dのオプションコマンドに関するルールを扱うパッケージ.
  */
 package matsu.num.statistics.kdeapp.kde2d.command.rule;

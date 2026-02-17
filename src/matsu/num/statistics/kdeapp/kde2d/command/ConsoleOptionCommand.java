@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.6
+ * 2026.2.17
  */
 package matsu.num.statistics.kdeapp.kde2d.command;
 
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * コンソールオプションコマンドの列挙を表現するクラス.
+ * kde2dのコンソールオプションコマンドの列挙を表現するクラス.
  * 
  * @author Matsuura Y.
  */
