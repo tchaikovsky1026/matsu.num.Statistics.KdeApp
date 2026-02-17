@@ -121,7 +121,7 @@ chmod +x kde1d.sh
 ---
 
 ## Application: kde2d
-`kde2d` は1次元のカーネル密度推定の実行を表すコードネームである.
+`kde2d` は2次元のカーネル密度推定の実行を表すコードネームである.
 
 ### Execution
 実行方法は, Windows と macOS / Linux で次のようになる.
