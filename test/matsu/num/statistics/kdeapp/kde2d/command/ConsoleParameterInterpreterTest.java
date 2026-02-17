@@ -48,7 +48,7 @@ final class ConsoleParameterInterpreterTest {
             argsList.add(new String[] { "-f", "test.txt" });
             argsList.add(new String[] { "-f", "test.txt", "--echo-off" });
             argsList.add(new String[] { "--echo-off", "-f", "test.txt" });
-            argsList.add(new String[] { "-f", "test.txt", "-sep", "\t" });
+            argsList.add(new String[] { "-f", "test.txt", "-sep-i", "\t" });
         }
 
         @Theory
@@ -70,7 +70,7 @@ final class ConsoleParameterInterpreterTest {
         @Test(expected = InvalidParameterException.class)
         public void test_パラメータに重複がある場合は例外_引数無し() {
 
-            String[] args = { "--dummy-no-arg", "--dummy-no-arg" };
+            String[] args = { "--echo-off", "--echo-off" };
             ConsoleParameterInterpreter.from(args, nullRule());
         }
     }

@@ -57,7 +57,7 @@ final class Kde2dCliWithStyle050Test {
                     new Kde2dCliWithStyle050().run(
                             new String[] {
                                     "-f", inputFile.toString(), "-out-f", outputFile.toString(),
-                                    "-sep", ","
+                                    "-sep-i", ","
                             }, out, err),
                     is(0));
         }
