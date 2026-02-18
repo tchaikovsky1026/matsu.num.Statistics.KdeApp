@@ -6,12 +6,12 @@
  */
 
 /*
- * 2026.2.17
+ * 2026.2.18
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
+import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 import matsu.num.statistics.kdeapp.exception.IllegalParameterException;
-import matsu.num.statistics.kdeapp.kde1d.command.ConsoleParameterInterpreter;
 
 /**
  * オプションパラメータからインスタンスを構築することを表現するインターフェース.
@@ -36,5 +36,5 @@ interface ComponentConstructor<T> {
      * @return インスタンス
      * @throws NullPointerException 引数がnullの場合
      */
-    public abstract T construct(ConsoleParameterInterpreter interpreter);
+    public abstract T construct(ConsoleParameters interpreter);
 }

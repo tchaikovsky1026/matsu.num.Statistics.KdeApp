@@ -6,13 +6,13 @@
  */
 
 /*
- * 2026.2.5
+ * 2026.2.18
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
-import static matsu.num.statistics.kdeapp.kde1d.command.ArgumentRequiringCommand.*;
+import static matsu.num.statistics.kdeapp.kde1d.Commands.*;
 
-import matsu.num.statistics.kdeapp.kde1d.command.ConsoleParameterInterpreter;
+import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 
 /**
  * {@link WritingFormatter} の構築器.
@@ -37,13 +37,14 @@ final class WritingFormatterConstructor implements ComponentConstructor<WritingF
      * @throws NullPointerException {@inheritDoc }
      */
     @Override
-    public WritingFormatter construct(ConsoleParameterInterpreter interpreter) {
+    public WritingFormatter construct(ConsoleParameters interpreter) {
 
         WritingFormatter.Builder builder = new WritingFormatter.Builder()
                 .disableLabel()
                 .setSeparator('\t');
 
-        interpreter.valueOf(LABEL_HEADER)
+        interpreter.valueOf(
+                LABEL_HEADER)
                 .ifPresent(header -> builder.enableLabel(header));
 
         interpreter.valueOf(SEPARATOR)
