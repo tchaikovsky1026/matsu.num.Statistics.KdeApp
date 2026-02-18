@@ -6,13 +6,13 @@
  */
 
 /*
- * 2026.2.10
+ * 2026.2.18
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
-import static matsu.num.statistics.kdeapp.kde1d.command.ArgumentRequiringCommand.*;
+import static matsu.num.statistics.kdeapp.kde1d.Commands.*;
 
-import matsu.num.statistics.kdeapp.kde1d.command.ConsoleParameterInterpreter;
+import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 
 /**
  * {@link ResultOutput} の構築器.
@@ -31,7 +31,7 @@ final class ResultOutputConstructor implements ComponentConstructor<ResultOutput
      * @throws NullPointerException {@inheritDoc }
      */
     @Override
-    public ResultOutput construct(ConsoleParameterInterpreter interpreter) {
+    public ResultOutput construct(ConsoleParameters interpreter) {
 
         /*
          * OUTPUT_FORCE -> forceOutput
@@ -39,7 +39,8 @@ final class ResultOutputConstructor implements ComponentConstructor<ResultOutput
          * empty -> nullOutput
          */
 
-        return interpreter.valueOf(OUTPUT_FORCE_FILE_PATH)
+        return interpreter.valueOf(
+                OUTPUT_FORCE_FILE_PATH)
                 .map(ResultOutput::forceOutput)
                 .orElse(
                         interpreter.valueOf(OUTPUT_FILE_PATH)

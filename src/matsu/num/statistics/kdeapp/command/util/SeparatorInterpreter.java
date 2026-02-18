@@ -6,9 +6,9 @@
  */
 
 /*
- * 2026.2.6
+ * 2026.2.17
  */
-package matsu.num.statistics.kdeapp.kde1d.command;
+package matsu.num.statistics.kdeapp.command.util;
 
 import static java.util.stream.Collectors.*;
 
@@ -31,7 +31,7 @@ import java.util.Objects;
  * 
  * @author Matsuura Y.
  */
-final class SeparatorInterpreter {
+public final class SeparatorInterpreter {
 
     private SeparatorInterpreter() {
         // インスタンス化不可
@@ -40,18 +40,21 @@ final class SeparatorInterpreter {
 
     /**
      * 与えた文字列から区切り文字を得る. <br>
-     * 引数不正の場合, {@code null} を返す.
+     * 引数不正の場合, 例外 ({@link IllegalArgumentException}) をスローする.
      * 
      * @param s 文字列
      * @return 区切り文字, 不正なら {@code null}
+     * @throws IllegalArgumentException 引数を解釈できない場合
      * @throws NullPointerException 引数がnull
      */
-    static Character from(String s) {
+    public static Character from(String s) {
 
         if (s.length() == 1) {
             // ASCII かどうかを判定して返す.
             char c = s.charAt(0);
-            return c <= 0x7F ? c : null;
+            if (c <= 0x7F) {
+                return c;
+            }
         }
 
         // バックスラッシュ1文字はここまで到達しない
@@ -59,7 +62,8 @@ final class SeparatorInterpreter {
             return EscapeSequence.from(s);
         }
 
-        return null;
+        throw new IllegalArgumentException(
+                "invalid separator: \"%s\"".formatted(s));
     }
 
     /**

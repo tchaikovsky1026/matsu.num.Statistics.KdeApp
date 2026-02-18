@@ -7,7 +7,7 @@
 
 package matsu.num.statistics.kdeapp.kde1d;
 
-import static matsu.num.statistics.kdeapp.kde1d.command.ArgumentRequiringCommand.*;
+import static matsu.num.statistics.kdeapp.kde1d.Commands.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 

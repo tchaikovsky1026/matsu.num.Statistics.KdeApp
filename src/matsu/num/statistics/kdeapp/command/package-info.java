@@ -6,6 +6,6 @@
  */
 
 /**
- * kde2dのオプションコマンドに関わるパッケージ.
+ * アプリケーションの起動コマンドに関連する要素を扱うパッケージ.
  */
-package matsu.num.statistics.kdeapp.kde2d.command;
+package matsu.num.statistics.kdeapp.command;

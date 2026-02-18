@@ -6,6 +6,6 @@
  */
 
 /**
- * オプションコマンドに関するルールを扱うパッケージ.
+ * アプリケーションの起動コマンドのユーティリティパッケージ.
  */
-package matsu.num.statistics.kdeapp.kde1d.command.rule;
+package matsu.num.statistics.kdeapp.command.util;

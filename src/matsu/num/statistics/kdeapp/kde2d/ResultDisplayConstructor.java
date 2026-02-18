@@ -6,17 +6,17 @@
  */
 
 /*
- * 2026.2.12
+ * 2026.2.18
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
+import static matsu.num.statistics.kdeapp.kde2d.Commands.*;
 import static matsu.num.statistics.kdeapp.kde2d.ResultDisplay.*;
 
 import java.io.PrintStream;
 import java.util.Objects;
 
-import matsu.num.statistics.kdeapp.kde2d.command.ConsoleParameterInterpreter;
-import matsu.num.statistics.kdeapp.kde2d.command.NoArgumentCommand;
+import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 
 /**
  * {@link ResultDisplay} の構築器.
@@ -45,9 +45,9 @@ final class ResultDisplayConstructor implements ComponentConstructor<ResultDispl
      * @throws NullPointerException {@inheritDoc }
      */
     @Override
-    public ResultDisplay construct(ConsoleParameterInterpreter interpreter) {
+    public ResultDisplay construct(ConsoleParameters interpreter) {
 
-        return interpreter.contains(NoArgumentCommand.ECHO_OFF)
+        return interpreter.contains(ECHO_OFF)
                 ? nullDisplay()
                 : stdout(out, err);
     }

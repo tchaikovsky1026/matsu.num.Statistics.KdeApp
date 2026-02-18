@@ -6,14 +6,14 @@
  */
 
 /*
- * 2026.2.17
+ * 2026.2.18
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
 import java.io.PrintStream;
 
+import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 import matsu.num.statistics.kdeapp.exception.ApplicationException;
-import matsu.num.statistics.kdeapp.kde1d.command.ConsoleParameterInterpreter;
 
 /**
  * 最も単純な1次元カーネル密度推定を実行するクラス.
@@ -65,7 +65,7 @@ final class Kde1dCliWithStyle020 {
 
         out.println("kde1d...");
 
-        ConsoleParameterInterpreter interpretation = ConsoleParameterInterpreter.from(args);
+        ConsoleParameters interpretation = Commands.getInterpreter().interpret(args);
 
         Kde1dSourceLoader loader =
                 new Kde1dSourceLoaderConstructor().construct(interpretation);
