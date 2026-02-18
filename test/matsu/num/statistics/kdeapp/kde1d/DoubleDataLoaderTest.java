@@ -7,8 +7,8 @@
 
 package matsu.num.statistics.kdeapp.kde1d;
 
-import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.Matchers.*;
 
 import java.io.IOException;
 import java.util.List;

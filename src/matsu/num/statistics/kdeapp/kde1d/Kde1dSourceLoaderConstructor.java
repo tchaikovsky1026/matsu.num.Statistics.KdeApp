@@ -6,13 +6,13 @@
  */
 
 /*
- * 2026.2.5
+ * 2026.2.18
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
-import static matsu.num.statistics.kdeapp.kde1d.command.ArgumentRequiringCommand.*;
+import static matsu.num.statistics.kdeapp.kde1d.Commands.*;
 
-import matsu.num.statistics.kdeapp.kde1d.command.ConsoleParameterInterpreter;
+import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 
 /**
  * {@link Kde1dSourceLoader} の構築器.
@@ -41,7 +41,7 @@ final class Kde1dSourceLoaderConstructor implements ComponentConstructor<Kde1dSo
      * @throws NullPointerException {@inheritDoc }
      */
     @Override
-    public Kde1dSourceLoader construct(ConsoleParameterInterpreter interpreter) {
+    public Kde1dSourceLoader construct(ConsoleParameters interpreter) {
 
         String pathString = interpreter.valueOf(INPUT_FILE_PATH)
                 .orElseThrow(() -> new AssertionError("unreachable"));

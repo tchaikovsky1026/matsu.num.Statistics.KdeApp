@@ -12,7 +12,7 @@ package matsu.num.statistics.kdeapp.kde2d;
 
 import java.util.Arrays;
 
-import matsu.num.statistics.kdeapp.kde2d.exception.CalculationException;
+import matsu.num.statistics.kdeapp.exception.CalculationException;
 import matsu.num.statistics.kerneldensity.GaussianKd2D;
 import matsu.num.statistics.kerneldensity.Kde2DSourceDto;
 import matsu.num.statistics.kerneldensity.KernelDensity2D;
