@@ -62,6 +62,7 @@ public final class ConsoleParameters {
      * 戻り値型はオプショナルである.
      * </p>
      * 
+     * @param <T> オプション引数の変換後の型
      * @param command オプションの属性
      * @return オプションの値, 指定されていない場合は空.
      * @throws NullPointerException 引数がnullの場合

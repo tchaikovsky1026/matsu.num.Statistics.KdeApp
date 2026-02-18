@@ -28,6 +28,14 @@ import matsu.num.statistics.kdeapp.exception.IllegalParameterException;
 public sealed abstract class CommandAssignmentRule {
 
     /**
+     * 非公開の唯一のコンストラクタ.
+     * 
+     */
+    private CommandAssignmentRule() {
+        super();
+    }
+
+    /**
      * 指定されたコマンドの集合がルールに合っているかどうかを検証する.
      * 
      * <p>
