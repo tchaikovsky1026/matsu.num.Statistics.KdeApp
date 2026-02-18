@@ -8,9 +8,9 @@
 /*
  * 2026.2.18
  */
-package matsu.num.statistics.kdeapp.kde1d;
+package matsu.num.statistics.kdeapp.kde2d;
 
-import static matsu.num.statistics.kdeapp.kde1d.Commands.*;
+import static matsu.num.statistics.kdeapp.kde2d.Commands.*;
 
 import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 
@@ -39,8 +39,7 @@ final class ResultOutputConstructor implements ComponentConstructor<ResultOutput
          * empty -> nullOutput
          */
 
-        return interpreter.valueOf(
-                OUTPUT_FORCE_FILE_PATH)
+        return interpreter.valueOf(OUTPUT_FORCE_FILE_PATH)
                 .map(ResultOutput::forceOutput)
                 .orElse(
                         interpreter.valueOf(OUTPUT_FILE_PATH)

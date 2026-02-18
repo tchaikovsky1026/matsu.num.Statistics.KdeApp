@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/mit-license.php
  */
 
-package matsu.num.statistics.kdeapp.kde1d;
+package matsu.num.statistics.kdeapp.kde2d;
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
@@ -38,24 +38,24 @@ final class DoubleDataLoaderTest {
 
         @Before
         public void before_ローダーの準備() {
-            loader = new DoubleDataLoader(new DoubleLineParser(List.of("#")));
+            loader = new DoubleDataLoader(new DoubleColumnDoubleLineParser(List.of("#"), ','));
         }
 
         @Test
         public void test_正常系() throws IOException {
-            double[] data = loader.load(
+            double[][] data = loader.load(
                     () -> List.of(
                             // U+3000は全角スペース
-                            " 1.0 ", " -1d ", "# dummy", " \u3000", "100").stream());
+                            " 1.0,2.0 ", " -1d,3d ", "# dummy", " \u3000", "100,5").stream());
 
-            assertThat(data, is(new double[] { 1d, -1d, 100d }));
+            assertThat(data, is(new double[][] { { 1d, -1d, 100d }, { 2d, 3d, 5d } }));
         }
 
         @Test(expected = IOException.class)
         public void test_異常系() throws IOException {
             loader.load(
                     () -> List.of(
-                            " 1.0 ", "dummy").stream());
+                            " 1.0,1d ", "dummy").stream());
         }
     }
 }

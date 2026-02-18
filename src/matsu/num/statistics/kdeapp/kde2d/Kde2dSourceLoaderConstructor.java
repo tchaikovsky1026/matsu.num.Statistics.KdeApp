@@ -8,14 +8,14 @@
 /*
  * 2026.2.18
  */
-package matsu.num.statistics.kdeapp.kde1d;
+package matsu.num.statistics.kdeapp.kde2d;
 
-import static matsu.num.statistics.kdeapp.kde1d.Commands.*;
+import static matsu.num.statistics.kdeapp.kde2d.Commands.*;
 
 import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 
 /**
- * {@link Kde1dSourceLoader} の構築器.
+ * {@link Kde2dSourceLoader} の構築器.
  * 
  * <p>
  * 入力ファイルのフォーマットは, 次である.
@@ -23,31 +23,33 @@ import matsu.num.statistics.kdeapp.command.ConsoleParameters;
  * 
  * <ul>
  * <li>エスケープ文字はデフォルトが "#" (オプションコマンドで変更される)</li>
- * <li>ソースの値は 1 column で縦に並べる</li>
+ * <li>ソースの値は 2 column で縦に並べ, 区切り文字はデフォルトが "\t" (オプションコマンドで変更される)</li>
  * <li>ソースの値には inf, NaN を含まず, {@link Double#parseDouble(String)} で解釈可能</li>
  * </ul>
  * 
  * @author Matsuura Y.
  */
-final class Kde1dSourceLoaderConstructor implements ComponentConstructor<Kde1dSourceLoader> {
+final class Kde2dSourceLoaderConstructor implements ComponentConstructor<Kde2dSourceLoader> {
 
     /**
      * 唯一のコンストラクタ.
      */
-    Kde1dSourceLoaderConstructor() {
+    Kde2dSourceLoaderConstructor() {
     }
 
     /**
      * @throws NullPointerException {@inheritDoc }
      */
     @Override
-    public Kde1dSourceLoader construct(ConsoleParameters interpreter) {
+    public Kde2dSourceLoader construct(ConsoleParameters interpreter) {
 
         String pathString = interpreter.valueOf(INPUT_FILE_PATH)
                 .orElseThrow(() -> new AssertionError("unreachable"));
 
         String escape = interpreter.valueOf(COMMENT_CHAR)
                 .orElse("#");
-        return new Kde1dSourceLoader(pathString, escape);
+        char separator = interpreter.valueOf(SEPARATOR_INPUT)
+                .orElse('\t');
+        return new Kde2dSourceLoader(pathString, separator, escape);
     }
 }

@@ -8,10 +8,10 @@
 /*
  * 2026.2.18
  */
-package matsu.num.statistics.kdeapp.kde1d;
+package matsu.num.statistics.kdeapp.kde2d;
 
-import static matsu.num.statistics.kdeapp.kde1d.Commands.*;
-import static matsu.num.statistics.kdeapp.kde1d.ResultDisplay.*;
+import static matsu.num.statistics.kdeapp.kde2d.Commands.*;
+import static matsu.num.statistics.kdeapp.kde2d.ResultDisplay.*;
 
 import java.io.PrintStream;
 import java.util.Objects;

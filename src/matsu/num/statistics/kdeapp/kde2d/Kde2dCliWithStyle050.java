@@ -8,7 +8,7 @@
 /*
  * 2026.2.18
  */
-package matsu.num.statistics.kdeapp.kde1d;
+package matsu.num.statistics.kdeapp.kde2d;
 
 import java.io.PrintStream;
 
@@ -16,20 +16,20 @@ import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 import matsu.num.statistics.kdeapp.exception.ApplicationException;
 
 /**
- * 最も単純な1次元カーネル密度推定を実行するクラス.
+ * 最も単純な2次元カーネル密度推定を実行するクラス.
  * 
  * <p>
- * コンソールパラメータは, version 0.2.0 以降のスタイルとする.
+ * コンソールパラメータは, version 0.5.0 以降のスタイルとする.
  * </p>
  * 
  * @author Matsuura Y.
  */
-final class Kde1dCliWithStyle020 {
+final class Kde2dCliWithStyle050 {
 
     /**
      * 唯一のコンストラクタ.
      */
-    Kde1dCliWithStyle020() {
+    Kde2dCliWithStyle050() {
         super();
     }
 
@@ -37,7 +37,7 @@ final class Kde1dCliWithStyle020 {
      * ソースとなるファイルパスをコマンドライン引数として受け取り, 標準出力で推定結果を出力する単純実行.
      * 
      * <p>
-     * 入力ファイルのフォーマットは, {@link Kde1dSourceLoaderConstructor} に従う. <br>
+     * 入力ファイルのフォーマットは, {@link Kde2dSourceLoaderConstructor} に従う. <br>
      * 出力フォーマットは, {@link WritingFormatterConstructor} に従う.
      * </p>
      * 
@@ -67,8 +67,8 @@ final class Kde1dCliWithStyle020 {
 
         ConsoleParameters interpretation = Commands.getInterpreter().interpret(args);
 
-        Kde1dSourceLoader loader =
-                new Kde1dSourceLoaderConstructor().construct(interpretation);
+        Kde2dSourceLoader loader =
+                new Kde2dSourceLoaderConstructor().construct(interpretation);
         WritingFormatter writingFormatter =
                 new WritingFormatterConstructor().construct(interpretation);
         ResultOutput output =
@@ -76,8 +76,8 @@ final class Kde1dCliWithStyle020 {
         ResultDisplay stdout =
                 new ResultDisplayConstructor(out, err).construct(interpretation);
 
-        double[] source = loader.load();
-        WritableKde1dResult result = new GaussianStandardKde1dCalculator().calc(source);
+        double[][] source = loader.load();
+        WritableKde2dResult result = new GaussianStandardKde2dCalculator().calc(source);
         stdout.write(result, writingFormatter);
         output.write(result, writingFormatter);
 

@@ -6,13 +6,13 @@
  */
 
 /*
- * 2026.1.21
+ * 2026.2.17
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
 import java.util.Arrays;
 
-import matsu.num.statistics.kdeapp.kde1d.exception.CalculationException;
+import matsu.num.statistics.kdeapp.exception.CalculationException;
 import matsu.num.statistics.kerneldensity.GaussianKd1D;
 import matsu.num.statistics.kerneldensity.KernelDensity1D;
 import matsu.num.statistics.kerneldensity.Range;

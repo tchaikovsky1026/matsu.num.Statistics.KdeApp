@@ -8,7 +8,7 @@
 /*
  * 2026.2.18
  */
-package matsu.num.statistics.kdeapp.kde1d;
+package matsu.num.statistics.kdeapp.kde2d;
 
 import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 import matsu.num.statistics.kdeapp.exception.IllegalParameterException;

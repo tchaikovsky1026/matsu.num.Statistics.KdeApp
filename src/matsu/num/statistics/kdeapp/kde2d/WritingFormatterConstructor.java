@@ -8,9 +8,9 @@
 /*
  * 2026.2.18
  */
-package matsu.num.statistics.kdeapp.kde1d;
+package matsu.num.statistics.kdeapp.kde2d;
 
-import static matsu.num.statistics.kdeapp.kde1d.Commands.*;
+import static matsu.num.statistics.kdeapp.kde2d.Commands.*;
 
 import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 
@@ -43,11 +43,10 @@ final class WritingFormatterConstructor implements ComponentConstructor<WritingF
                 .disableLabel()
                 .setSeparator('\t');
 
-        interpreter.valueOf(
-                LABEL_HEADER)
+        interpreter.valueOf(LABEL_HEADER)
                 .ifPresent(header -> builder.enableLabel(header));
 
-        interpreter.valueOf(SEPARATOR)
+        interpreter.valueOf(SEPARATOR_OUTPUT)
                 .ifPresent(separator -> builder.setSeparator(separator.charValue()));
 
         return builder.build();
