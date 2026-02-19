@@ -15,7 +15,6 @@ import static matsu.num.statistics.kdeapp.command.CommandAssignmentRule.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -51,7 +50,7 @@ final class Commands {
     public static final ArgumentRequiringCommand<Path> INPUT_FILE_PATH =
             ArgumentRequiringCommand.of(
                     "INPUT_FILE_PATH", Path.class,
-                    s -> conertToPath(s),
+                    Path::of,
                     "--input-file", "-f");
 
     /**
@@ -64,7 +63,7 @@ final class Commands {
     public static final ArgumentRequiringCommand<Path> OUTPUT_FORCE_FILE_PATH =
             ArgumentRequiringCommand.of(
                     "OUTPUT_FORCE_FILE_PATH", Path.class,
-                    s -> conertToPath(s),
+                    Path::of,
                     "--output-force", "-out-f");
 
     /**
@@ -77,20 +76,8 @@ final class Commands {
     public static final ArgumentRequiringCommand<Path> OUTPUT_FILE_PATH =
             ArgumentRequiringCommand.of(
                     "OUTPUT_FILE_PATH", Path.class,
-                    s -> conertToPath(s),
+                    Path::of,
                     "--output", "-out");
-
-    /**
-     * 文字列を Path に変換する. <br>
-     * パスとして不適切な文字列である場合は例外をスローするが, それをnullを返すように翻訳する.
-     */
-    private static Path conertToPath(String pathStr) {
-        try {
-            return Path.of(pathStr);
-        } catch (InvalidPathException ignore) {
-            return null;
-        }
-    }
 
     /**
      * 入力のコメント行の prefix の指定を表現するシングルトンインスタンス.
@@ -120,7 +107,7 @@ final class Commands {
     public static final ArgumentRequiringCommand<Character> SEPARATOR_INPUT =
             ArgumentRequiringCommand.of(
                     "SEPARATOR_INPUT", Character.class,
-                    s -> interpretSeparator(s),
+                    SeparatorInterpreter::from,
                     "--separator-in", "-sep-i");
 
     /**
@@ -141,20 +128,8 @@ final class Commands {
     public static final ArgumentRequiringCommand<Character> SEPARATOR_OUTPUT =
             ArgumentRequiringCommand.of(
                     "SEPARATOR_OUTPUT", Character.class,
-                    s -> interpretSeparator(s),
+                    SeparatorInterpreter::from,
                     "--separator-out", "-sep-o");
-
-    /**
-     * {@link SeparatorInterpreter#from(String)} を使用して文字列を char に変換する. <br>
-     * 元のメソッドは例外をスローするが, それをnullを返すように翻訳する.
-     */
-    private static Character interpretSeparator(String s) {
-        try {
-            return SeparatorInterpreter.from(s);
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
-    }
 
     /**
      * 出力のラベルに付与する prefix の指定を表現するシングルトンインスタンス.
