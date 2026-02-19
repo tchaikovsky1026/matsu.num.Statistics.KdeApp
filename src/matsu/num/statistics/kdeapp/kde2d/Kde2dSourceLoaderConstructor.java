@@ -6,11 +6,13 @@
  */
 
 /*
- * 2026.2.18
+ * 2026.2.19
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
 import static matsu.num.statistics.kdeapp.kde2d.Commands.*;
+
+import java.nio.file.Path;
 
 import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 
@@ -43,13 +45,14 @@ final class Kde2dSourceLoaderConstructor implements ComponentConstructor<Kde2dSo
     @Override
     public Kde2dSourceLoader construct(ConsoleParameters interpreter) {
 
-        String pathString = interpreter.valueOf(INPUT_FILE_PATH)
+        // INPUT_FILE_PATH は必須パラメータなので必ず取得できる.
+        Path path = interpreter.valueOf(INPUT_FILE_PATH)
                 .orElseThrow(() -> new AssertionError("unreachable"));
 
         String escape = interpreter.valueOf(COMMENT_CHAR)
                 .orElse("#");
         char separator = interpreter.valueOf(SEPARATOR_INPUT)
                 .orElse('\t');
-        return new Kde2dSourceLoader(pathString, separator, escape);
+        return new Kde2dSourceLoader(path, separator, escape);
     }
 }

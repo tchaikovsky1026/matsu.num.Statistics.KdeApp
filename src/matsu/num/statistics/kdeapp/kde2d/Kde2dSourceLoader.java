@@ -6,13 +6,12 @@
  */
 
 /*
- * 2026.2.17
+ * 2026.2.19
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
@@ -27,7 +26,7 @@ import matsu.num.statistics.kdeapp.exception.InputException;
 final class Kde2dSourceLoader {
 
     private final DoubleDataLoader loader;
-    private final String pathString;
+    private final Path path;
 
     /**
      * エスケープする文字列を指定し, ローダーを起動.
@@ -38,11 +37,11 @@ final class Kde2dSourceLoader {
      * @throws IllegalArgumentException エスケープ文字列に空文字が含まれる場合
      * @throws NullPointerException 引数にnullを含む場合
      */
-    Kde2dSourceLoader(String pathString, char separator, String... escapes) {
+    Kde2dSourceLoader(Path path, char separator, String... escapes) {
         DoubleColumnDoubleLineParser lineParser =
                 new DoubleColumnDoubleLineParser(List.of(escapes), separator);
         this.loader = new DoubleDataLoader(lineParser);
-        this.pathString = Objects.requireNonNull(pathString);
+        this.path = Objects.requireNonNull(path);
     }
 
     /**
@@ -53,9 +52,8 @@ final class Kde2dSourceLoader {
      */
     double[][] load() {
         try {
-            Path path = Path.of(pathString);
             return loader.load(() -> Files.lines(path));
-        } catch (InvalidPathException | IOException e) {
+        } catch (IOException e) {
             throw new InputException(
                     e.getClass().getSimpleName() + ": " + e.getMessage());
         }

@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.18
+ * 2026.2.19
  */
 package matsu.num.statistics.kdeapp.command;
 
@@ -40,6 +40,20 @@ final class DummyCommandListForTesting {
     static final ArgumentRequiringCommand<?> DUMMY_ARG_3 =
             ArgumentRequiringCommand.identifying(
                     "DUMMY_ARG_3", "--dummy-arg-3", "-d-a-3");
+
+    /**
+     * コンバートは恒等変換だが, 文字列の長さが1でなければならない.
+     */
+    static final ArgumentRequiringCommand<String> SINGLE_CHAR =
+            ArgumentRequiringCommand.of(
+                    "SINGLE_CHAR", String.class,
+                    s -> {
+                        if (s.length() != 1) {
+                            throw new IllegalArgumentException("not single char");
+                        }
+                        return s;
+                    },
+                    "--single-char", "-sc");
 
     private DummyCommandListForTesting() {
         // インスタンス化不可

@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.18
+ * 2026.2.19
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
@@ -15,6 +15,7 @@ import static matsu.num.statistics.kdeapp.command.CommandAssignmentRule.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -43,31 +44,40 @@ final class Commands {
      * 入力ファイルの指定を表現するシングルトンインスタンス.
      * 
      * <p>
-     * 引数はバリデーションされない.
+     * 引数は {@link Path} への変換される.
      * </p>
      */
-    public static final ArgumentRequiringCommand<String> INPUT_FILE_PATH =
-            identifying("INPUT_FILE_PATH", "--input-file", "-f");
+    public static final ArgumentRequiringCommand<Path> INPUT_FILE_PATH =
+            ArgumentRequiringCommand.of(
+                    "INPUT_FILE_PATH", Path.class,
+                    Path::of,
+                    "--input-file", "-f");
 
     /**
      * 強制上書きモードによる出力ファイルの指定を表現するシングルトンインスタンス.
      * 
      * <p>
-     * 引数はバリデーションされない.
+     * 引数は {@link Path} への変換される.
      * </p>
      */
-    public static final ArgumentRequiringCommand<String> OUTPUT_FORCE_FILE_PATH =
-            identifying("OUTPUT_FORCE_FILE_PATH", "--output-force", "-out-f");
+    public static final ArgumentRequiringCommand<Path> OUTPUT_FORCE_FILE_PATH =
+            ArgumentRequiringCommand.of(
+                    "OUTPUT_FORCE_FILE_PATH", Path.class,
+                    Path::of,
+                    "--output-force", "-out-f");
 
     /**
      * 上書き禁止モードである出力ファイルの指定を表現するシングルトンインスタンス.
      * 
      * <p>
-     * 引数はバリデーションされない.
+     * 引数は {@link Path} への変換される.
      * </p>
      */
-    public static final ArgumentRequiringCommand<String> OUTPUT_FILE_PATH =
-            identifying("OUTPUT_FILE_PATH", "--output", "-out");
+    public static final ArgumentRequiringCommand<Path> OUTPUT_FILE_PATH =
+            ArgumentRequiringCommand.of(
+                    "OUTPUT_FILE_PATH", Path.class,
+                    Path::of,
+                    "--output", "-out");
 
     /**
      * 入力のコメント行の prefix の指定を表現するシングルトンインスタンス.
@@ -97,7 +107,7 @@ final class Commands {
     public static final ArgumentRequiringCommand<Character> SEPARATOR_INPUT =
             ArgumentRequiringCommand.of(
                     "SEPARATOR_INPUT", Character.class,
-                    s -> interpretSeparator(s),
+                    SeparatorInterpreter::from,
                     "--separator-in", "-sep-i");
 
     /**
@@ -118,20 +128,8 @@ final class Commands {
     public static final ArgumentRequiringCommand<Character> SEPARATOR_OUTPUT =
             ArgumentRequiringCommand.of(
                     "SEPARATOR_OUTPUT", Character.class,
-                    s -> interpretSeparator(s),
+                    SeparatorInterpreter::from,
                     "--separator-out", "-sep-o");
-
-    /**
-     * {@link SeparatorInterpreter#from(String)} を使用して文字列を char に変換する. <br>
-     * 元のメソッドは例外をスローするが, それをnullを返すように翻訳する.
-     */
-    private static Character interpretSeparator(String s) {
-        try {
-            return SeparatorInterpreter.from(s);
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
-    }
 
     /**
      * 出力のラベルに付与する prefix の指定を表現するシングルトンインスタンス.

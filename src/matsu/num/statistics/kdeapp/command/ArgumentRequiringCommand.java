@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.18
+ * 2026.2.19
  */
 package matsu.num.statistics.kdeapp.command;
 
@@ -35,8 +35,9 @@ public final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand {
      * 内部から呼ばれる唯一のコンストラクタ.
      * 
      * <p>
-     * コンバータは, コンバートできない場合 (例外をスローすべき引数の場合) は {@code null} を返すようにする. <br>
-     * 正常系で {@code null} を返してはいけない.
+     * コンバータは, コンバートできない場合 (例外をスローすべき引数の場合) は
+     * {@link IllegalArgumentException} をスローするようにする. <br>
+     * {@code null} を返してはいけない.
      * </p>
      * 
      * @param enumString インスタンスの文字列表現
@@ -82,20 +83,21 @@ public final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand {
      * @throws NullPointerException 引数がnullの場合(必ず)
      */
     public final T convertArg(String arg) {
-        T out = converter.apply(Objects.requireNonNull(arg));
-        if (Objects.isNull(out)) {
+        try {
+            return converter.apply(Objects.requireNonNull(arg));
+        } catch (IllegalArgumentException iae) {
             throw new IllegalParameterException(
                     "invalid-arg for <" + this.commandString() + ">: \"" + arg + "\"");
         }
-        return out;
     }
 
     /**
      * インスタンスを構築する.
      * 
      * <p>
-     * コンバータは, コンバートできない場合 (例外をスローすべき引数の場合) は {@code null} を返すようにする. <br>
-     * 正常系で {@code null} を返してはいけない.
+     * コンバータは, コンバートできない場合 (例外をスローすべき引数の場合) は
+     * {@link IllegalArgumentException} をスローするようにする. <br>
+     * {@code null} を返してはいけない.
      * </p>
      * 
      * @param <T> コンバート先の型, see {@link #convertArg(String)}
