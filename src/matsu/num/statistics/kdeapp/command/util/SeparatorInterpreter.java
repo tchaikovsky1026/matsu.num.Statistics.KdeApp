@@ -79,16 +79,6 @@ public final class SeparatorInterpreter {
         TAB("\\t", '\t'),
 
         /**
-         * キャリッジリターン.
-         */
-        CR("\\r", '\r'),
-
-        /**
-         * ラインフィード.
-         */
-        LF("\\n", '\n'),
-
-        /**
          * バックスラッシュ.
          */
         BACKSLASH("\\\\", '\\');
