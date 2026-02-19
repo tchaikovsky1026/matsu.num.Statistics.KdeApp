@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.18
+ * 2026.2.19
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -15,6 +15,8 @@ import static matsu.num.statistics.kdeapp.command.CommandAssignmentRule.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -43,31 +45,52 @@ final class Commands {
      * 入力ファイルの指定を表現するシングルトンインスタンス.
      * 
      * <p>
-     * 引数はバリデーションされない.
+     * 引数は {@link Path} への変換される.
      * </p>
      */
-    public static final ArgumentRequiringCommand<String> INPUT_FILE_PATH =
-            identifying("INPUT_FILE_PATH", "--input-file", "-f");
+    public static final ArgumentRequiringCommand<Path> INPUT_FILE_PATH =
+            ArgumentRequiringCommand.of(
+                    "INPUT_FILE_PATH", Path.class,
+                    s -> conertToPath(s),
+                    "--input-file", "-f");
 
     /**
      * 強制上書きモードによる出力ファイルの指定を表現するシングルトンインスタンス.
      * 
      * <p>
-     * 引数はバリデーションされない.
+     * 引数は {@link Path} への変換される.
      * </p>
      */
-    public static final ArgumentRequiringCommand<String> OUTPUT_FORCE_FILE_PATH =
-            identifying("OUTPUT_FORCE_FILE_PATH", "--output-force", "-out-f");
+    public static final ArgumentRequiringCommand<Path> OUTPUT_FORCE_FILE_PATH =
+            ArgumentRequiringCommand.of(
+                    "OUTPUT_FORCE_FILE_PATH", Path.class,
+                    s -> conertToPath(s),
+                    "--output-force", "-out-f");
 
     /**
      * 上書き禁止モードである出力ファイルの指定を表現するシングルトンインスタンス.
      * 
      * <p>
-     * 引数はバリデーションされない.
+     * 引数は {@link Path} への変換される.
      * </p>
      */
-    public static final ArgumentRequiringCommand<String> OUTPUT_FILE_PATH =
-            identifying("OUTPUT_FILE_PATH", "--output", "-out");
+    public static final ArgumentRequiringCommand<Path> OUTPUT_FILE_PATH =
+            ArgumentRequiringCommand.of(
+                    "OUTPUT_FILE_PATH", Path.class,
+                    s -> conertToPath(s),
+                    "--output", "-out");
+
+    /**
+     * 文字列を Path に変換する. <br>
+     * パスとして不適切な文字列である場合は例外をスローするが, それをnullを返すように翻訳する.
+     */
+    private static Path conertToPath(String pathStr) {
+        try {
+            return Path.of(pathStr);
+        } catch (InvalidPathException ignore) {
+            return null;
+        }
+    }
 
     /**
      * 入力のコメント行の prefix の指定を表現するシングルトンインスタンス.
