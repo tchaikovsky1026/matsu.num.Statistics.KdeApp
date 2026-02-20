@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.17
+ * 2026.2.20
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
@@ -17,6 +17,8 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Pattern;
+
+import matsu.num.statistics.kdeapp.format.Separator;
 
 /**
  * 1行の文字列を2個の {@code double} 値に変換するパーサー.
@@ -48,7 +50,7 @@ final class DoubleColumnDoubleLineParser {
      * @throws IllegalArgumentException エスケープ文字列に空文字が含まれる場合
      * @throws NullPointerException 引数がnullの場合, コレクションがnullを含む場合
      */
-    DoubleColumnDoubleLineParser(Collection<String> escapes, char separator) {
+    DoubleColumnDoubleLineParser(Collection<String> escapes, Separator separator) {
         super();
 
         this.escapes = new HashSet<>();
@@ -60,7 +62,7 @@ final class DoubleColumnDoubleLineParser {
             this.escapes.add(trim);
         }
 
-        this.separatorPattern = Pattern.quote(String.valueOf(separator));
+        this.separatorPattern = Pattern.quote(separator.asString());
     }
 
     /**

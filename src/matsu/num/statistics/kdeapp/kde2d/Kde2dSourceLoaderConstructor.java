@@ -15,6 +15,7 @@ import static matsu.num.statistics.kdeapp.kde2d.Commands.*;
 import java.nio.file.Path;
 
 import matsu.num.statistics.kdeapp.command.ConsoleParameters;
+import matsu.num.statistics.kdeapp.format.Separator;
 
 /**
  * {@link Kde2dSourceLoader} の構築器.
@@ -51,8 +52,8 @@ final class Kde2dSourceLoaderConstructor implements ComponentConstructor<Kde2dSo
 
         String escape = interpreter.valueOf(COMMENT_CHAR)
                 .orElse("#");
-        char separator = interpreter.valueOf(SEPARATOR_INPUT)
-                .orElse('\t');
+        Separator separator = interpreter.valueOf(SEPARATOR_INPUT)
+                .orElse(Separator.from("\t"));
         return new Kde2dSourceLoader(path, separator, escape);
     }
 }
