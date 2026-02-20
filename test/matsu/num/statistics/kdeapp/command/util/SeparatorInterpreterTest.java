@@ -68,6 +68,11 @@ final class SeparatorInterpreterTest {
         public void test_バックスラッシュ2文字() {
             assertThat(SeparatorInterpreter.from("\\\\"), is('\\'));
         }
+
+        @Test(expected = IllegalArgumentException.class)
+        public void test_不正なエスケープシーケンス() {
+            SeparatorInterpreter.from("\\x");
+        }
     }
 
     public static class エスケープシーケンスの列挙 {

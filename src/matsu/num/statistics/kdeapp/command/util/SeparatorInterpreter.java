@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.17
+ * 2026.2.20
  */
 package matsu.num.statistics.kdeapp.command.util;
 
@@ -43,11 +43,11 @@ public final class SeparatorInterpreter {
      * 引数不正の場合, 例外 ({@link IllegalArgumentException}) をスローする.
      * 
      * @param s 文字列
-     * @return 区切り文字, 不正なら {@code null}
-     * @throws IllegalArgumentException 引数を解釈できない場合
+     * @return 区切り文字
+     * @throws IllegalArgumentException 引数を解釈できない場合 (不正の場合)
      * @throws NullPointerException 引数がnull
      */
-    public static Character from(String s) {
+    public static char from(String s) {
 
         if (s.length() == 1) {
             // ASCII かどうかを判定して返す.
@@ -59,7 +59,10 @@ public final class SeparatorInterpreter {
 
         // バックスラッシュ1文字はここまで到達しない
         if (s.startsWith("\\")) {
-            return EscapeSequence.from(s);
+            Character c = EscapeSequence.from(s);
+            if (Objects.nonNull(c)) {
+                return c.charValue();
+            }
         }
 
         throw new IllegalArgumentException(

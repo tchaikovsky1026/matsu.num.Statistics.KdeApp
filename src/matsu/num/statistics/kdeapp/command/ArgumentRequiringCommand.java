@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.19
+ * 2026.2.20
  */
 package matsu.num.statistics.kdeapp.command;
 
@@ -80,11 +80,13 @@ public final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand {
      * @param arg 文字列引数
      * @return 変換後の値
      * @throws IllegalParameterException パラメータ不正の場合
-     * @throws NullPointerException 引数がnullの場合(必ず)
+     * @throws NullPointerException 引数がnullの場合(必ず),
+     *             戻り値がnullの場合(converterが契約違反)
      */
     public final T convertArg(String arg) {
         try {
-            return converter.apply(Objects.requireNonNull(arg));
+            // nullに変換されることは認められない
+            return Objects.requireNonNull(converter.apply(Objects.requireNonNull(arg)));
         } catch (IllegalArgumentException iae) {
             throw new IllegalParameterException(
                     "invalid-arg for <" + this.commandString() + ">: \"" + arg + "\"");

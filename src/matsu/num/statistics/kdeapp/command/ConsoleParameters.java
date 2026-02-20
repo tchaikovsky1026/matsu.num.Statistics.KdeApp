@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.18
+ * 2026.2.20
  */
 package matsu.num.statistics.kdeapp.command;
 
@@ -143,48 +143,44 @@ public final class ConsoleParameters {
                 Objects.requireNonNull(commandAsString);
 
                 // 引数なしコマンドを検索
-                {
-                    NoArgumentCommand noArgCommand =
-                            mapperToNoArgCommand.get(commandAsString);
-                    if (Objects.nonNull(noArgCommand)) {
-                        cursor++;
+                NoArgumentCommand noArgCommand =
+                        mapperToNoArgCommand.get(commandAsString);
+                if (Objects.nonNull(noArgCommand)) {
+                    cursor++;
 
-                        // すでにコマンドが登録されていたら例外スロー
-                        if (!noArgCommandSet.add(noArgCommand)) {
-                            throw new IllegalParameterException(
-                                    "duplicate: <" + noArgCommand.commandString() + ">");
-                        }
-
-                        continue;
+                    // すでにコマンドが登録されていたら例外スロー
+                    if (!noArgCommandSet.add(noArgCommand)) {
+                        throw new IllegalParameterException(
+                                "duplicate: <" + noArgCommand.commandString() + ">");
                     }
+
+                    continue;
                 }
 
                 // 引数有りコマンドを検索
-                {
-                    ArgumentRequiringCommand<?> argCommand =
-                            mapperToArgCommand.get(commandAsString);
-                    if (Objects.nonNull(argCommand)) {
-                        cursor++;
+                ArgumentRequiringCommand<?> argCommand =
+                        mapperToArgCommand.get(commandAsString);
+                if (Objects.nonNull(argCommand)) {
+                    cursor++;
 
-                        // 後続のパラメータが必要な場合, 存在しているかを確かめる
-                        if (cursor >= size) {
-                            throw new IllegalParameterException(
-                                    "args lack for <" + argCommand.commandString() + ">");
-                        }
-
-                        // すでにコマンドが登録されていたら例外スロー
-                        // コンバートに失敗した場合, 例外スロー
-                        if (Objects.nonNull(
-                                argCommandMapper.put(
-                                        argCommand,
-                                        argCommand.convertArg(Objects.requireNonNull(args[cursor]))))) {
-                            throw new IllegalParameterException(
-                                    "duplicate: <" + argCommand.commandString() + ">");
-                        }
-                        cursor++;
-
-                        continue;
+                    // 後続のパラメータが必要な場合, 存在しているかを確かめる
+                    if (cursor >= size) {
+                        throw new IllegalParameterException(
+                                "args lack for <" + argCommand.commandString() + ">");
                     }
+
+                    // すでにコマンドが登録されていたら例外スロー
+                    // コンバートに失敗した場合, 例外スロー
+                    if (Objects.nonNull(
+                            argCommandMapper.put(
+                                    argCommand,
+                                    argCommand.convertArg(Objects.requireNonNull(args[cursor]))))) {
+                        throw new IllegalParameterException(
+                                "duplicate: <" + argCommand.commandString() + ">");
+                    }
+                    cursor++;
+
+                    continue;
                 }
 
                 // オプションが不明である場合は例外をスローする
