@@ -21,6 +21,8 @@ import org.junit.Test.None;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 
+import matsu.num.statistics.kdeapp.format.Separator;
+
 /**
  * {@link GaussianStandardKde2dCalculator} のテスト.
  */
@@ -29,7 +31,7 @@ final class WritableKde2dResultTest {
 
     public static class 結果出力のフォーマットに関する_ラベル無し {
 
-        private final char separator = ',';
+        private final Separator separator = Separator.from(",");
 
         private WritableKde2dResult result;
         private WritingFormatter formatter;
@@ -42,9 +44,8 @@ final class WritableKde2dResultTest {
 
         @Before
         public void before_フォーマッターの準備() {
-            // カンマ区切り, スラッシュがラベル
-            formatter = new WritingFormatter.Builder()
-                    .setSeparator(separator)
+            // カンマ区切り, ラベルなし
+            formatter = new WritingFormatter.Builder(separator)
                     .disableLabel()
                     .build();
         }
@@ -66,7 +67,7 @@ final class WritableKde2dResultTest {
 
             // すべての行がデータ
             for (String s : lineStrings) {
-                String[] values = s.split(String.valueOf(separator));
+                String[] values = s.split(separator.asString());
                 assertThat(values.length, is(3));
 
                 // 例外がスローされないことを確かめる
@@ -78,7 +79,7 @@ final class WritableKde2dResultTest {
 
     public static class 結果出力のフォーマットに関する_ラベル有り_char指定 {
 
-        private final char separator = ',';
+        private final Separator separator = Separator.from(",");
         private final char labelHeader = '/';
 
         private WritableKde2dResult result;
@@ -93,8 +94,7 @@ final class WritableKde2dResultTest {
         @Before
         public void before_フォーマッターの準備() {
             // カンマ区切り, スラッシュがラベル
-            formatter = new WritingFormatter.Builder()
-                    .setSeparator(separator)
+            formatter = new WritingFormatter.Builder(separator)
                     .enableLabel(labelHeader)
                     .build();
         }
@@ -125,7 +125,7 @@ final class WritableKde2dResultTest {
             // 2行目以降はデータ
             for (; ite.hasNext();) {
                 String s = ite.next();
-                String[] values = s.split(String.valueOf(separator));
+                String[] values = s.split(separator.asString());
                 assertThat(values.length, is(3));
 
                 // 例外がスローされないことを確かめる
@@ -137,7 +137,7 @@ final class WritableKde2dResultTest {
 
     public static class 結果出力のフォーマットに関する_ラベル有り_String指定 {
 
-        private final char separator = ',';
+        private final Separator separator = Separator.from(",");
         private final String labelHeader = "//";
 
         private WritableKde2dResult result;
@@ -151,9 +151,8 @@ final class WritableKde2dResultTest {
 
         @Before
         public void before_フォーマッターの準備() {
-            // カンマ区切り, スラッシュがラベル
-            formatter = new WritingFormatter.Builder()
-                    .setSeparator(separator)
+            // カンマ区切り, スラッシュ2個がラベル
+            formatter = new WritingFormatter.Builder(separator)
                     .enableLabel(labelHeader)
                     .build();
         }
@@ -184,7 +183,7 @@ final class WritableKde2dResultTest {
             // 2行目以降はデータ
             for (; ite.hasNext();) {
                 String s = ite.next();
-                String[] values = s.split(String.valueOf(separator));
+                String[] values = s.split(separator.asString());
                 assertThat(values.length, is(3));
 
                 // 例外がスローされないことを確かめる

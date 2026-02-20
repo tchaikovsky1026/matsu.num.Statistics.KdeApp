@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.19
+ * 2026.2.20
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 import matsu.num.statistics.kdeapp.exception.InputException;
+import matsu.num.statistics.kdeapp.format.Separator;
 
 /**
  * 2次元のカーネル密度推定に使うデータソースのローダー.
@@ -37,7 +38,7 @@ final class Kde2dSourceLoader {
      * @throws IllegalArgumentException エスケープ文字列に空文字が含まれる場合
      * @throws NullPointerException 引数にnullを含む場合
      */
-    Kde2dSourceLoader(Path path, char separator, String... escapes) {
+    Kde2dSourceLoader(Path path, Separator separator, String... escapes) {
         DoubleColumnDoubleLineParser lineParser =
                 new DoubleColumnDoubleLineParser(List.of(escapes), separator);
         this.loader = new DoubleDataLoader(lineParser);

@@ -6,12 +6,13 @@
  */
 
 /*
- * 2026.2.17
+ * 2026.2.20
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
 import java.util.Objects;
 
+import matsu.num.statistics.kdeapp.format.Separator;
 import matsu.num.statistics.kerneldensity.output.FormattableKdeResult2D;
 import matsu.num.statistics.kerneldensity.output.Kde2dCharSVTextFormatter;
 
@@ -22,7 +23,7 @@ import matsu.num.statistics.kerneldensity.output.Kde2dCharSVTextFormatter;
  */
 final class WritingFormatter {
 
-    private final char separator;
+    private final Separator separator;
     private final String labelHeader;
 
     private final Kde2dCharSVTextFormatter formatter;
@@ -44,8 +45,8 @@ final class WritingFormatter {
      */
     private Kde2dCharSVTextFormatter createFormatter() {
         return Objects.isNull(labelHeader)
-                ? Kde2dCharSVTextFormatter.labelless(separator)
-                : Kde2dCharSVTextFormatter.withLabelEscaped(separator, labelHeader);
+                ? Kde2dCharSVTextFormatter.labelless(separator.charValue())
+                : Kde2dCharSVTextFormatter.withLabelEscaped(separator.charValue(), labelHeader);
     }
 
     /**
@@ -63,18 +64,21 @@ final class WritingFormatter {
      */
     static final class Builder {
 
-        private volatile char separator;
+        private volatile Separator separator;
         private volatile String labelHeader;
 
         /**
-         * デフォルトの設定でビルダインスタンスを立ち上げる.
+         * 区切り文字を与えて, ビルダインスタンスを立ち上げる.
          * 
          * <p>
-         * デフォルトは, 区切り文字がタブで, ラベル無しである.
+         * デフォルトは, ラベル無しである.
          * </p>
+         * 
+         * @param separator 区切り文字
+         * @throws NullPointerException 引数がnullの場合
          */
-        Builder() {
-            separator = '\t';
+        Builder(Separator separator) {
+            this.separator = Objects.requireNonNull(separator);
             labelHeader = null;
         }
 
@@ -100,8 +104,9 @@ final class WritingFormatter {
          * 
          * @param separator 区切り文字
          * @return {@code this}
+         * @throws NullPointerException 引数がnullの場合
          */
-        Builder setSeparator(char separator) {
+        Builder setSeparator(Separator separator) {
             this.separator = separator;
             return this;
         }

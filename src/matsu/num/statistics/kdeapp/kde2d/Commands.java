@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.19
+ * 2026.2.20
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
@@ -25,7 +25,7 @@ import matsu.num.statistics.kdeapp.command.ArgumentRequiringCommand;
 import matsu.num.statistics.kdeapp.command.CommandAssignmentRule;
 import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 import matsu.num.statistics.kdeapp.command.NoArgumentCommand;
-import matsu.num.statistics.kdeapp.command.util.SeparatorInterpreter;
+import matsu.num.statistics.kdeapp.format.Separator;
 
 /**
  * kde2d で取り扱う, コマンドに関するルールなど.
@@ -93,42 +93,26 @@ final class Commands {
      * 入力ファイルの区切り文字の指定を表現するシングルトンインスタンス.
      * 
      * <p>
-     * 引数はバリデーションされたうえで, {@code char} に変換される. <br>
-     * 区切り文字の正当性ルールは次の通りである. <br>
-     * (エスケープシーケンスは, 列挙定数で用意されている,
-     * 自動テストで文字列出力される.)
+     * インスタンス生成時にバリデーションされる.
      * </p>
-     * 
-     * <ul>
-     * <li>ASCII 1文字</li>
-     * <li>エスケープシーケンス</li>
-     * </ul>
      */
-    public static final ArgumentRequiringCommand<Character> SEPARATOR_INPUT =
+    public static final ArgumentRequiringCommand<Separator> SEPARATOR_INPUT =
             ArgumentRequiringCommand.of(
-                    "SEPARATOR_INPUT", Character.class,
-                    SeparatorInterpreter::from,
+                    "SEPARATOR_INPUT", Separator.class,
+                    Separator::from,
                     "--separator-in", "-sep-i");
 
     /**
      * 出力ファイルの区切り文字の指定を表現するシングルトンインスタンス.
      * 
      * <p>
-     * 引数はバリデーションされたうえで, {@code char} に変換される. <br>
-     * 区切り文字の正当性ルールは次の通りである. <br>
-     * (エスケープシーケンスは, 列挙定数で用意されている,
-     * 自動テストで文字列出力される.)
+     * インスタンス生成時にバリデーションされる.
      * </p>
-     * 
-     * <ul>
-     * <li>ASCII 1文字</li>
-     * <li>エスケープシーケンス</li>
-     * </ul>
      */
-    public static final ArgumentRequiringCommand<Character> SEPARATOR_OUTPUT =
+    public static final ArgumentRequiringCommand<Separator> SEPARATOR_OUTPUT =
             ArgumentRequiringCommand.of(
-                    "SEPARATOR_OUTPUT", Character.class,
-                    SeparatorInterpreter::from,
+                    "SEPARATOR_OUTPUT", Separator.class,
+                    Separator::from,
                     "--separator-out", "-sep-o");
 
     /**

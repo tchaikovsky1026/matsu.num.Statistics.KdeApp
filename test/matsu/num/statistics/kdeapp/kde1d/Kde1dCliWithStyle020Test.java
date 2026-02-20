@@ -39,6 +39,8 @@ final class Kde1dCliWithStyle020Test {
         private final Path outputDir = Path.of("test/output");
         private final Path outputFile = outputDir.resolve("kde1d result.txt");
 
+        private final String commentChar = "#";
+
         @Before
         public void before_ハッピーパスの準備() throws IOException {
             // アウトプットファイルが含まれるディレクトリの削除
@@ -58,7 +60,8 @@ final class Kde1dCliWithStyle020Test {
                     new Kde1dCliWithStyle020().run(
                             new String[] {
                                     INPUT_FILE_PATH.commandString(), inputFile.toString(),
-                                    OUTPUT_FORCE_FILE_PATH.commandString(), outputFile.toString()
+                                    OUTPUT_FORCE_FILE_PATH.commandString(), outputFile.toString(),
+                                    COMMENT_CHAR.commandString(), commentChar
                             }, out, err),
                     is(0));
         }
