@@ -44,7 +44,7 @@ final class WritingFormatterConstructor implements ComponentConstructor<WritingF
                 Separator.from("\t"));
 
         interpreter.valueOf(
-                LABEL_HEADER)
+                LABEL_PREFIX)
                 .ifPresent(header -> builder.enableLabel(header));
 
         interpreter.valueOf(SEPARATOR)

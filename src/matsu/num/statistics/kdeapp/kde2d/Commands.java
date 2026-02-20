@@ -122,8 +122,8 @@ final class Commands {
      * 引数はバリデーションされない.
      * </p>
      */
-    public static final ArgumentRequiringCommand<String> LABEL_HEADER =
-            identifying("LABEL_HEADER", "--label-header");
+    public static final ArgumentRequiringCommand<String> LABEL_PREFIX =
+            identifying("LABEL_PREFIX", "--label-prefix");
 
     /**
      * コマンドの指定に関するルール.
