@@ -38,7 +38,7 @@ final class DoubleDataLoaderTest {
 
         @Before
         public void before_ローダーの準備() {
-            loader = new DoubleDataLoader(new DoubleLineParser(List.of("#")));
+            loader = new DoubleDataLoader(new DoubleLineParser("#"));
         }
 
         @Test
