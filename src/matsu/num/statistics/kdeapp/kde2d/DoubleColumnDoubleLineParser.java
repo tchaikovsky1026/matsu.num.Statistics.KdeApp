@@ -6,17 +6,15 @@
  */
 
 /*
- * 2026.2.17
+ * 2026.2.20
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 import java.util.regex.Pattern;
+
+import matsu.num.statistics.kdeapp.format.Separator;
 
 /**
  * 1行の文字列を2個の {@code double} 値に変換するパーサー.
@@ -27,40 +25,32 @@ final class DoubleColumnDoubleLineParser {
 
     private static final int COLUMNS = 2;
 
-    private final Set<String> escapes;
+    private final String commentPrefix;
     private final String separatorPattern;
 
     /**
      * インスタンスを生成する.
      * 
      * <p>
-     * 引数でエスケープ行の開始文字列と, 区切り文字を指定する. <br>
-     * コレクションが空ならばエスケープしない. <br>
-     * </p>
-     * 
-     * <p>
-     * エスケープ文字列は, ブランクであってはならない. <br>
+     * 引数でコメント開始文字列を指定する. <br>
+     * ブランクであってはならない. <br>
      * 前後のブランクは削除される.
      * </p>
      * 
-     * @param escapes エスケープ文字列のセット (空の場合はエスケープしない)
+     * @param commentPrefix コメント開始文字列
      * @param separator 区切り文字
      * @throws IllegalArgumentException エスケープ文字列に空文字が含まれる場合
-     * @throws NullPointerException 引数がnullの場合, コレクションがnullを含む場合
+     * @throws NullPointerException 引数がnullの場合
      */
-    DoubleColumnDoubleLineParser(Collection<String> escapes, char separator) {
+    DoubleColumnDoubleLineParser(String commentPrefix, Separator separator) {
         super();
 
-        this.escapes = new HashSet<>();
-        for (String s : new ArrayList<>(escapes)) {
-            String trim = s.strip();
-            if (trim.isEmpty()) {
-                throw new IllegalArgumentException("including blank");
-            }
-            this.escapes.add(trim);
+        this.commentPrefix = commentPrefix.strip();
+        if (this.commentPrefix.isEmpty()) {
+            throw new IllegalArgumentException("blank");
         }
 
-        this.separatorPattern = Pattern.quote(String.valueOf(separator));
+        this.separatorPattern = Pattern.quote(separator.asString());
     }
 
     /**
@@ -81,8 +71,7 @@ final class DoubleColumnDoubleLineParser {
         if (s.isEmpty()) {
             return Optional.empty();
         }
-
-        if (escapes.stream().anyMatch(s::startsWith)) {
+        if (s.startsWith(commentPrefix)) {
             return Optional.empty();
         }
 

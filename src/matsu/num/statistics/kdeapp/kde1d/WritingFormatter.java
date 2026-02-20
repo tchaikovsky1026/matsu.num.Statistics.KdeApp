@@ -6,12 +6,13 @@
  */
 
 /*
- * 2026.1.25
+ * 2026.2.20
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
 import java.util.Objects;
 
+import matsu.num.statistics.kdeapp.format.Separator;
 import matsu.num.statistics.kerneldensity.output.FormattableKdeResult1D;
 import matsu.num.statistics.kerneldensity.output.Kde1dCharSVTextFormatter;
 
@@ -22,8 +23,8 @@ import matsu.num.statistics.kerneldensity.output.Kde1dCharSVTextFormatter;
  */
 final class WritingFormatter {
 
-    private final char separator;
-    private final String labelHeader;
+    private final Separator separator;
+    private final String labelPrefix;
 
     private final Kde1dCharSVTextFormatter formatter;
 
@@ -34,7 +35,7 @@ final class WritingFormatter {
         super();
 
         this.separator = builder.separator;
-        this.labelHeader = builder.labelHeader;
+        this.labelPrefix = builder.labelPrefix;
 
         this.formatter = createFormatter();
     }
@@ -43,9 +44,9 @@ final class WritingFormatter {
      * この書き込みパラメータからフォーマッターを構築する.
      */
     private Kde1dCharSVTextFormatter createFormatter() {
-        return Objects.isNull(labelHeader)
-                ? Kde1dCharSVTextFormatter.labelless(separator)
-                : Kde1dCharSVTextFormatter.withLabelEscaped(separator, labelHeader);
+        return Objects.isNull(labelPrefix)
+                ? Kde1dCharSVTextFormatter.labelless(separator.charValue())
+                : Kde1dCharSVTextFormatter.withLabelEscaped(separator.charValue(), labelPrefix);
     }
 
     /**
@@ -63,19 +64,22 @@ final class WritingFormatter {
      */
     static final class Builder {
 
-        private volatile char separator;
-        private volatile String labelHeader;
+        private volatile Separator separator;
+        private volatile String labelPrefix;
 
         /**
-         * デフォルトの設定でビルダインスタンスを立ち上げる.
+         * 区切り文字を与えて, ビルダインスタンスを立ち上げる.
          * 
          * <p>
-         * デフォルトは, 区切り文字がタブで, ラベル無しである.
+         * デフォルトは, ラベル無しである.
          * </p>
+         * 
+         * @param separator 区切り文字
+         * @throws NullPointerException 引数がnullの場合
          */
-        Builder() {
-            separator = '\t';
-            labelHeader = null;
+        Builder(Separator separator) {
+            this.separator = Objects.requireNonNull(separator);
+            labelPrefix = null;
         }
 
         /**
@@ -85,7 +89,7 @@ final class WritingFormatter {
          */
         Builder(Builder src) {
             this.separator = src.separator;
-            this.labelHeader = src.labelHeader;
+            this.labelPrefix = src.labelPrefix;
         }
 
         /**
@@ -100,9 +104,10 @@ final class WritingFormatter {
          * 
          * @param separator 区切り文字
          * @return {@code this}
+         * @throws NullPointerException 引数がnullの場合
          */
-        Builder setSeparator(char separator) {
-            this.separator = separator;
+        Builder setSeparator(Separator separator) {
+            this.separator = Objects.requireNonNull(separator);
             return this;
         }
 
@@ -117,11 +122,11 @@ final class WritingFormatter {
          * </i>
          * </p>
          * 
-         * @param labelHeader ラベルの先頭に付与する文字
+         * @param labelPrefix ラベルの先頭に付与する文字
          * @return {@code this}
          */
-        Builder enableLabel(char labelHeader) {
-            return this.enableLabel(String.valueOf(labelHeader));
+        Builder enableLabel(char labelPrefix) {
+            return this.enableLabel(String.valueOf(labelPrefix));
         }
 
         /**
@@ -135,12 +140,12 @@ final class WritingFormatter {
          * </i>
          * </p>
          * 
-         * @param labelHeader ラベルの先頭に付与する文字
+         * @param labelPrefix ラベルの先頭に付与する文字
          * @return {@code this}
          * @throws NullPointerException 引数がnullの場合
          */
-        Builder enableLabel(String labelHeader) {
-            this.labelHeader = Objects.requireNonNull(labelHeader);
+        Builder enableLabel(String labelPrefix) {
+            this.labelPrefix = Objects.requireNonNull(labelPrefix);
             return this;
         }
 
@@ -157,7 +162,7 @@ final class WritingFormatter {
          * @return {@code this}
          */
         Builder disableLabel() {
-            this.labelHeader = null;
+            this.labelPrefix = null;
             return this;
         }
 

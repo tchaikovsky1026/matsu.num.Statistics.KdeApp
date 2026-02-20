@@ -13,6 +13,7 @@ package matsu.num.statistics.kdeapp.kde2d;
 import static matsu.num.statistics.kdeapp.kde2d.Commands.*;
 
 import matsu.num.statistics.kdeapp.command.ConsoleParameters;
+import matsu.num.statistics.kdeapp.format.Separator;
 
 /**
  * {@link WritingFormatter} の構築器.
@@ -39,15 +40,14 @@ final class WritingFormatterConstructor implements ComponentConstructor<WritingF
     @Override
     public WritingFormatter construct(ConsoleParameters interpreter) {
 
-        WritingFormatter.Builder builder = new WritingFormatter.Builder()
-                .disableLabel()
-                .setSeparator('\t');
+        WritingFormatter.Builder builder = new WritingFormatter.Builder(
+                Separator.from("\t"));
 
-        interpreter.valueOf(LABEL_HEADER)
+        interpreter.valueOf(LABEL_PREFIX)
                 .ifPresent(header -> builder.enableLabel(header));
 
         interpreter.valueOf(SEPARATOR_OUTPUT)
-                .ifPresent(separator -> builder.setSeparator(separator.charValue()));
+                .ifPresent(separator -> builder.setSeparator(separator));
 
         return builder.build();
     }

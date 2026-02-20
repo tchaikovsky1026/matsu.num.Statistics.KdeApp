@@ -6,6 +6,6 @@
  */
 
 /**
- * アプリケーションの起動コマンドのユーティリティパッケージ.
+ * アプリケーションのデータフォーマットに関わるパッケージ.
  */
-package matsu.num.statistics.kdeapp.command.util;
+package matsu.num.statistics.kdeapp.format;
