@@ -6,14 +6,13 @@
  */
 
 /*
- * 2026.2.19
+ * 2026.2.20
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.Objects;
 
 import matsu.num.statistics.kdeapp.exception.InputException;
@@ -32,12 +31,12 @@ final class Kde1dSourceLoader {
      * エスケープする文字列を指定し, ローダーを起動.
      * 
      * @param path ロードするファイルのパス
-     * @param escapes エスケープする文字列のセット
-     * @throws IllegalArgumentException エスケープ文字列に空文字が含まれる場合
+     * @param commentPrefix コメント開始文字列
+     * @throws IllegalArgumentException コメント開始文字が空文字の場合
      * @throws NullPointerException 引数にnullを含む場合
      */
-    Kde1dSourceLoader(Path path, String... escapes) {
-        DoubleLineParser lineParser = new DoubleLineParser(List.of(escapes));
+    Kde1dSourceLoader(Path path, String commentPrefix) {
+        DoubleLineParser lineParser = new DoubleLineParser(commentPrefix);
         this.loader = new DoubleDataLoader(lineParser);
         this.path = Objects.requireNonNull(path);
     }

@@ -6,15 +6,11 @@
  */
 
 /*
- * 2026.1.13
+ * 2026.2.20
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.OptionalDouble;
-import java.util.Set;
 
 /**
  * 1行の文字列を1個の {@code double} 値に変換するパーサー.
@@ -23,35 +19,27 @@ import java.util.Set;
  */
 final class DoubleLineParser {
 
-    private final Set<String> escapes;
+    private final String commentPrefix;
 
     /**
      * インスタンスを生成する.
      * 
      * <p>
-     * 引数でエスケープ行の開始文字列を指定する. <br>
-     * コレクションが空ならばエスケープしない. <br>
-     * </p>
-     * 
-     * <p>
-     * エスケープ文字列は, ブランクであってはならない. <br>
+     * 引数でコメント開始文字列を指定する. <br>
+     * ブランクであってはならない. <br>
      * 前後のブランクは削除される.
      * </p>
      * 
-     * @param escapes エスケープ文字列のセット (空の場合はエスケープしない)
-     * @throws IllegalArgumentException エスケープ文字列に空文字が含まれる場合
-     * @throws NullPointerException 引数がnullの場合, コレクションがnullを含む場合
+     * @param commentPrefix コメント開始文字列のセット
+     * @throws IllegalArgumentException 空文字の場合
+     * @throws NullPointerException 引数がnullの場合
      */
-    DoubleLineParser(Collection<String> escapes) {
+    DoubleLineParser(String commentPrefix) {
         super();
 
-        this.escapes = new HashSet<>();
-        for (String s : new ArrayList<>(escapes)) {
-            String trim = s.strip();
-            if (trim.isEmpty()) {
-                throw new IllegalArgumentException("including blank");
-            }
-            this.escapes.add(trim);
+        this.commentPrefix = commentPrefix.strip();
+        if (this.commentPrefix.isEmpty()) {
+            throw new IllegalArgumentException("blank");
         }
     }
 
@@ -74,7 +62,7 @@ final class DoubleLineParser {
             return OptionalDouble.empty();
         }
 
-        if (escapes.stream().anyMatch(s::startsWith)) {
+        if (s.startsWith(commentPrefix)) {
             return OptionalDouble.empty();
         }
         return OptionalDouble.of(Double.parseDouble(s));

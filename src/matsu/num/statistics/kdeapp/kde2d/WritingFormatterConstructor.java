@@ -43,7 +43,7 @@ final class WritingFormatterConstructor implements ComponentConstructor<WritingF
         WritingFormatter.Builder builder = new WritingFormatter.Builder(
                 Separator.from("\t"));
 
-        interpreter.valueOf(LABEL_HEADER)
+        interpreter.valueOf(LABEL_PREFIX)
                 .ifPresent(header -> builder.enableLabel(header));
 
         interpreter.valueOf(SEPARATOR_OUTPUT)

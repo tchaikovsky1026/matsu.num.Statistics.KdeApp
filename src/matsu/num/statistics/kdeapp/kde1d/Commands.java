@@ -86,8 +86,8 @@ final class Commands {
      * 引数はバリデーションされない.
      * </p>
      */
-    public static final ArgumentRequiringCommand<String> COMMENT_CHAR =
-            identifying("COMMENT_CHAR", "--comment-char");
+    public static final ArgumentRequiringCommand<String> COMMENT_PREFIX =
+            identifying("COMMENT_PREFIX", "--comment-prefix");
 
     /**
      * 区切り文字の指定を表現するシングルトンインスタンス.
@@ -109,8 +109,8 @@ final class Commands {
      * 引数はバリデーションされない.
      * </p>
      */
-    public static final ArgumentRequiringCommand<String> LABEL_HEADER =
-            identifying("LABEL_HEADER", "--label-header");
+    public static final ArgumentRequiringCommand<String> LABEL_PREFIX =
+            identifying("LABEL_PREFIX", "--label-prefix");
 
     /**
      * コマンドの指定に関するルール.

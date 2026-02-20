@@ -10,11 +10,9 @@ package matsu.num.statistics.kdeapp.kde1d;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
-import java.util.List;
 import java.util.OptionalDouble;
 
 import org.junit.Test;
-import org.junit.Test.None;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 
@@ -26,40 +24,24 @@ final class DoubleLineParserTest {
 
     public static class 生成のテスト {
 
-        @Test(expected = None.class)
-        public void test_空コレクションを渡すことは可能() {
-            new DoubleLineParser(List.of());
-        }
-
         @Test(expected = NullPointerException.class)
         public void test_nullを渡す() {
             new DoubleLineParser(null);
         }
 
-        @Test(expected = NullPointerException.class)
-        public void test_nullを含む() {
-            new DoubleLineParser(List.of("#", null));
-        }
-
         @Test(expected = IllegalArgumentException.class)
         public void test_空文字を含む() {
-            new DoubleLineParser(List.of(" "));
+            new DoubleLineParser(" ");
         }
     }
 
     public static class 値抽出のテスト {
 
-        // 2種のエスケープを持つパーサー
-        private final DoubleLineParser parser = new DoubleLineParser(List.of("//", "#"));
+        private final DoubleLineParser parser = new DoubleLineParser("//");
 
         @Test
         public void test_スラッシュエスケープ() {
             assertThat(parser.parse("// dummy"), is(OptionalDouble.empty()));
-        }
-
-        @Test
-        public void test_シャープエスケープ() {
-            assertThat(parser.parse("## dummy"), is(OptionalDouble.empty()));
         }
 
         @Test(expected = NullPointerException.class)

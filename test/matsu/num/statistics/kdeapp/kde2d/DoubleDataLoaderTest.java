@@ -41,7 +41,7 @@ final class DoubleDataLoaderTest {
         @Before
         public void before_ローダーの準備() {
             loader = new DoubleDataLoader(
-                    new DoubleColumnDoubleLineParser(List.of("#"), Separator.from(",")));
+                    new DoubleColumnDoubleLineParser("#", Separator.from(",")));
         }
 
         @Test

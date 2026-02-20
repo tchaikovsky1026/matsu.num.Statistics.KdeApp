@@ -10,11 +10,9 @@ package matsu.num.statistics.kdeapp.kde2d;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.junit.Test;
-import org.junit.Test.None;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 
@@ -29,43 +27,27 @@ final class DoubleColumnDoubleLineParserTest {
     public static class 生成のテスト {
         private final Separator separator = Separator.from(",");
 
-        @Test(expected = None.class)
-        public void test_空コレクションを渡すことは可能() {
-            new DoubleColumnDoubleLineParser(List.of(), separator);
-        }
-
         @Test(expected = NullPointerException.class)
         public void test_nullを渡す() {
             new DoubleColumnDoubleLineParser(null, separator);
         }
 
-        @Test(expected = NullPointerException.class)
-        public void test_nullを含む() {
-            new DoubleColumnDoubleLineParser(List.of("#", null), separator);
-        }
-
         @Test(expected = IllegalArgumentException.class)
         public void test_空文字を含む() {
-            new DoubleColumnDoubleLineParser(List.of(" "), separator);
+            new DoubleColumnDoubleLineParser(" ", separator);
         }
     }
 
     public static class 値抽出のテスト {
 
-        // 2種のエスケープを持つパーサー
         private final DoubleColumnDoubleLineParser parser =
                 new DoubleColumnDoubleLineParser(
-                        List.of("//", "#"),
+                        "//",
                         Separator.from(","));
 
         @Test
         public void test_スラッシュエスケープ() {
             assertThat(parser.parse("// dummy"), is(Optional.empty()));
-        }
-
-        @Test
-        public void test_シャープエスケープ() {
-            assertThat(parser.parse("## dummy"), is(Optional.empty()));
         }
 
         @Test(expected = NullPointerException.class)

@@ -24,7 +24,7 @@ import matsu.num.statistics.kerneldensity.output.Kde2dCharSVTextFormatter;
 final class WritingFormatter {
 
     private final Separator separator;
-    private final String labelHeader;
+    private final String labelPrefix;
 
     private final Kde2dCharSVTextFormatter formatter;
 
@@ -35,7 +35,7 @@ final class WritingFormatter {
         super();
 
         this.separator = builder.separator;
-        this.labelHeader = builder.labelHeader;
+        this.labelPrefix = builder.labelPrefix;
 
         this.formatter = createFormatter();
     }
@@ -44,9 +44,9 @@ final class WritingFormatter {
      * この書き込みパラメータからフォーマッターを構築する.
      */
     private Kde2dCharSVTextFormatter createFormatter() {
-        return Objects.isNull(labelHeader)
+        return Objects.isNull(labelPrefix)
                 ? Kde2dCharSVTextFormatter.labelless(separator.charValue())
-                : Kde2dCharSVTextFormatter.withLabelEscaped(separator.charValue(), labelHeader);
+                : Kde2dCharSVTextFormatter.withLabelEscaped(separator.charValue(), labelPrefix);
     }
 
     /**
@@ -65,7 +65,7 @@ final class WritingFormatter {
     static final class Builder {
 
         private volatile Separator separator;
-        private volatile String labelHeader;
+        private volatile String labelPrefix;
 
         /**
          * 区切り文字を与えて, ビルダインスタンスを立ち上げる.
@@ -79,7 +79,7 @@ final class WritingFormatter {
          */
         Builder(Separator separator) {
             this.separator = Objects.requireNonNull(separator);
-            labelHeader = null;
+            labelPrefix = null;
         }
 
         /**
@@ -89,7 +89,7 @@ final class WritingFormatter {
          */
         Builder(Builder src) {
             this.separator = src.separator;
-            this.labelHeader = src.labelHeader;
+            this.labelPrefix = src.labelPrefix;
         }
 
         /**
@@ -122,11 +122,11 @@ final class WritingFormatter {
          * </i>
          * </p>
          * 
-         * @param labelHeader ラベルの先頭に付与する文字
+         * @param labelPrefix ラベルの先頭に付与する文字
          * @return {@code this}
          */
-        Builder enableLabel(char labelHeader) {
-            return this.enableLabel(String.valueOf(labelHeader));
+        Builder enableLabel(char labelPrefix) {
+            return this.enableLabel(String.valueOf(labelPrefix));
         }
 
         /**
@@ -140,12 +140,12 @@ final class WritingFormatter {
          * </i>
          * </p>
          * 
-         * @param labelHeader ラベルの先頭に付与する文字
+         * @param labelPrefix ラベルの先頭に付与する文字列
          * @return {@code this}
          * @throws NullPointerException 引数がnullの場合
          */
-        Builder enableLabel(String labelHeader) {
-            this.labelHeader = Objects.requireNonNull(labelHeader);
+        Builder enableLabel(String labelPrefix) {
+            this.labelPrefix = Objects.requireNonNull(labelPrefix);
             return this;
         }
 
@@ -162,7 +162,7 @@ final class WritingFormatter {
          * @return {@code this}
          */
         Builder disableLabel() {
-            this.labelHeader = null;
+            this.labelPrefix = null;
             return this;
         }
 
