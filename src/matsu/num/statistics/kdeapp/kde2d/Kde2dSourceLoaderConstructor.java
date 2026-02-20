@@ -50,10 +50,10 @@ final class Kde2dSourceLoaderConstructor implements ComponentConstructor<Kde2dSo
         Path path = interpreter.valueOf(INPUT_FILE_PATH)
                 .orElseThrow(() -> new AssertionError("unreachable"));
 
-        String escape = interpreter.valueOf(COMMENT_CHAR)
+        String commentPrefix = interpreter.valueOf(COMMENT_PREFIX)
                 .orElse("#");
         Separator separator = interpreter.valueOf(SEPARATOR_INPUT)
                 .orElse(Separator.from("\t"));
-        return new Kde2dSourceLoader(path, separator, escape);
+        return new Kde2dSourceLoader(path, separator, commentPrefix);
     }
 }

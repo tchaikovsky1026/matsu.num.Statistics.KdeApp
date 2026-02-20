@@ -24,7 +24,7 @@ import matsu.num.statistics.kdeapp.command.ConsoleParameters;
  * </p>
  * 
  * <ul>
- * <li>エスケープ文字はデフォルトが "#" (オプションコマンドで変更される)</li>
+ * <li>コメント開始文字列はデフォルトが "#" (オプションコマンドで変更される)</li>
  * <li>ソースの値は 1 column で縦に並べる</li>
  * <li>ソースの値には inf, NaN を含まず, {@link Double#parseDouble(String)} で解釈可能</li>
  * </ul>
@@ -49,8 +49,8 @@ final class Kde1dSourceLoaderConstructor implements ComponentConstructor<Kde1dSo
         Path path = interpreter.valueOf(INPUT_FILE_PATH)
                 .orElseThrow(() -> new AssertionError("unreachable"));
 
-        String escape = interpreter.valueOf(COMMENT_CHAR)
+        String commentPrefix = interpreter.valueOf(COMMENT_PREFIX)
                 .orElse("#");
-        return new Kde1dSourceLoader(path, escape);
+        return new Kde1dSourceLoader(path, commentPrefix);
     }
 }

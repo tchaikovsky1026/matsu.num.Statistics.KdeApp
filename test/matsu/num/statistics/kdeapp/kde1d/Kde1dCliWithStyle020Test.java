@@ -61,7 +61,7 @@ final class Kde1dCliWithStyle020Test {
                             new String[] {
                                     INPUT_FILE_PATH.commandString(), inputFile.toString(),
                                     OUTPUT_FORCE_FILE_PATH.commandString(), outputFile.toString(),
-                                    COMMENT_CHAR.commandString(), commentChar
+                                    COMMENT_PREFIX.commandString(), commentChar
                             }, out, err),
                     is(0));
         }
