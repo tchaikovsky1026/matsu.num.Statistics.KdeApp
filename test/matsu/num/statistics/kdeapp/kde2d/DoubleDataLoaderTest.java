@@ -18,6 +18,8 @@ import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 
+import matsu.num.statistics.kdeapp.format.CommentPrefix;
+import matsu.num.statistics.kdeapp.format.LineFilter;
 import matsu.num.statistics.kdeapp.format.Separator;
 
 /**
@@ -41,7 +43,8 @@ final class DoubleDataLoaderTest {
         @Before
         public void before_ローダーの準備() {
             loader = new DoubleDataLoader(
-                    new DoubleColumnDoubleLineParser("#", Separator.from(",")));
+                    new DoubleColumnDoubleLineParser(
+                            new LineFilter(CommentPrefix.of("#")), Separator.from(",")));
         }
 
         @Test

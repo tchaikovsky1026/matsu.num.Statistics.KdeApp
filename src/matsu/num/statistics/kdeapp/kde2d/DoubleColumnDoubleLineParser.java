@@ -11,9 +11,11 @@
 package matsu.num.statistics.kdeapp.kde2d;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
+import matsu.num.statistics.kdeapp.format.LineFilter;
 import matsu.num.statistics.kdeapp.format.Separator;
 
 /**
@@ -25,31 +27,21 @@ final class DoubleColumnDoubleLineParser {
 
     private static final int COLUMNS = 2;
 
-    private final String commentPrefix;
+    private final LineFilter lineFilter;
     private final String separatorPattern;
 
     /**
      * インスタンスを生成する.
      * 
-     * <p>
-     * 引数でコメント開始文字列を指定する. <br>
-     * ブランクであってはならない. <br>
-     * 前後のブランクは削除される.
-     * </p>
-     * 
-     * @param commentPrefix コメント開始文字列
+     * @param lineFilter 文字列フィルタ
      * @param separator 区切り文字
      * @throws IllegalArgumentException エスケープ文字列に空文字が含まれる場合
      * @throws NullPointerException 引数がnullの場合
      */
-    DoubleColumnDoubleLineParser(String commentPrefix, Separator separator) {
+    DoubleColumnDoubleLineParser(LineFilter lineFilter, Separator separator) {
         super();
 
-        this.commentPrefix = commentPrefix.strip();
-        if (this.commentPrefix.isEmpty()) {
-            throw new IllegalArgumentException("blank");
-        }
-
+        this.lineFilter = Objects.requireNonNull(lineFilter);
         this.separatorPattern = Pattern.quote(separator.asString());
     }
 
@@ -57,7 +49,7 @@ final class DoubleColumnDoubleLineParser {
      * 文字列を解析し, 2個の {@code double} 値を抽出する.
      * 
      * <p>
-     * ブランクの場合, エスケープ文字列から始まる場合は空が返る. <br>
+     * 空文字の場合, エスケープ文字列から始まる場合は空が返る. <br>
      * 前後のブランクは削除される.
      * </p>
      * 
@@ -67,13 +59,14 @@ final class DoubleColumnDoubleLineParser {
      * @throws NullPointerException null
      */
     public Optional<double[]> parse(String line) {
-        String s = line.strip();
-        if (s.isEmpty()) {
+
+        Optional<String> filtered = lineFilter.apply(line);
+
+        // 将来の方針: この以下の処理を切り出して, Optional.mapから呼び出すのが適切
+        if (filtered.isEmpty()) {
             return Optional.empty();
         }
-        if (s.startsWith(commentPrefix)) {
-            return Optional.empty();
-        }
+        line = filtered.get();
 
         String[] splitStrings = line.split(separatorPattern, -1);
         if (splitStrings.length != COLUMNS) {
