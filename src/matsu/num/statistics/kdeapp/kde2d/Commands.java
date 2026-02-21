@@ -25,6 +25,7 @@ import matsu.num.statistics.kdeapp.command.ArgumentRequiringCommand;
 import matsu.num.statistics.kdeapp.command.CommandAssignmentRule;
 import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 import matsu.num.statistics.kdeapp.command.NoArgumentCommand;
+import matsu.num.statistics.kdeapp.format.CommentPrefix;
 import matsu.num.statistics.kdeapp.format.Separator;
 
 /**
@@ -83,11 +84,14 @@ final class Commands {
      * 入力のコメント行の prefix の指定を表現するシングルトンインスタンス.
      * 
      * <p>
-     * 引数はバリデーションされない.
+     * インスタンス生成時にバリデーションされる.
      * </p>
      */
-    public static final ArgumentRequiringCommand<String> COMMENT_PREFIX =
-            identifying("COMMENT_PREFIX", "--comment-prefix");
+    public static final ArgumentRequiringCommand<CommentPrefix> COMMENT_PREFIX =
+            ArgumentRequiringCommand.of(
+                    "COMMENT_PREFIX", CommentPrefix.class,
+                    CommentPrefix::of,
+                    "--comment-prefix");
 
     /**
      * 入力ファイルの区切り文字の指定を表現するシングルトンインスタンス.

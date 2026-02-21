@@ -6,14 +6,16 @@
  */
 
 /*
- * 2026.1.21
+ * 2026.2.21
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
 import java.io.IOException;
 import java.util.Objects;
-import java.util.OptionalDouble;
+import java.util.Optional;
 import java.util.stream.Stream;
+
+import matsu.num.statistics.kdeapp.format.LineFilter;
 
 /**
  * {@code double} 値配列としてのデータを構築するローダー.
@@ -22,18 +24,18 @@ import java.util.stream.Stream;
  */
 final class DoubleDataLoader {
 
-    private final DoubleLineParser parser;
+    private final LineFilter lineFilter;
 
     /**
-     * 文字列を {@code double} 値に変換するパーサーを与えて,
-     * ローダーを構築する.
+     * 文字列フィルタを与えて,
+     * {@code double} 値を取得するローダーを構築する.
      * 
-     * @param parser パーサー
+     * @param lineFilter 文字列フィルタ
      * @throws NullPointerException 引数がnull
      */
-    DoubleDataLoader(DoubleLineParser parser) {
+    DoubleDataLoader(LineFilter lineFilter) {
         super();
-        this.parser = Objects.requireNonNull(parser);
+        this.lineFilter = Objects.requireNonNull(lineFilter);
     }
 
     /**
@@ -60,8 +62,9 @@ final class DoubleDataLoader {
     public double[] load(IOSupplier<Stream<String>> linesSupplier) throws IOException {
         try (Stream<String> lines = linesSupplier.get()) {
             return lines
-                    .map(s -> parser.parse(s))
-                    .flatMapToDouble(OptionalDouble::stream)
+                    .map(line -> lineFilter.apply(line, Double::parseDouble))
+                    .flatMap(Optional::stream)
+                    .mapToDouble(Double::doubleValue)
                     .toArray();
         } catch (NumberFormatException e) {
             throw new IOException("illegal number format: " + e.getMessage());
