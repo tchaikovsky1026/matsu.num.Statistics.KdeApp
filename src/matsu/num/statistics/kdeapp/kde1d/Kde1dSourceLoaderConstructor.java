@@ -15,6 +15,7 @@ import static matsu.num.statistics.kdeapp.kde1d.Commands.*;
 import java.nio.file.Path;
 
 import matsu.num.statistics.kdeapp.command.ConsoleParameters;
+import matsu.num.statistics.kdeapp.format.CommentPrefix;
 
 /**
  * {@link Kde1dSourceLoader} の構築器.
@@ -49,8 +50,8 @@ final class Kde1dSourceLoaderConstructor implements ComponentConstructor<Kde1dSo
         Path path = interpreter.valueOf(INPUT_FILE_PATH)
                 .orElseThrow(() -> new AssertionError("unreachable"));
 
-        String commentPrefix = interpreter.valueOf(COMMENT_PREFIX)
-                .orElse("#");
+        CommentPrefix commentPrefix = interpreter.valueOf(COMMENT_PREFIX)
+                .orElse(CommentPrefix.of("#"));
         return new Kde1dSourceLoader(path, commentPrefix);
     }
 }
