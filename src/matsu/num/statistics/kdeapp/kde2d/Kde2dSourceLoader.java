@@ -17,7 +17,7 @@ import java.util.Objects;
 
 import matsu.num.statistics.kdeapp.exception.InputException;
 import matsu.num.statistics.kdeapp.format.CommentPrefix;
-import matsu.num.statistics.kdeapp.format.LineFilter;
+import matsu.num.statistics.kdeapp.format.DelimitedLineParser;
 import matsu.num.statistics.kdeapp.format.Separator;
 
 /**
@@ -40,9 +40,8 @@ final class Kde2dSourceLoader {
      * @throws NullPointerException 引数にnullを含む場合
      */
     Kde2dSourceLoader(Path path, Separator separator, CommentPrefix commentPrefix) {
-        DoubleColumnDoubleLineParser lineParser =
-                new DoubleColumnDoubleLineParser(new LineFilter(commentPrefix), separator);
-        this.loader = new DoubleDataLoader(lineParser);
+        this.loader = new DoubleDataLoader(
+                new DelimitedLineParser(2, separator, commentPrefix));
         this.path = Objects.requireNonNull(path);
     }
 
