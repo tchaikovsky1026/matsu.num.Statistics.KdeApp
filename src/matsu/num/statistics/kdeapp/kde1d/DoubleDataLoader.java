@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.1.21
+ * 2026.2.21
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -62,9 +62,9 @@ final class DoubleDataLoader {
     public double[] load(IOSupplier<Stream<String>> linesSupplier) throws IOException {
         try (Stream<String> lines = linesSupplier.get()) {
             return lines
-                    .map(lineFilter::apply)
+                    .map(line -> lineFilter.apply(line, Double::parseDouble))
                     .flatMap(Optional::stream)
-                    .mapToDouble(Double::parseDouble)
+                    .mapToDouble(Double::doubleValue)
                     .toArray();
         } catch (NumberFormatException e) {
             throw new IOException("illegal number format: " + e.getMessage());

@@ -10,7 +10,9 @@
  */
 package matsu.num.statistics.kdeapp.format;
 
+import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * 1行文字列に対し, フィルタを行うクラス.
@@ -37,7 +39,7 @@ public final class LineFilter {
      */
     public LineFilter(CommentPrefix commentPrefix) {
         super();
-        this.commentPrefix = commentPrefix;
+        this.commentPrefix = Objects.requireNonNull(commentPrefix);
     }
 
     /**
@@ -49,16 +51,35 @@ public final class LineFilter {
      * 空文字の場合, コメント開始文字列から始まる場合は空が返る.
      * </p>
      * 
-     * @param s 文字列
+     * @param line 文字列
      * @return フィルタされた結果
      * @throws NullPointerException 引数がnullの場合
      */
-    public Optional<String> apply(String s) {
-        s = s.strip();
-        if (s.isEmpty() || s.startsWith(commentPrefix.asString())) {
+    public Optional<String> apply(String line) {
+        line = line.strip();
+        if (line.isEmpty() || line.startsWith(commentPrefix.asString())) {
             return Optional.empty();
         }
 
-        return Optional.of(s);
+        return Optional.of(line);
+    }
+
+    /**
+     * 与えられた文字列に対してフィルタを実行し,
+     * mapper によって値を変換して返す.
+     * 
+     * <p>
+     * {@link #apply(String)} の要件に従う. <br>
+     * また, 空文字でない場合で, mapper によって例外が発生した場合はそのままスローする.
+     * </p>
+     * 
+     * @param line 文字列
+     * @param mapper マッパ
+     * @return フィルタされた結果
+     * @throws RuntimeException マッパが例外をスローした場合
+     * @throws NullPointerException 文字列がnullの場合, フィルタの結果が空でなくマッパがnullの場合
+     */
+    public <T> Optional<T> apply(String line, Function<? super String, ? extends T> mapper) {
+        return apply(line).map(mapper);
     }
 }
