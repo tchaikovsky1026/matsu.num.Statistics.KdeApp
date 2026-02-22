@@ -10,6 +10,8 @@ package matsu.num.statistics.kdeapp.format;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
+import java.util.Optional;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
@@ -27,12 +29,17 @@ final class DelimitedLineParserTest {
 
         @Before
         public void before_パーサーの用意() {
-            parser = new DelimitedLineParser(2, Separator.from(","), CommentPrefix.of("#"));
+            parser = new DelimitedLineParser(2, Separator.from(","), CommentPrefix.of("//"));
+        }
+
+        @Test
+        public void test_スラッシュエスケープ() {
+            assertThat(parser.apply("// dummy"), is(Optional.empty()));
         }
 
         @Test
         public void test_Doubleへの変換() {
-            String line = "1.0,2d";
+            String line = "  1.0   ,  2d   ";
             Double[] result =
                     parser.apply(line, Double::parseDouble, Double.class)
                             .get();
@@ -44,7 +51,7 @@ final class DelimitedLineParserTest {
 
         @Test
         public void test_Doubleへの変換_後ろに空があり() {
-            String line = "1.0,3d,";
+            String line = "   1.0 ,  3d , ,";
             Double[] result =
                     parser.apply(line, Double::parseDouble, Double.class)
                             .get();
