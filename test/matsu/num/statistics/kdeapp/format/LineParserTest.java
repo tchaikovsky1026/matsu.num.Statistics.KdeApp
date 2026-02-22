@@ -17,23 +17,23 @@ import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 
 /**
- * {@link LineFilter} のテスト.
+ * {@link LineParser} のテスト.
  */
 @RunWith(Enclosed.class)
-final class LineFilterTest {
+final class LineParserTest {
 
     public static class 値抽出のテスト {
 
-        private final LineFilter lineFilter = new LineFilter(CommentPrefix.of("//"));
+        private final LineParser lineParser = new LineParser(CommentPrefix.of("//"));
 
         @Test
         public void test_スラッシュエスケープ() {
-            assertThat(lineFilter.apply("// dummy"), is(Optional.empty()));
+            assertThat(lineParser.apply("// dummy"), is(Optional.empty()));
         }
 
         @Test
         public void test_値の取得() {
-            assertThat(lineFilter.apply(" abcd "), is(Optional.of("abcd")));
+            assertThat(lineParser.apply(" abcd "), is(Optional.of("abcd")));
         }
     }
 }

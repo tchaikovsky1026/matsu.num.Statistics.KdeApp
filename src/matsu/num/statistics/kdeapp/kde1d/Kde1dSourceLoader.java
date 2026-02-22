@@ -17,7 +17,7 @@ import java.util.Objects;
 
 import matsu.num.statistics.kdeapp.exception.InputException;
 import matsu.num.statistics.kdeapp.format.CommentPrefix;
-import matsu.num.statistics.kdeapp.format.LineFilter;
+import matsu.num.statistics.kdeapp.format.LineParser;
 
 /**
  * 1次元のカーネル密度推定に使うデータソースのローダー.
@@ -38,7 +38,7 @@ final class Kde1dSourceLoader {
      * @throws NullPointerException 引数にnullを含む場合
      */
     Kde1dSourceLoader(Path path, CommentPrefix commentPrefix) {
-        this.loader = new DoubleDataLoader(new LineFilter(commentPrefix));
+        this.loader = new DoubleDataLoader(new LineParser(commentPrefix));
         this.path = Objects.requireNonNull(path);
     }
 

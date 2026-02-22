@@ -15,7 +15,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import matsu.num.statistics.kdeapp.format.LineFilter;
+import matsu.num.statistics.kdeapp.format.LineParser;
 
 /**
  * {@code double} 値配列としてのデータを構築するローダー.
@@ -24,18 +24,18 @@ import matsu.num.statistics.kdeapp.format.LineFilter;
  */
 final class DoubleDataLoader {
 
-    private final LineFilter lineFilter;
+    private final LineParser lineParser;
 
     /**
-     * 文字列フィルタを与えて,
+     * 文字列パーサを与えて,
      * {@code double} 値を取得するローダーを構築する.
      * 
-     * @param lineFilter 文字列フィルタ
+     * @param lineParser パーサ
      * @throws NullPointerException 引数がnull
      */
-    DoubleDataLoader(LineFilter lineFilter) {
+    DoubleDataLoader(LineParser lineParser) {
         super();
-        this.lineFilter = Objects.requireNonNull(lineFilter);
+        this.lineParser = Objects.requireNonNull(lineParser);
     }
 
     /**
@@ -62,7 +62,7 @@ final class DoubleDataLoader {
     public double[] load(IOSupplier<Stream<String>> linesSupplier) throws IOException {
         try (Stream<String> lines = linesSupplier.get()) {
             return lines
-                    .map(line -> lineFilter.apply(line, Double::parseDouble))
+                    .map(line -> lineParser.apply(line, Double::parseDouble))
                     .flatMap(Optional::stream)
                     .mapToDouble(Double::doubleValue)
                     .toArray();

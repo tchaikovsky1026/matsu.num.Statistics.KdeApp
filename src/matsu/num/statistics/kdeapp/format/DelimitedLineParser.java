@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 
 /**
  * 固定カラム数のデータを区切り文字で結合した1行文字列に対し,
- * 区切り文字による分割とフィルタを行うクラス.
+ * フィルタと区切り文字による分割, データ抽出を行うクラス.
  * 
  * <p>
  * 入力データとして与えられる各行の文字列を想定している.
@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
  */
 public final class DelimitedLineParser {
 
-    private final LineFilter lineFilter;
+    private final CommentLineFilter lineFilter;
 
     private final Separator separator;
     private final String separatorPattern;
@@ -57,7 +57,7 @@ public final class DelimitedLineParser {
 
         this.columns = columns;
         this.separator = Objects.requireNonNull(separator);
-        this.lineFilter = new LineFilter(commentPrefix);
+        this.lineFilter = new CommentLineFilter(commentPrefix);
 
         this.separatorPattern = Pattern.quote(this.separator.asString());
     }

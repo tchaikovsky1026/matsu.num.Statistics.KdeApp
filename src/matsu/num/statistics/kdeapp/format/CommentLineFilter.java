@@ -6,13 +6,12 @@
  */
 
 /*
- * 2026.2.21
+ * 2026.2.22
  */
 package matsu.num.statistics.kdeapp.format;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Function;
 
 /**
  * 1行文字列に対し, フィルタを行うクラス.
@@ -23,7 +22,7 @@ import java.util.function.Function;
  * 
  * @author Matsuura Y.
  */
-public final class LineFilter {
+public final class CommentLineFilter {
 
     private final CommentPrefix commentPrefix;
 
@@ -37,7 +36,7 @@ public final class LineFilter {
      * @param commentPrefix コメント開始文字列
      * @throws NullPointerException 引数がnullの場合
      */
-    public LineFilter(CommentPrefix commentPrefix) {
+    public CommentLineFilter(CommentPrefix commentPrefix) {
         super();
         this.commentPrefix = Objects.requireNonNull(commentPrefix);
     }
@@ -46,7 +45,7 @@ public final class LineFilter {
      * 与えられた文字列に対してフィルタを実行する.
      * 
      * <p>
-     * 前処理として, 前後のブランクが削除される. <br>
+     * 前処理として, 後のブランクが削除される. <br>
      * 前処理後の文字列が {@link Optional} でラップされて返るが,
      * 空文字の場合, コメント開始文字列から始まる場合は空が返る.
      * </p>
@@ -56,30 +55,11 @@ public final class LineFilter {
      * @throws NullPointerException 引数がnullの場合
      */
     public Optional<String> apply(String line) {
-        line = line.strip();
+        line = line.stripTrailing();
         if (line.isEmpty() || line.startsWith(commentPrefix.asString())) {
             return Optional.empty();
         }
 
         return Optional.of(line);
-    }
-
-    /**
-     * 与えられた文字列に対してフィルタを実行し,
-     * mapper によって値を変換して返す.
-     * 
-     * <p>
-     * {@link #apply(String)} の要件に従う. <br>
-     * また, 空文字でない場合で, mapper によって例外が発生した場合はそのままスローする.
-     * </p>
-     * 
-     * @param line 文字列
-     * @param mapper マッパ
-     * @return フィルタされた結果
-     * @throws RuntimeException マッパが例外をスローした場合
-     * @throws NullPointerException 文字列がnullの場合, フィルタの結果が空でなくマッパがnullの場合
-     */
-    public <T> Optional<T> apply(String line, Function<? super String, ? extends T> mapper) {
-        return apply(line).map(mapper);
     }
 }
