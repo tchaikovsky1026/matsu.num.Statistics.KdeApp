@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.21
+ * 2026.2.22
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -15,6 +15,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import matsu.num.statistics.kdeapp.base.ThrowableSupplier;
 import matsu.num.statistics.kdeapp.format.LineParser;
 
 /**
@@ -43,7 +44,7 @@ final class DoubleDataLoader {
      * 配列として返す.
      * 
      * <p>
-     * 実行には, ストリームのサプライヤ ({@link IOSupplier}) を渡す. <br>
+     * 実行には, ストリームのサプライヤ ({@link ThrowableSupplier}) を渡す. <br>
      * このメソッド内でストリームが生成され, クローズ処理が実行される.
      * </p>
      * 
@@ -55,19 +56,24 @@ final class DoubleDataLoader {
      * 
      * @param linesSupplier supplier
      * @return double[]
-     * @throws IOException {@link IOSupplier} によるストリームの生成で例外が発生した場合,
+     * @throws IOException {@link ThrowableSupplier} によるストリームの生成で例外が発生した場合,
      *             文字列フォーマットが不正の場合
      * @throws NullPointerException 引数やストリームの要素にnullを含む場合
      */
-    public double[] load(IOSupplier<Stream<String>> linesSupplier) throws IOException {
-        try (Stream<String> lines = linesSupplier.get()) {
+    public double[] load(
+            ThrowableSupplier<
+                    ? extends Stream<? extends String>,
+                    ? extends IOException> linesSupplier)
+            throws IOException {
+
+        try (Stream<? extends String> lines = linesSupplier.get()) {
             return lines
                     .map(line -> lineParser.apply(line, Double::parseDouble))
                     .flatMap(Optional::stream)
                     .mapToDouble(Double::doubleValue)
                     .toArray();
         } catch (NumberFormatException e) {
-            throw new IOException("illegal number format: " + e.getMessage());
+            throw new IOException("illegal format: " + e.getMessage());
         }
     }
 }

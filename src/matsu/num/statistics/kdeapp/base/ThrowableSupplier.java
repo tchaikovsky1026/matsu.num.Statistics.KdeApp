@@ -6,11 +6,10 @@
  */
 
 /*
- * 2026.1.13
+ * 2026.2.22
  */
-package matsu.num.statistics.kdeapp.kde1d;
+package matsu.num.statistics.kdeapp.base;
 
-import java.io.IOException;
 import java.util.function.Supplier;
 
 /**
@@ -18,26 +17,22 @@ import java.util.function.Supplier;
  * 
  * <p>
  * get 時に
- * {@link IOException} をスローできるようにインターフェースを定義した. <br>
+ * {@link Exception} をスローできるようにインターフェースを定義した. <br>
  * ラムダ (あるいはメソッド参照) により実装されるべきである.
- * </p>
- * 
- * <p>
- * {@code kde1d} パッケージで閉じることが可能ならば,
- *  このインターフェースのアクセス修飾子は package-private のままが望ましい.
  * </p>
  * 
  * @author Matsuura Y.
  * @param <T> get の戻り値型
+ * @param <X> get でスローされる可能性がある例外の型
  */
 @FunctionalInterface
-interface IOSupplier<T> {
+public interface ThrowableSupplier<T, X extends Exception> {
 
     /**
      * インスタンスを返す.
      * 
      * @return T型のインスタンス
-     * @throws IOException IOに失敗した場合
+     * @throws X get に失敗した場合
      */
-    public abstract T get() throws IOException;
+    public abstract T get() throws X;
 }

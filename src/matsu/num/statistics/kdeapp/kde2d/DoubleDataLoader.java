@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.17
+ * 2026.2.22
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
@@ -18,6 +18,7 @@ import java.util.Optional;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import matsu.num.statistics.kdeapp.base.ThrowableSupplier;
 import matsu.num.statistics.kdeapp.format.DelimitedLineParser;
 
 /**
@@ -47,7 +48,7 @@ final class DoubleDataLoader {
      * 結果は, 列優先 (double[columns][recordSize]) の形式である.
      * 
      * <p>
-     * 実行には, ストリームのサプライヤ ({@link IOSupplier}) を渡す. <br>
+     * 実行には, ストリームのサプライヤ ({@link ThrowableSupplier}) を渡す. <br>
      * このメソッド内でストリームが生成され, クローズ処理が実行される.
      * </p>
      * 
@@ -59,12 +60,17 @@ final class DoubleDataLoader {
      * 
      * @param linesSupplier supplier
      * @return double[]
-     * @throws IOException {@link IOSupplier} によるストリームの生成で例外が発生した場合,
+     * @throws IOException {@link ThrowableSupplier} によるストリームの生成で例外が発生した場合,
      *             文字列フォーマットが不正の場合
      * @throws NullPointerException 引数やストリームの要素にnullを含む場合
      */
-    public double[][] load(IOSupplier<Stream<String>> linesSupplier) throws IOException {
-        try (Stream<String> lines = linesSupplier.get()) {
+    public double[][] load(
+            ThrowableSupplier<
+                    ? extends Stream<? extends String>,
+                    ? extends IOException> linesSupplier)
+            throws IOException {
+
+        try (Stream<? extends String> lines = linesSupplier.get()) {
 
             // 結果格納用のリスト
             List<List<Double>> columnData = new ArrayList<>();
