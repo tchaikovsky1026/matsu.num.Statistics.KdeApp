@@ -6,12 +6,13 @@
  */
 
 /*
- * 2026.2.20
+ * 2026.2.23
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
 import static matsu.num.statistics.kdeapp.kde1d.Commands.*;
 
+import matsu.num.statistics.kdeapp.command.ComponentConstructor;
 import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 import matsu.num.statistics.kdeapp.format.Separator;
 
@@ -38,7 +39,7 @@ final class WritingFormatterConstructor implements ComponentConstructor<WritingF
      * @throws NullPointerException {@inheritDoc }
      */
     @Override
-    public WritingFormatter construct(ConsoleParameters interpreter) {
+    public WritingFormatter apply(ConsoleParameters interpreter) {
 
         WritingFormatter.Builder builder = new WritingFormatter.Builder(
                 Separator.from("\t"));

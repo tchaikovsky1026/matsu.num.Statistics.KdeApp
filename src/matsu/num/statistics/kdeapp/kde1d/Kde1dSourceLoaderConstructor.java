@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.20
+ * 2026.2.23
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -14,6 +14,7 @@ import static matsu.num.statistics.kdeapp.kde1d.Commands.*;
 
 import java.nio.file.Path;
 
+import matsu.num.statistics.kdeapp.command.ComponentConstructor;
 import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 import matsu.num.statistics.kdeapp.format.CommentPrefix;
 
@@ -44,7 +45,7 @@ final class Kde1dSourceLoaderConstructor implements ComponentConstructor<Kde1dSo
      * @throws NullPointerException {@inheritDoc }
      */
     @Override
-    public Kde1dSourceLoader construct(ConsoleParameters interpreter) {
+    public Kde1dSourceLoader apply(ConsoleParameters interpreter) {
 
         // INPUT_FILE_PATH は必須パラメータなので必ず取得できる.
         Path path = interpreter.valueOf(INPUT_FILE_PATH)
