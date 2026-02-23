@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.18
+ * 2026.2.23
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -68,13 +68,13 @@ final class Kde1dCliWithStyle020 {
         ConsoleParameters interpretation = Commands.getInterpreter().interpret(args);
 
         Kde1dSourceLoader loader =
-                new Kde1dSourceLoaderConstructor().construct(interpretation);
+                new Kde1dSourceLoaderConstructor().apply(interpretation);
         WritingFormatter writingFormatter =
-                new WritingFormatterConstructor().construct(interpretation);
+                new WritingFormatterConstructor().apply(interpretation);
         ResultOutput output =
-                new ResultOutputConstructor().construct(interpretation);
+                new ResultOutputConstructor().apply(interpretation);
         ResultDisplay stdout =
-                new ResultDisplayConstructor(out, err).construct(interpretation);
+                new ResultDisplayConstructor(out, err).apply(interpretation);
 
         double[] source = loader.load();
         WritableKde1dResult result = new GaussianStandardKde1dCalculator().calc(source);
