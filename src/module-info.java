@@ -17,5 +17,7 @@
  * @version 0.5.0
  */
 module matsu.num.Statistics.KdeApp {
+
+    requires java.logging;
     requires matsu.num.Statistics.KernelDensity;
 }
