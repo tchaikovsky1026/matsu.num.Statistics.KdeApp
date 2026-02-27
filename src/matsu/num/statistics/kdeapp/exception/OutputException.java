@@ -15,7 +15,7 @@ package matsu.num.statistics.kdeapp.exception;
  * 
  * @author Matsuura Y.
  */
-public class OutputException extends ApplicationException {
+public final class OutputException extends ApplicationException {
 
     private static final long serialVersionUID = 1L;
     /**
