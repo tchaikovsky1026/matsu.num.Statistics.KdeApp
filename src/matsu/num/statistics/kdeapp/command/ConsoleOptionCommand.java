@@ -17,6 +17,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import matsu.num.statistics.kdeapp.exception.ProgrammingBugException;
+
 /**
  * コンソールオプションコマンドを表現するクラス.
  * 
@@ -140,7 +142,7 @@ public abstract sealed class ConsoleOptionCommand
                 .collect(groupingBy(s -> s, counting()));
         for (Map.Entry<String, Long> e : map.entrySet()) {
             if (e.getValue().longValue() >= 2) {
-                throw new AssertionError("duplicate: " + e.getKey());
+                throw new ProgrammingBugException("duplicate string representation: " + e.getKey());
             }
         }
 

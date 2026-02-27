@@ -13,6 +13,7 @@ package matsu.num.statistics.kdeapp.kde2d;
 import java.util.Arrays;
 
 import matsu.num.statistics.kdeapp.exception.CalculationException;
+import matsu.num.statistics.kdeapp.exception.ProgrammingBugException;
 import matsu.num.statistics.kerneldensity.GaussianKd2D;
 import matsu.num.statistics.kerneldensity.Kde2DSourceDto;
 import matsu.num.statistics.kerneldensity.KernelDensity2D;
@@ -50,10 +51,10 @@ final class GaussianStandardKde2dCalculator {
      */
     WritableKde2dResult calc(double[][] source) {
         if (source.length != 2) {
-            throw new AssertionError("source.length != 2");
+            throw new ProgrammingBugException("source.length != 2");
         }
         if (source[0].length != source[1].length) {
-            throw new AssertionError("source[0].length != source[1].length");
+            throw new ProgrammingBugException("source[0].length != source[1].length");
         }
 
         if (source[0].length == 0) {
