@@ -205,7 +205,7 @@ public final class ConsoleParameters {
          * </p>
          * 
          * <p>
-         * 渡されたコマンド集合の中で, コマンド文字列 (expression) が重複してはならない.
+         * 渡されたコマンド集合の中で, コマンド文字列 (representation) が重複してはならない.
          * </p>
          * 
          * @param noArgCommands 解釈される引数なしコマンドの集合
@@ -241,18 +241,18 @@ public final class ConsoleParameters {
          * @throws NullPointerException nullを含む場合
          */
         private static void validateCommandDuplication(
-                Set<String> noArgCommandExpressions,
-                Set<String> argCommandExpressions) {
+                Set<String> noArgCommandRepresentations,
+                Set<String> argCommandRepresentations) {
 
-            Set<String> merged = new HashSet<>(argCommandExpressions);
-            merged.addAll(noArgCommandExpressions);
+            Set<String> merged = new HashSet<>(argCommandRepresentations);
+            merged.addAll(noArgCommandRepresentations);
 
-            int overlapCount = argCommandExpressions.size() +
-                    noArgCommandExpressions.size() - merged.size();
+            int overlapCount = argCommandRepresentations.size() +
+                    noArgCommandRepresentations.size() - merged.size();
 
             if (overlapCount > 0) {
                 throw new IllegalArgumentException(
-                        "command expressions are duplicated");
+                        "duplicate command representations");
             }
         }
     }

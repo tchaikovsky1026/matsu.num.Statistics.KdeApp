@@ -43,16 +43,16 @@ public final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand {
      * @param enumString インスタンスの文字列表現
      * @param valueType 変更先の型トークン
      * @param converter コンバータ
-     * @param commandExpression コマンドの正式な文字列表現
-     * @param otherExpressions 正式表現以外の文字列表現
+     * @param commandRepresentation コマンドの正式な文字列表現
+     * @param otherRepresentations 正式表現以外の文字列表現
      * @throws IllegalArgumentException 文字列がブランクを含む場合
      * @throws NullPointerException 引数にnullが含まれる場合
      */
     private ArgumentRequiringCommand(
             String enumString,
             Class<T> valueType, Function<? super String, ? extends T> converter,
-            String commandExpression, String... otherExpressions) {
-        super(enumString, commandExpression, otherExpressions);
+            String commandRepresentation, String... otherRepresentations) {
+        super(enumString, commandRepresentation, otherRepresentations);
 
         this.valueType = valueType;
         this.converter = converter;
@@ -106,8 +106,8 @@ public final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand {
      * @param enumString インスタンスの文字列表現
      * @param valueType コンバート先 ({@code T}) の型トークン
      * @param converter コンバータ
-     * @param commandExpression コマンドの正式な文字列表現
-     * @param otherExpressions 正式表現以外の文字列表現
+     * @param commandRepresentation コマンドの正式な文字列表現
+     * @param otherRepresentations 正式表現以外の文字列表現
      * @return インスタンス
      * @throws IllegalArgumentException 文字列がブランクを含む場合
      * @throws NullPointerException 引数にnullが含まれる場合
@@ -115,10 +115,10 @@ public final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand {
     public static <T> ArgumentRequiringCommand<T> of(
             String enumString,
             Class<T> valueType, Function<? super String, ? extends T> converter,
-            String commandExpression, String... otherExpressions) {
+            String commandRepresentation, String... otherRepresentations) {
 
         return new ArgumentRequiringCommand<>(
-                enumString, valueType, converter, commandExpression, otherExpressions);
+                enumString, valueType, converter, commandRepresentation, otherRepresentations);
     }
 
     /**
@@ -126,17 +126,17 @@ public final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand {
      * メソッドのコンバータに恒等写像を与える形式で, インスタンスを生成する.
      * 
      * @param enumString インスタンスの文字列表現
-     * @param commandExpression コマンドの正式な文字列表現
-     * @param otherExpressions 正式表現以外の文字列表現
+     * @param commandRepresentation コマンドの正式な文字列表現
+     * @param otherRepresentations 正式表現以外の文字列表現
      * @return インスタンス
      * @throws IllegalArgumentException 文字列がブランクを含む場合
      * @throws NullPointerException 引数にnullが含まれる場合
      */
     public static ArgumentRequiringCommand<String> identifying(
-            String enumString, String commandExpression, String... otherExpressions) {
+            String enumString, String commandRepresentation, String... otherRepresentations) {
 
         return new ArgumentRequiringCommand<String>(
                 enumString, String.class, s -> s,
-                commandExpression, otherExpressions);
+                commandRepresentation, otherRepresentations);
     }
 }
