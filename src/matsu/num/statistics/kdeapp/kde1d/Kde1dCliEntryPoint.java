@@ -32,25 +32,24 @@ public final class Kde1dCliEntryPoint {
      * エントリーポイント.
      * 
      * @param args パラメータ
-     * @throws Exception 例外スロー時
      */
-    public static void main(String[] args) throws Exception {
-        Logging.init("kde1d");
-        LoggerHolder.LOGGER.info("start kde1d");
-
+    public static void main(String[] args) {
         int exitCode = 0;
         try {
+            Logging.init("kde1d");
+            LoggerHolder.LOGGER.info("start kde1d");
             exitCode = new Kde1dCliWithStyle020().run(args);
         } catch (ApplicationException ae) {
-            exitCode = 2;
-            LoggerHolder.LOGGER.severe(
-                    "throws " + ae.getClass().getSimpleName() + ": " + ae.getMessage());
+            exitCode = ae.getExitCode();
+            LoggerHolder.LOGGER.severe("throws " + ae.toStringForLogging());
         } catch (Exception e) {
             exitCode = 1;
-            LoggerHolder.LOGGER.log(Level.SEVERE, "throws Exception", e);
+            // 不明な例外はスタックトレースを記録する
+            LoggerHolder.LOGGER.log(Level.SEVERE, "throws unknown exception", e);
+        } finally {
+            LoggerHolder.LOGGER.info("end kde1d, exit-code=" + exitCode);
+            System.exit(exitCode);
         }
-        LoggerHolder.LOGGER.info("end kde1d, exit-code=" + exitCode);
-        System.exit(exitCode);
     }
 
     private static final class LoggerHolder {
