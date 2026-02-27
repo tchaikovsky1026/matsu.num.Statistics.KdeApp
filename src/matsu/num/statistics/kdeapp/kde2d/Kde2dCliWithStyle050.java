@@ -63,7 +63,7 @@ final class Kde2dCliWithStyle050 {
      */
     int run(String[] args, PrintStream out, PrintStream err) {
 
-        out.println("kde1d...");
+        out.println("kde2d...");
 
         ConsoleParameters interpretation = Commands.getInterpreter().interpret(args);
 
