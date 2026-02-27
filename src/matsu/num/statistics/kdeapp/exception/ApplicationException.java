@@ -53,4 +53,33 @@ public class ApplicationException extends RuntimeException {
     public ApplicationException(String message, Throwable cause) {
         super(message, cause);
     }
+
+    /**
+     * ログ出力向けの文字列を取得する.
+     * 
+     * <p>
+     * 形式は, <br>
+     * 単純クラス名 + ": " + メッセージ <br>
+     * である.
+     * </p>
+     * 
+     * @return 文字列
+     */
+    public final String toStringForLogging() {
+        return getClass().getSimpleName() + ": " + getMessage();
+    }
+
+    /**
+     * この例外によりアプリケーションが終了するときの終了コードを返す. <br>
+     * 2 以上の整数である.
+     * 
+     * @implSpec
+     *               {@link ApplicationException} クラスでは2を返す. <br>
+     *               サブクラスでオーバーライドしても良い (2 以上の整数を返すようにすること).
+     * 
+     * @return 終了コード
+     */
+    public int getExitCode() {
+        return ExitCode.getExitCode(getClass());
+    }
 }
