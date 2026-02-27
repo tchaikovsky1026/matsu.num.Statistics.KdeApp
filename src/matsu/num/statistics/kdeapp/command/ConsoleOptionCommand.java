@@ -6,18 +6,18 @@
  */
 
 /*
- * 2026.2.18
+ * 2026.2.27
  */
 package matsu.num.statistics.kdeapp.command;
 
 import static java.util.stream.Collectors.*;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-
-import matsu.num.statistics.kdeapp.exception.ProgrammingBugException;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * コンソールオプションコマンドを表現するクラス.
@@ -40,7 +40,7 @@ public abstract sealed class ConsoleOptionCommand
     private final String enumString;
 
     private final String commandRepresentation;
-    private final List<String> representations;
+    private final Set<String> representations;
 
     /**
      * 唯一のコンストラクタ. <br>
@@ -60,8 +60,8 @@ public abstract sealed class ConsoleOptionCommand
             throw new IllegalArgumentException("enumString is blank");
         }
 
-        this.commandRepresentation = commandRepresentation;
-        this.representations = new ArrayList<>();
+        this.commandRepresentation = Objects.requireNonNull(commandRepresentation);
+        this.representations = new HashSet<>();
         this.representations.add(commandRepresentation);
         this.representations.addAll(List.of(otherRepresentations));
 
@@ -143,10 +143,11 @@ public abstract sealed class ConsoleOptionCommand
                 .collect(groupingBy(s -> s, counting()));
         for (Map.Entry<String, Long> e : map.entrySet()) {
             if (e.getValue().longValue() >= 2) {
-                throw new ProgrammingBugException("duplicate string representation: " + e.getKey());
+                throw new IllegalArgumentException("duplicate representation: " + e.getKey());
             }
         }
 
+        // representationに重複がないので, toMapは成功
         return pairs.stream()
                 .collect(toMap(p -> p.representation, p -> p.command));
     }

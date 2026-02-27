@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.20
+ * 2026.2.27
  */
 package matsu.num.statistics.kdeapp.command;
 
@@ -54,8 +54,8 @@ public final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand {
             String commandRepresentation, String... otherRepresentations) {
         super(enumString, commandRepresentation, otherRepresentations);
 
-        this.valueType = valueType;
-        this.converter = converter;
+        this.valueType = Objects.requireNonNull(valueType);
+        this.converter = Objects.requireNonNull(converter);
     }
 
     /**

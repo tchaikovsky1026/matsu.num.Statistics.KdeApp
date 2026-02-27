@@ -6,12 +6,15 @@
  */
 
 /*
- * 2026.2.20
+ * 2026.2.27
  */
 package matsu.num.statistics.kdeapp.command;
 
+import static java.util.stream.Collectors.*;
+
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -106,7 +109,8 @@ public final class ConsoleParameters {
          * </p>
          */
         private Interpreter(Map<String, NoArgumentCommand> mapperToNoArgCommand,
-                Map<String, ArgumentRequiringCommand<?>> mapperToArgCommand, CommandAssignmentRule rule) {
+                Map<String, ArgumentRequiringCommand<?>> mapperToArgCommand,
+                CommandAssignmentRule rule) {
             super();
             this.mapperToNoArgCommand = mapperToNoArgCommand;
             this.mapperToArgCommand = mapperToArgCommand;
@@ -244,15 +248,15 @@ public final class ConsoleParameters {
                 Set<String> noArgCommandRepresentations,
                 Set<String> argCommandRepresentations) {
 
-            Set<String> merged = new HashSet<>(argCommandRepresentations);
-            merged.addAll(noArgCommandRepresentations);
-
-            int overlapCount = argCommandRepresentations.size() +
-                    noArgCommandRepresentations.size() - merged.size();
-
-            if (overlapCount > 0) {
-                throw new IllegalArgumentException(
-                        "duplicate command representations");
+            Map<String, Long> duplicationMap =
+                    List.of(noArgCommandRepresentations, argCommandRepresentations)
+                            .stream()
+                            .flatMap(set -> set.stream())
+                            .collect(groupingBy(s -> s, counting()));
+            for (Map.Entry<String, Long> e : duplicationMap.entrySet()) {
+                if (e.getValue().longValue() >= 2) {
+                    throw new IllegalArgumentException("duplicate representation: " + e.getKey());
+                }
             }
         }
     }
