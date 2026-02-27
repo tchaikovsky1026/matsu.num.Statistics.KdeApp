@@ -65,7 +65,7 @@ enum ExitCode {
             for (ExitCode ec : ExitCode.values()) {
                 if (Objects.nonNull(
                         MAPPER.put(Objects.requireNonNull(ec.exceptionType), ec))) {
-                    throw new AssertionError("duplicate exception type");
+                    throw new ProgrammingBugException("duplicate exception type");
                 }
             }
         }

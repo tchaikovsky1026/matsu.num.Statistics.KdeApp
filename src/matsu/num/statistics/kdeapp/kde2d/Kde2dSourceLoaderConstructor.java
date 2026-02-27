@@ -16,6 +16,7 @@ import java.nio.file.Path;
 
 import matsu.num.statistics.kdeapp.command.ComponentConstructor;
 import matsu.num.statistics.kdeapp.command.ConsoleParameters;
+import matsu.num.statistics.kdeapp.exception.ProgrammingBugException;
 import matsu.num.statistics.kdeapp.format.CommentPrefix;
 import matsu.num.statistics.kdeapp.format.Separator;
 
@@ -50,7 +51,7 @@ final class Kde2dSourceLoaderConstructor implements ComponentConstructor<Kde2dSo
 
         // INPUT_FILE_PATH は必須パラメータなので必ず取得できる.
         Path path = interpreter.valueOf(INPUT_FILE_PATH)
-                .orElseThrow(() -> new AssertionError("unreachable"));
+                .orElseThrow(() -> new ProgrammingBugException("unreachable"));
 
         CommentPrefix commentPrefix = interpreter.valueOf(COMMENT_PREFIX)
                 .orElse(CommentPrefix.of("#"));
