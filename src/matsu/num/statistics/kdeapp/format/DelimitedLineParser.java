@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.22
+ * 2026.2.27
  */
 package matsu.num.statistics.kdeapp.format;
 
@@ -150,6 +150,7 @@ public final class DelimitedLineParser {
      * @param typeToken {@code T} 型の型トークン
      * @return 抽出された結果
      * @throws RuntimeException マッパが例外をスローした場合
+     * @throws IllegalArgumentException 正当なフォーマットでない場合
      * @throws NullPointerException 文字列がnullの場合, フィルタの結果が空でなくマッパがnullの場合
      */
     public <T> Optional<T[]> apply(
