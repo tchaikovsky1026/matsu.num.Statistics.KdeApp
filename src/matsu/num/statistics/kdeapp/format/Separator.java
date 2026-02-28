@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.20
+ * 2026.2.27
  */
 package matsu.num.statistics.kdeapp.format;
 
@@ -15,6 +15,8 @@ import static java.util.stream.Collectors.*;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
+
+import matsu.num.statistics.kdeapp.exception.ProgrammingBugException;
 
 /**
  * データの区切り文字を表現する値クラス.
@@ -199,8 +201,14 @@ public final class Separator implements Comparable<Separator> {
         static final Map<String, Character> mapper;
 
         static {
-            mapper = Arrays.stream(EscapeSequence.values())
-                    .collect(toMap(EscapeSequence::representation, EscapeSequence::toChar));
+            try {
+                mapper = Arrays.stream(EscapeSequence.values())
+                        .collect(toMap(EscapeSequence::representation, EscapeSequence::toChar));
+            } catch (IllegalStateException ise) {
+                throw new ProgrammingBugException(
+                        "Instances of " + EscapeSequence.class.getSimpleName() +
+                                " have duplicate representations: " + ise.getMessage());
+            }
         }
     }
 }
