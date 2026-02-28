@@ -14,8 +14,10 @@
  * </p>
  * 
  * @author Matsuura Y.
- * @version 0.5.0
+ * @version 0.6.0
  */
 module matsu.num.Statistics.KdeApp {
+
+    requires java.logging;
     requires matsu.num.Statistics.KernelDensity;
 }

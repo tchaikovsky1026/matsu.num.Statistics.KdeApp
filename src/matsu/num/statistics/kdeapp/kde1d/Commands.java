@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.18
+ * 2026.2.20
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -15,6 +15,7 @@ import static matsu.num.statistics.kdeapp.command.CommandAssignmentRule.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -24,7 +25,8 @@ import matsu.num.statistics.kdeapp.command.ArgumentRequiringCommand;
 import matsu.num.statistics.kdeapp.command.CommandAssignmentRule;
 import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 import matsu.num.statistics.kdeapp.command.NoArgumentCommand;
-import matsu.num.statistics.kdeapp.command.util.SeparatorInterpreter;
+import matsu.num.statistics.kdeapp.format.CommentPrefix;
+import matsu.num.statistics.kdeapp.format.Separator;
 
 /**
  * kde1d で取り扱う, コマンドに関するルールなど.
@@ -43,74 +45,66 @@ final class Commands {
      * 入力ファイルの指定を表現するシングルトンインスタンス.
      * 
      * <p>
-     * 引数はバリデーションされない.
+     * 引数は {@link Path} への変換される.
      * </p>
      */
-    public static final ArgumentRequiringCommand<String> INPUT_FILE_PATH =
-            identifying("INPUT_FILE_PATH", "--input-file", "-f");
+    public static final ArgumentRequiringCommand<Path> INPUT_FILE_PATH =
+            ArgumentRequiringCommand.of(
+                    "INPUT_FILE_PATH", Path.class,
+                    Path::of,
+                    "--input-file", "-f");
 
     /**
      * 強制上書きモードによる出力ファイルの指定を表現するシングルトンインスタンス.
      * 
      * <p>
-     * 引数はバリデーションされない.
+     * 引数は {@link Path} への変換される.
      * </p>
      */
-    public static final ArgumentRequiringCommand<String> OUTPUT_FORCE_FILE_PATH =
-            identifying("OUTPUT_FORCE_FILE_PATH", "--output-force", "-out-f");
+    public static final ArgumentRequiringCommand<Path> OUTPUT_FORCE_FILE_PATH =
+            ArgumentRequiringCommand.of(
+                    "OUTPUT_FORCE_FILE_PATH", Path.class,
+                    Path::of,
+                    "--output-force", "-out-f");
 
     /**
      * 上書き禁止モードである出力ファイルの指定を表現するシングルトンインスタンス.
      * 
      * <p>
-     * 引数はバリデーションされない.
+     * 引数は {@link Path} への変換される.
      * </p>
      */
-    public static final ArgumentRequiringCommand<String> OUTPUT_FILE_PATH =
-            identifying("OUTPUT_FILE_PATH", "--output", "-out");
+    public static final ArgumentRequiringCommand<Path> OUTPUT_FILE_PATH =
+            ArgumentRequiringCommand.of(
+                    "OUTPUT_FILE_PATH", Path.class,
+                    Path::of,
+                    "--output", "-out");
 
     /**
      * 入力のコメント行の prefix の指定を表現するシングルトンインスタンス.
      * 
      * <p>
-     * 引数はバリデーションされない.
+     * インスタンス生成時にバリデーションされる.
      * </p>
      */
-    public static final ArgumentRequiringCommand<String> COMMENT_CHAR =
-            identifying("COMMENT_CHAR", "--comment-char");
+    public static final ArgumentRequiringCommand<CommentPrefix> COMMENT_PREFIX =
+            ArgumentRequiringCommand.of(
+                    "COMMENT_PREFIX", CommentPrefix.class,
+                    CommentPrefix::of,
+                    "--comment-prefix");
 
     /**
      * 区切り文字の指定を表現するシングルトンインスタンス.
      * 
      * <p>
-     * 引数はバリデーションされたうえで, {@code char} に変換される. <br>
-     * 区切り文字の正当性ルールは次の通りである. <br>
-     * (エスケープシーケンスは, 列挙定数で用意されている,
-     * 自動テストで文字列出力される.)
+     * インスタンス生成時にバリデーションされる.
      * </p>
-     * 
-     * <ul>
-     * <li>ASCII 1文字</li>
-     * <li>エスケープシーケンス</li>
-     * </ul>
      */
-    public static final ArgumentRequiringCommand<Character> SEPARATOR =
+    public static final ArgumentRequiringCommand<Separator> SEPARATOR =
             ArgumentRequiringCommand.of(
-                    "SEPARATOR", Character.class,
-                    s -> interpretSeparator(s),
+                    "SEPARATOR", Separator.class,
+                    Separator::from,
                     "--separator", "-sep");
-
-    /**
-     * {@link SeparatorInterpreter#from(String)} を使用して文字列を char に変換する. <br>
-     * 元のメソッドは例外をスローするが, それをnullを返すように翻訳する.
-     */
-    private static Character interpretSeparator(String s) {
-        try {
-            return SeparatorInterpreter.from(s);
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
-    }
 
     /**
      * 出力のラベルに付与する prefix の指定を表現するシングルトンインスタンス.
@@ -119,8 +113,8 @@ final class Commands {
      * 引数はバリデーションされない.
      * </p>
      */
-    public static final ArgumentRequiringCommand<String> LABEL_HEADER =
-            identifying("LABEL_HEADER", "--label-header");
+    public static final ArgumentRequiringCommand<String> LABEL_PREFIX =
+            identifying("LABEL_PREFIX", "--label-prefix");
 
     /**
      * コマンドの指定に関するルール.

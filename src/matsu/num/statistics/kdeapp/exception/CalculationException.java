@@ -15,7 +15,7 @@ package matsu.num.statistics.kdeapp.exception;
  * 
  * @author Matsuura Y.
  */
-public class CalculationException extends ApplicationException {
+public final class CalculationException extends ApplicationException {
 
     private static final long serialVersionUID = 1L;
 

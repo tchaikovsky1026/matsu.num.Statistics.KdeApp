@@ -6,6 +6,6 @@
  */
 
 /**
- * アプリケーションの起動コマンドのユーティリティパッケージ.
+ * プロジェクト (アプリケーション) の共通の要素を扱うパッケージ.
  */
-package matsu.num.statistics.kdeapp.command.util;
+package matsu.num.statistics.kdeapp;

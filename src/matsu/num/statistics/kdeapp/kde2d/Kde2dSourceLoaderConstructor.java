@@ -6,13 +6,19 @@
  */
 
 /*
- * 2026.2.18
+ * 2026.2.23
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
 import static matsu.num.statistics.kdeapp.kde2d.Commands.*;
 
+import java.nio.file.Path;
+
+import matsu.num.statistics.kdeapp.command.ComponentConstructor;
 import matsu.num.statistics.kdeapp.command.ConsoleParameters;
+import matsu.num.statistics.kdeapp.exception.ProgrammingBugException;
+import matsu.num.statistics.kdeapp.format.CommentPrefix;
+import matsu.num.statistics.kdeapp.format.Separator;
 
 /**
  * {@link Kde2dSourceLoader} の構築器.
@@ -41,15 +47,16 @@ final class Kde2dSourceLoaderConstructor implements ComponentConstructor<Kde2dSo
      * @throws NullPointerException {@inheritDoc }
      */
     @Override
-    public Kde2dSourceLoader construct(ConsoleParameters interpreter) {
+    public Kde2dSourceLoader apply(ConsoleParameters interpreter) {
 
-        String pathString = interpreter.valueOf(INPUT_FILE_PATH)
-                .orElseThrow(() -> new AssertionError("unreachable"));
+        // INPUT_FILE_PATH は必須パラメータなので必ず取得できる.
+        Path path = interpreter.valueOf(INPUT_FILE_PATH)
+                .orElseThrow(() -> new ProgrammingBugException("unreachable"));
 
-        String escape = interpreter.valueOf(COMMENT_CHAR)
-                .orElse("#");
-        char separator = interpreter.valueOf(SEPARATOR_INPUT)
-                .orElse('\t');
-        return new Kde2dSourceLoader(pathString, separator, escape);
+        CommentPrefix commentPrefix = interpreter.valueOf(COMMENT_PREFIX)
+                .orElse(CommentPrefix.of("#"));
+        Separator separator = interpreter.valueOf(SEPARATOR_INPUT)
+                .orElse(Separator.from("\t"));
+        return new Kde2dSourceLoader(path, separator, commentPrefix);
     }
 }

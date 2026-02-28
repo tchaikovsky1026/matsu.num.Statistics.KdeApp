@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.17
+ * 2026.2.19
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
@@ -18,7 +18,6 @@ import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Objects;
 
 import matsu.num.statistics.kdeapp.exception.OutputException;
@@ -46,8 +45,8 @@ abstract class ResultOutput {
      * 
      * @throws NullPointerException 引数がnullを含む場合
      */
-    static ResultOutput forceOutput(String filePath) {
-        return new FileOutput(filePath, FileOutput.OverwriteOption.FORCE);
+    static ResultOutput forceOutput(Path path) {
+        return new FileOutput(path, FileOutput.OverwriteOption.FORCE);
     }
 
     /**
@@ -55,8 +54,8 @@ abstract class ResultOutput {
      * 
      * @throws NullPointerException 引数がnullを含む場合
      */
-    static ResultOutput regularOutput(String filePath) {
-        return new FileOutput(filePath, FileOutput.OverwriteOption.REGULAR);
+    static ResultOutput regularOutput(Path path) {
+        return new FileOutput(path, FileOutput.OverwriteOption.REGULAR);
     }
 
     /**
@@ -90,14 +89,14 @@ abstract class ResultOutput {
     private static final class FileOutput extends ResultOutput {
 
         private final OverwriteOption outputOption;
-        private final String filePath;
+        private final Path path;
 
         /**
          * @param forceOverwrite 強制上書きするかどうかに関するオプション
          * @throws NullPointerException 引数がnullを含む場合
          */
-        FileOutput(String filePath, OverwriteOption outputOption) {
-            this.filePath = Objects.requireNonNull(filePath);
+        FileOutput(Path path, OverwriteOption outputOption) {
+            this.path = Objects.requireNonNull(path);
             this.outputOption = Objects.requireNonNull(outputOption);
         }
 
@@ -108,8 +107,6 @@ abstract class ResultOutput {
         @Override
         void write(WritableKde2dResult result, WritingFormatter writingFormatter) {
             try {
-                Path path = Paths.get(filePath);
-
                 // 出力ディレクトリの構築
                 Path parent = path.getParent();
                 if (Objects.nonNull(parent)) {

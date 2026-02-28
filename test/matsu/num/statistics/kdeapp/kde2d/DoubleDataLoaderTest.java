@@ -18,19 +18,15 @@ import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 
+import matsu.num.statistics.kdeapp.format.CommentPrefix;
+import matsu.num.statistics.kdeapp.format.DelimitedLineParser;
+import matsu.num.statistics.kdeapp.format.Separator;
+
 /**
  * {@link DoubleDataLoader} のテスト.
  */
 @RunWith(Enclosed.class)
 final class DoubleDataLoaderTest {
-
-    public static class 生成に関する {
-
-        @Test(expected = NullPointerException.class)
-        public void test_パーサーはnullではいけない() {
-            new DoubleDataLoader(null);
-        }
-    }
 
     public static class 値の抽出に関する {
 
@@ -38,7 +34,8 @@ final class DoubleDataLoaderTest {
 
         @Before
         public void before_ローダーの準備() {
-            loader = new DoubleDataLoader(new DoubleColumnDoubleLineParser(List.of("#"), ','));
+            loader = new DoubleDataLoader(
+                    new DelimitedLineParser(2, Separator.from(","), CommentPrefix.of("#")));
         }
 
         @Test
