@@ -6,23 +6,23 @@
  */
 
 /*
- * 2026.2.17
+ * 2026.2.27
  */
 package matsu.num.statistics.kdeapp.exception;
 
 /**
- * パラメータ不正であることを表現する例外クラス.
+ * プログラミング上のバグを表現するクラス.
  * 
  * @author Matsuura Y.
  */
-public final class IllegalParameterException extends ApplicationException {
+public class ProgrammingBugException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * 引数なしコンストラクタ.
      */
-    public IllegalParameterException() {
+    public ProgrammingBugException() {
         super();
     }
 
@@ -31,7 +31,7 @@ public final class IllegalParameterException extends ApplicationException {
      * 
      * @param message message
      */
-    public IllegalParameterException(String message) {
+    public ProgrammingBugException(String message) {
         super(message);
     }
 
@@ -40,7 +40,7 @@ public final class IllegalParameterException extends ApplicationException {
      * 
      * @param cause cause
      */
-    public IllegalParameterException(Throwable cause) {
+    public ProgrammingBugException(Throwable cause) {
         super(cause);
     }
 
@@ -50,7 +50,7 @@ public final class IllegalParameterException extends ApplicationException {
      * @param message message
      * @param cause cause
      */
-    public IllegalParameterException(String message, Throwable cause) {
+    public ProgrammingBugException(String message, Throwable cause) {
         super(message, cause);
     }
 }

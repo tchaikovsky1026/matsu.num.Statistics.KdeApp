@@ -6,12 +6,15 @@
  */
 
 /*
- * 2026.2.20
+ * 2026.2.27
  */
 package matsu.num.statistics.kdeapp.command;
 
+import static java.util.stream.Collectors.*;
+
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -106,7 +109,8 @@ public final class ConsoleParameters {
          * </p>
          */
         private Interpreter(Map<String, NoArgumentCommand> mapperToNoArgCommand,
-                Map<String, ArgumentRequiringCommand<?>> mapperToArgCommand, CommandAssignmentRule rule) {
+                Map<String, ArgumentRequiringCommand<?>> mapperToArgCommand,
+                CommandAssignmentRule rule) {
             super();
             this.mapperToNoArgCommand = mapperToNoArgCommand;
             this.mapperToArgCommand = mapperToArgCommand;
@@ -205,7 +209,7 @@ public final class ConsoleParameters {
          * </p>
          * 
          * <p>
-         * 渡されたコマンド集合の中で, コマンド文字列 (expression) が重複してはならない.
+         * 渡されたコマンド集合の中で, コマンド文字列 (representation) が重複してはならない.
          * </p>
          * 
          * @param noArgCommands 解釈される引数なしコマンドの集合
@@ -241,18 +245,18 @@ public final class ConsoleParameters {
          * @throws NullPointerException nullを含む場合
          */
         private static void validateCommandDuplication(
-                Set<String> noArgCommandExpressions,
-                Set<String> argCommandExpressions) {
+                Set<String> noArgCommandRepresentations,
+                Set<String> argCommandRepresentations) {
 
-            Set<String> merged = new HashSet<>(argCommandExpressions);
-            merged.addAll(noArgCommandExpressions);
-
-            int overlapCount = argCommandExpressions.size() +
-                    noArgCommandExpressions.size() - merged.size();
-
-            if (overlapCount > 0) {
-                throw new IllegalArgumentException(
-                        "command expressions are duplicated");
+            Map<String, Long> duplicationMap =
+                    List.of(noArgCommandRepresentations, argCommandRepresentations)
+                            .stream()
+                            .flatMap(set -> set.stream())
+                            .collect(groupingBy(s -> s, counting()));
+            for (Map.Entry<String, Long> e : duplicationMap.entrySet()) {
+                if (e.getValue().longValue() >= 2) {
+                    throw new IllegalArgumentException("duplicate representation: " + e.getKey());
+                }
             }
         }
     }

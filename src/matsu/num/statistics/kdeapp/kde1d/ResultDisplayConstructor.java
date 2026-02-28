@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.18
+ * 2026.2.23
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -16,6 +16,7 @@ import static matsu.num.statistics.kdeapp.kde1d.ResultDisplay.*;
 import java.io.PrintStream;
 import java.util.Objects;
 
+import matsu.num.statistics.kdeapp.command.ComponentConstructor;
 import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 
 /**
@@ -45,7 +46,7 @@ final class ResultDisplayConstructor implements ComponentConstructor<ResultDispl
      * @throws NullPointerException {@inheritDoc }
      */
     @Override
-    public ResultDisplay construct(ConsoleParameters interpreter) {
+    public ResultDisplay apply(ConsoleParameters interpreter) {
 
         return interpreter.contains(ECHO_OFF)
                 ? nullDisplay()
