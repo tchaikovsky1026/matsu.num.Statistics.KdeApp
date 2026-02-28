@@ -70,6 +70,7 @@ public final class LineParser {
      * また, 戻り値が空でない場合で, mapper によって例外が発生した場合はそのままスローする.
      * </p>
      * 
+     * @param <T> マッパによる変換後の型
      * @param line 文字列
      * @param mapper マッパ
      * @return 抽出された結果
