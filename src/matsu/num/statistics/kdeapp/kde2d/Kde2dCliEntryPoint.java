@@ -10,11 +10,8 @@
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import matsu.num.statistics.kdeapp.Logging;
 import matsu.num.statistics.kdeapp.exception.ApplicationException;
+import matsu.num.statistics.kdeapp.logging.AppLogger;
 
 /**
  * 2次元カーネル密度推定のエントリーポイント.
@@ -36,7 +33,7 @@ public final class Kde2dCliEntryPoint {
     public static void main(String[] args) {
         int exitCode = 0;
         try {
-            Logging.init("kde2d");
+            AppLogger.init("kde2d");
             LoggerHolder.LOGGER.info("start kde2d");
             exitCode = new Kde2dCliWithStyle050().run(args);
         } catch (ApplicationException ae) {
@@ -45,7 +42,7 @@ public final class Kde2dCliEntryPoint {
         } catch (Exception e) {
             exitCode = 1;
             // 不明な例外はスタックトレースを記録する
-            LoggerHolder.LOGGER.log(Level.SEVERE, "throws unknown exception", e);
+            LoggerHolder.LOGGER.severe("throws unknown exception", e);
         } finally {
             LoggerHolder.LOGGER.info("end kde2d, exit-code=" + exitCode);
             System.exit(exitCode);
@@ -53,6 +50,6 @@ public final class Kde2dCliEntryPoint {
     }
 
     private static final class LoggerHolder {
-        static final Logger LOGGER = Logger.getLogger(Kde2dCliEntryPoint.class.getPackageName());
+        static final AppLogger LOGGER = AppLogger.getLogger(Kde2dCliEntryPoint.class.getPackageName());
     }
 }
