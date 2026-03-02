@@ -28,7 +28,8 @@ import java.util.logging.Logger;
  * このアプリケーションの全体のロギングを扱う.
  * 
  * <p>
- * エントリーポイントの最初で, 初期化メソッドを呼ぶようにすること.
+ * エントリーポイントの最初で, 初期化メソッドを呼ぶようにすること. <br>
+ * 初期化されない間は, ログ出力されない.
  * </p>
  * 
  * @author Matsuura Y.
@@ -36,6 +37,8 @@ import java.util.logging.Logger;
 public final class AppLogger {
 
     private static final String DIR_NAME = "logs";
+
+    private static volatile boolean initialized = false;
 
     private final Logger logger;
 
@@ -55,7 +58,9 @@ public final class AppLogger {
      * @param msg メッセージ
      */
     public void info(String msg) {
-        logger.info(msg);
+        if (initialized) {
+            logger.info(msg);
+        }
     }
 
     /**
@@ -64,7 +69,9 @@ public final class AppLogger {
      * @param msg メッセージ
      */
     public void severe(String msg) {
-        logger.severe(msg);
+        if (initialized) {
+            logger.severe(msg);
+        }
     }
 
     /**
@@ -74,7 +81,9 @@ public final class AppLogger {
      * @param thrown 原因となる例外
      */
     public void severe(String msg, Throwable thrown) {
-        logger.log(Level.SEVERE, msg, thrown);
+        if (initialized) {
+            logger.log(Level.SEVERE, msg, thrown);
+        }
     }
 
     /**
@@ -92,6 +101,7 @@ public final class AppLogger {
                 appName = "unknown";
             }
             LoggerInitializer.exe(appName);
+            initialized = true;
         } catch (Exception e) {
             // おそらく, スローされるのはIOExceptionのみである.
             System.err.println("Logging initialization failed");
