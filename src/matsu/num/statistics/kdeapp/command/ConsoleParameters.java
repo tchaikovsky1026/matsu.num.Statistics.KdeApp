@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.27
+ * 2026.3.2
  */
 package matsu.num.statistics.kdeapp.command;
 
@@ -21,6 +21,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import matsu.num.statistics.kdeapp.exception.IllegalParameterException;
+import matsu.num.statistics.kdeapp.logging.AppLogger;
 
 /**
  * 入力されたコンソールパラメータを扱うクラス.
@@ -96,6 +97,9 @@ public final class ConsoleParameters {
      */
     public static final class Interpreter {
 
+        private static final AppLogger LOGGER =
+                AppLogger.getLogger(Interpreter.class);
+
         private final Map<String, NoArgumentCommand> mapperToNoArgCommand;
         private final Map<String, ArgumentRequiringCommand<?>> mapperToArgCommand;
         private final CommandAssignmentRule rule;
@@ -141,6 +145,8 @@ public final class ConsoleParameters {
             // 引数なしコマンドの設定されているものセット
             Set<NoArgumentCommand> noArgCommandSet = new HashSet<>();
 
+            LOGGER.info("=== Cosole parameter interpreting ===");
+
             while (cursor < size) {
                 // オプションコマンドを同定し, 分岐
                 String commandAsString = args[cursor];
@@ -150,6 +156,8 @@ public final class ConsoleParameters {
                 NoArgumentCommand noArgCommand =
                         mapperToNoArgCommand.get(commandAsString);
                 if (Objects.nonNull(noArgCommand)) {
+                    LOGGER.info("command=\"" + noArgCommand.commandString() + "\"");
+
                     cursor++;
 
                     // すでにコマンドが登録されていたら例外スロー
@@ -165,6 +173,7 @@ public final class ConsoleParameters {
                 ArgumentRequiringCommand<?> argCommand =
                         mapperToArgCommand.get(commandAsString);
                 if (Objects.nonNull(argCommand)) {
+
                     cursor++;
 
                     // 後続のパラメータが必要な場合, 存在しているかを確かめる
@@ -172,13 +181,17 @@ public final class ConsoleParameters {
                         throw new IllegalParameterException(
                                 "args lack for <" + argCommand.commandString() + ">");
                     }
+                    String commandParameter = args[cursor];
+                    LOGGER.info(
+                            "command=\"" + argCommand.commandString() + "\", "
+                                    + "arg=\"" + commandParameter + "\"");
 
                     // すでにコマンドが登録されていたら例外スロー
                     // コンバートに失敗した場合, 例外スロー
                     if (Objects.nonNull(
                             argCommandMapper.put(
                                     argCommand,
-                                    argCommand.convertArg(Objects.requireNonNull(args[cursor]))))) {
+                                    argCommand.convertArg(Objects.requireNonNull(commandParameter))))) {
                         throw new IllegalParameterException(
                                 "duplicate: <" + argCommand.commandString() + ">");
                     }
@@ -197,6 +210,7 @@ public final class ConsoleParameters {
             commandSet.addAll(argCommandMapper.keySet());
             rule.validate(commandSet);
 
+            LOGGER.info("============== interpreted.");
             return new ConsoleParameters(argCommandMapper, noArgCommandSet);
         }
 
