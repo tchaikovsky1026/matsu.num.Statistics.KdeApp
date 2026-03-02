@@ -120,6 +120,32 @@ public final class AppLogger {
     }
 
     /**
+     * クラスに対する名前のロガーを取得する.
+     * 
+     * @param clazz クラス
+     * @return クラスに対する名前のロガー
+     * @throws NullPointerException 引数がnullの場合
+     */
+    public static AppLogger getLogger(Class<?> clazz) {
+        Package p = clazz.getPackage();
+        if (Objects.isNull(p)) {
+            return getLogger(clazz.getName());
+        }
+
+        String packageName = p.getName();
+        final String filter = "matsu.num.statistics.kdeapp";
+        final String replace = "kdeapp";
+
+        // フィルタ文字列が先頭でない場合は置換しないようにした.
+        // (置換のみ目的の場合は if 文は不要)
+        if (packageName.startsWith(filter)) {
+            packageName = packageName.replace(filter, replace);
+        }
+
+        return getLogger(packageName);
+    }
+
+    /**
      * ロガーの初期化を行う.
      */
     private static final class LoggerInitializer {
