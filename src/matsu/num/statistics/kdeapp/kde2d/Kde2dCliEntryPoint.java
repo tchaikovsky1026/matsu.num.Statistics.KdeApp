@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.27
+ * 2026.3.2
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
@@ -50,6 +50,6 @@ public final class Kde2dCliEntryPoint {
     }
 
     private static final class LoggerHolder {
-        static final AppLogger LOGGER = AppLogger.getLogger(Kde2dCliEntryPoint.class.getPackageName());
+        static final AppLogger LOGGER = AppLogger.getLogger(Kde2dCliEntryPoint.class);
     }
 }
