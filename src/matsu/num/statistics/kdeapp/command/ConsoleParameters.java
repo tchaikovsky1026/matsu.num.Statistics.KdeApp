@@ -145,7 +145,7 @@ public final class ConsoleParameters {
             // 引数なしコマンドの設定されているものセット
             Set<NoArgumentCommand> noArgCommandSet = new HashSet<>();
 
-            LOGGER.info("=== Cosole parameter interpreting ===");
+            LOGGER.info("=== Console parameter interpreting ===");
 
             while (cursor < size) {
                 // オプションコマンドを同定し, 分岐
