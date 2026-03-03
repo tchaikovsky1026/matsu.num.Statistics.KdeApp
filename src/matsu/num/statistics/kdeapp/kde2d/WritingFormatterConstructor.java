@@ -48,7 +48,7 @@ final class WritingFormatterConstructor implements ComponentConstructor<WritingF
 
         switch (formatType) {
             case LONG: {
-                WritingFormatter.LongTypeBuilder builder = new WritingFormatter.LongTypeBuilder(
+                var builder = new LongTypeFormatterBuilder(
                         Separator.from("\t"));
                 interpreter.valueOf(LABEL_PREFIX)
                         .ifPresent(header -> builder.enableLabel(header));
@@ -57,7 +57,7 @@ final class WritingFormatterConstructor implements ComponentConstructor<WritingF
                 return builder.build();
             }
             case MATRIX: {
-                WritingFormatter.MatrixTypeBuilder builder = new WritingFormatter.MatrixTypeBuilder(
+                var builder = new MatrixTypeFormatterBuilder(
                         Separator.from("\t"));
                 interpreter.valueOf(SEPARATOR_OUTPUT)
                         .ifPresent(separator -> builder.setSeparator(separator));
