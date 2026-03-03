@@ -14,7 +14,7 @@
  * </p>
  * 
  * @author Matsuura Y.
- * @version 0.6.0
+ * @version 0.6.1
  */
 module matsu.num.Statistics.KdeApp {
 

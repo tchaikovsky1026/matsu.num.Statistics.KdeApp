@@ -119,7 +119,7 @@ abstract class ResultOutput {
 
                 // 結果の出力
                 try (PrintWriter output = new PrintWriter(
-                        Files.newBufferedWriter(path, outputOption.openOption))) {
+                        Files.newBufferedWriter(path, outputOption.openOption, WRITE, TRUNCATE_EXISTING))) {
                     if (result.write(output, writingFormatter)) {
                         throw new IOException("write to " + path.toString());
                     }
