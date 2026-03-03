@@ -16,7 +16,8 @@ import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 import matsu.num.statistics.kdeapp.exception.ApplicationException;
 
 /**
- * 最も単純な1次元カーネル密度推定を実行するクラス.
+ * 最も単純な1次元カーネル密度推定を実行するクラス. <br>
+ * 実行される処理を扱う.
  * 
  * <p>
  * コンソールパラメータは, version 0.2.0 以降のスタイルとする.
