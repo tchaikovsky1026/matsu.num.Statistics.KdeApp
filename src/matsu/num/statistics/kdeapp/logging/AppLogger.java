@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.2
+ * 2026.3.3
  */
 package matsu.num.statistics.kdeapp.logging;
 
@@ -39,6 +39,7 @@ public final class AppLogger {
     private static final String DIR_NAME = "logs";
 
     private static volatile boolean initialized = false;
+    private static volatile boolean debugMode = false;
 
     private final Logger logger;
 
@@ -66,6 +67,11 @@ public final class AppLogger {
     /**
      * SEVERE レベルのログを出力する.
      * 
+     * <p>
+     * スローされた例外のロギングの場合,
+     * {@link #severe(String, Throwable)} が適切である.
+     * </p>
+     * 
      * @param msg メッセージ
      */
     public void severe(String msg) {
@@ -75,14 +81,23 @@ public final class AppLogger {
     }
 
     /**
-     * メッセージと原因となる例外について, SEVERE レベルのログを出力する.
+     * メッセージと該当例外について, SEVERE レベルのログを出力する.
+     * 
+     * <p>
+     * 例外に関する詳細なメッセージがスローされるかどうかは,
+     * Debug モードかどうかに従う.
+     * </p>
      * 
      * @param msg メッセージ
-     * @param thrown 原因となる例外
+     * @param thrown 該当例外
      */
     public void severe(String msg, Throwable thrown) {
         if (initialized) {
-            logger.log(Level.SEVERE, msg, thrown);
+            if (debugMode) {
+                logger.log(Level.SEVERE, msg, thrown);
+            } else {
+                logger.severe(msg);
+            }
         }
     }
 
@@ -96,11 +111,33 @@ public final class AppLogger {
      * @param appName アプリケーションの名前
      */
     public static synchronized void init(String appName) {
+        initHelper(appName, false);
+    }
+
+    /**
+     * ロギングを Debug モードとして初期化する.
+     * 
+     * <p>
+     * 必ず, アプリケーションの起動時に初期化すること.
+     * </p>
+     * 
+     * @param appName アプリケーションの名前
+     */
+    public static synchronized void initWithDebugMode(String appName) {
+        initHelper(appName, true);
+    }
+
+    /**
+     * 初期化のヘルパメソッド.
+     * appName に null を渡しても良い.
+     */
+    private static void initHelper(String appName, boolean debugMode) {
         try {
             if (appName == null) {
                 appName = "unknown";
             }
             LoggerInitializer.exe(appName);
+            AppLogger.debugMode = debugMode;
             initialized = true;
         } catch (Exception e) {
             // おそらく, スローされるのはIOExceptionのみである.
