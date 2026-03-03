@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.20
+ * 2026.3.3
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
@@ -15,6 +15,8 @@ import java.util.Objects;
 import matsu.num.statistics.kdeapp.format.Separator;
 import matsu.num.statistics.kerneldensity.output.FormattableKdeResult2D;
 import matsu.num.statistics.kerneldensity.output.Kde2dCharSVTextFormatter;
+import matsu.num.statistics.kerneldensity.output.Kde2dFormatter;
+import matsu.num.statistics.kerneldensity.output.MatrixCharSVTextFormatter;
 
 /**
  * kde2dの結果出力のフォーマッターを扱う.
@@ -23,30 +25,14 @@ import matsu.num.statistics.kerneldensity.output.Kde2dCharSVTextFormatter;
  */
 final class WritingFormatter {
 
-    private final Separator separator;
-    private final String labelPrefix;
-
-    private final Kde2dCharSVTextFormatter formatter;
+    private final Kde2dFormatter<Iterable<String>> formatter;
 
     /**
      * ビルダから呼ばれる.
      */
-    private WritingFormatter(Builder builder) {
+    private WritingFormatter(Kde2dFormatter<Iterable<String>> formatter) {
         super();
-
-        this.separator = builder.separator;
-        this.labelPrefix = builder.labelPrefix;
-
-        this.formatter = createFormatter();
-    }
-
-    /**
-     * この書き込みパラメータからフォーマッターを構築する.
-     */
-    private Kde2dCharSVTextFormatter createFormatter() {
-        return Objects.isNull(labelPrefix)
-                ? Kde2dCharSVTextFormatter.labelless(separator.charValue())
-                : Kde2dCharSVTextFormatter.withLabelEscaped(separator.charValue(), labelPrefix);
+        this.formatter = formatter;
     }
 
     /**
@@ -60,9 +46,9 @@ final class WritingFormatter {
     }
 
     /**
-     * フォーマッターのミュータブルなビルダ.
+     * Long 型 (1行が1値を表す縦持ち形式) フォーマッターのミュータブルなビルダ.
      */
-    static final class Builder {
+    static final class LongTypeBuilder {
 
         private volatile Separator separator;
         private volatile String labelPrefix;
@@ -77,7 +63,7 @@ final class WritingFormatter {
          * @param separator 区切り文字
          * @throws NullPointerException 引数がnullの場合
          */
-        Builder(Separator separator) {
+        LongTypeBuilder(Separator separator) {
             this.separator = Objects.requireNonNull(separator);
             labelPrefix = null;
         }
@@ -87,7 +73,7 @@ final class WritingFormatter {
          * 
          * @throws NullPointerException 引数がnullの場合
          */
-        Builder(Builder src) {
+        LongTypeBuilder(LongTypeBuilder src) {
             this.separator = src.separator;
             this.labelPrefix = src.labelPrefix;
         }
@@ -106,8 +92,8 @@ final class WritingFormatter {
          * @return {@code this}
          * @throws NullPointerException 引数がnullの場合
          */
-        Builder setSeparator(Separator separator) {
-            this.separator = separator;
+        LongTypeBuilder setSeparator(Separator separator) {
+            this.separator = Objects.requireNonNull(separator);
             return this;
         }
 
@@ -125,7 +111,7 @@ final class WritingFormatter {
          * @param labelPrefix ラベルの先頭に付与する文字
          * @return {@code this}
          */
-        Builder enableLabel(char labelPrefix) {
+        LongTypeBuilder enableLabel(char labelPrefix) {
             return this.enableLabel(String.valueOf(labelPrefix));
         }
 
@@ -144,7 +130,7 @@ final class WritingFormatter {
          * @return {@code this}
          * @throws NullPointerException 引数がnullの場合
          */
-        Builder enableLabel(String labelPrefix) {
+        LongTypeBuilder enableLabel(String labelPrefix) {
             this.labelPrefix = Objects.requireNonNull(labelPrefix);
             return this;
         }
@@ -161,7 +147,7 @@ final class WritingFormatter {
          * 
          * @return {@code this}
          */
-        Builder disableLabel() {
+        LongTypeBuilder disableLabel() {
             this.labelPrefix = null;
             return this;
         }
@@ -172,7 +158,71 @@ final class WritingFormatter {
          * @return フォーマッター
          */
         WritingFormatter build() {
-            return new WritingFormatter(this);
+            return new WritingFormatter(createFormatter());
+        }
+
+        /**
+         * この書き込みパラメータからフォーマッターを構築する.
+         */
+        private Kde2dCharSVTextFormatter createFormatter() {
+            return Objects.isNull(labelPrefix)
+                    ? Kde2dCharSVTextFormatter.labelless(separator.charValue())
+                    : Kde2dCharSVTextFormatter.withLabelEscaped(separator.charValue(), labelPrefix);
+        }
+    }
+
+    /**
+     * Matrix 型 (行列形式) フォーマッターのミュータブルなビルダ.
+     */
+    static final class MatrixTypeBuilder {
+
+        private volatile Separator separator;
+
+        /**
+         * 区切り文字を与えて, ビルダインスタンスを立ち上げる.
+         * 
+         * @param separator 区切り文字
+         * @throws NullPointerException 引数がnullの場合
+         */
+        MatrixTypeBuilder(Separator separator) {
+            this.separator = Objects.requireNonNull(separator);
+        }
+
+        /**
+         * コピーコンストラクタ.
+         * 
+         * @throws NullPointerException 引数がnullの場合
+         */
+        MatrixTypeBuilder(MatrixTypeBuilder src) {
+            this.separator = src.separator;
+        }
+
+        /**
+         * 区切り文字に引数の値を用いるように変更する.
+         * 
+         * <p>
+         * <i>
+         * {@code this}
+         * をリターンするので注意.
+         * </i>
+         * </p>
+         * 
+         * @param separator 区切り文字
+         * @return {@code this}
+         * @throws NullPointerException 引数がnullの場合
+         */
+        MatrixTypeBuilder setSeparator(Separator separator) {
+            this.separator = Objects.requireNonNull(separator);
+            return this;
+        }
+
+        /**
+         * フォーマッターをビルドする.
+         * 
+         * @return フォーマッター
+         */
+        WritingFormatter build() {
+            return new WritingFormatter(MatrixCharSVTextFormatter.of(separator.charValue()));
         }
     }
 }

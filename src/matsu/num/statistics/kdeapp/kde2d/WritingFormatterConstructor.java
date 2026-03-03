@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.18
+ * 2026.3.3
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
@@ -41,7 +41,7 @@ final class WritingFormatterConstructor implements ComponentConstructor<WritingF
     @Override
     public WritingFormatter apply(ConsoleParameters interpreter) {
 
-        WritingFormatter.Builder builder = new WritingFormatter.Builder(
+        WritingFormatter.LongTypeBuilder builder = new WritingFormatter.LongTypeBuilder(
                 Separator.from("\t"));
 
         interpreter.valueOf(LABEL_PREFIX)
