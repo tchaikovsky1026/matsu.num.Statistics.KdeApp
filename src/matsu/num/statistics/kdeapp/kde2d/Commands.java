@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.20
+ * 2026.3.3
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
@@ -27,6 +27,7 @@ import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 import matsu.num.statistics.kdeapp.command.NoArgumentCommand;
 import matsu.num.statistics.kdeapp.format.CommentPrefix;
 import matsu.num.statistics.kdeapp.format.Separator;
+import matsu.num.statistics.kdeapp.kde2d.format.OutputFormatType;
 
 /**
  * kde2d で取り扱う, コマンドに関するルールなど.
@@ -118,6 +119,19 @@ final class Commands {
                     "SEPARATOR_OUTPUT", Separator.class,
                     Separator::from,
                     "--separator-out", "-sep-o");
+
+    /**
+     * 出力フォーマットの形式の指定を表現するシングルトンインスタンス.
+     * 
+     * <p>
+     * インスタンス生成時にバリデーションされる.
+     * </p>
+     */
+    public static final ArgumentRequiringCommand<OutputFormatType> OUTPUT_FORMAT_TYPE =
+            ArgumentRequiringCommand.of(
+                    "OUTPUT_FORMAT_TYPE", OutputFormatType.class,
+                    OutputFormatType::from,
+                    "--format-output", "-format-o");
 
     /**
      * 出力のラベルに付与する prefix の指定を表現するシングルトンインスタンス.
