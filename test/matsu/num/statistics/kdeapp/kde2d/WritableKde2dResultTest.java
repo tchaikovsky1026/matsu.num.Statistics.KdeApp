@@ -45,7 +45,7 @@ final class WritableKde2dResultTest {
         @Before
         public void before_フォーマッターの準備() {
             // カンマ区切り, ラベルなし
-            formatter = new WritingFormatter.Builder(separator)
+            formatter = new LongTypeFormatterBuilder(separator)
                     .disableLabel()
                     .build();
         }
@@ -94,7 +94,7 @@ final class WritableKde2dResultTest {
         @Before
         public void before_フォーマッターの準備() {
             // カンマ区切り, スラッシュがラベル
-            formatter = new WritingFormatter.Builder(separator)
+            formatter = new LongTypeFormatterBuilder(separator)
                     .enableLabel(labelHeader)
                     .build();
         }
@@ -152,7 +152,7 @@ final class WritableKde2dResultTest {
         @Before
         public void before_フォーマッターの準備() {
             // カンマ区切り, スラッシュ2個がラベル
-            formatter = new WritingFormatter.Builder(separator)
+            formatter = new LongTypeFormatterBuilder(separator)
                     .enableLabel(labelHeader)
                     .build();
         }
