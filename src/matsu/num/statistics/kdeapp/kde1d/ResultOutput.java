@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.19
+ * 2026.3.2
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -21,6 +21,7 @@ import java.nio.file.Path;
 import java.util.Objects;
 
 import matsu.num.statistics.kdeapp.exception.OutputException;
+import matsu.num.statistics.kdeapp.logging.AppLogger;
 
 /**
  * 結果の外部出力を扱う.
@@ -88,6 +89,9 @@ abstract class ResultOutput {
      */
     private static final class FileOutput extends ResultOutput {
 
+        private static final AppLogger LOGGER =
+                AppLogger.getLogger(FileOutput.class);
+
         private final OverwriteOption outputOption;
         private final Path path;
 
@@ -120,6 +124,8 @@ abstract class ResultOutput {
                         throw new IOException("write to " + path.toString());
                     }
                 }
+
+                LOGGER.info("output to file: \"" + path.toAbsolutePath().normalize() + "\"");
             } catch (InvalidPathException | IOException e) {
                 throw new OutputException(
                         e.getClass().getSimpleName() + ": " + e.getMessage());

@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.23
+ * 2026.3.3
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
@@ -16,7 +16,8 @@ import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 import matsu.num.statistics.kdeapp.exception.ApplicationException;
 
 /**
- * 最も単純な2次元カーネル密度推定を実行するクラス.
+ * 最も単純な2次元カーネル密度推定を実行するクラス. <br>
+ * 実行される処理を扱う.
  * 
  * <p>
  * コンソールパラメータは, version 0.5.0 以降のスタイルとする.

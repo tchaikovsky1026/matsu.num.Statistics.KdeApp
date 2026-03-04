@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.18
+ * 2026.3.3
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
@@ -14,7 +14,9 @@ import static matsu.num.statistics.kdeapp.kde2d.Commands.*;
 
 import matsu.num.statistics.kdeapp.command.ComponentConstructor;
 import matsu.num.statistics.kdeapp.command.ConsoleParameters;
+import matsu.num.statistics.kdeapp.exception.ProgrammingBugException;
 import matsu.num.statistics.kdeapp.format.Separator;
+import matsu.num.statistics.kdeapp.kde2d.format.OutputFormatType;
 
 /**
  * {@link WritingFormatter} の構築器.
@@ -41,15 +43,28 @@ final class WritingFormatterConstructor implements ComponentConstructor<WritingF
     @Override
     public WritingFormatter apply(ConsoleParameters interpreter) {
 
-        WritingFormatter.Builder builder = new WritingFormatter.Builder(
-                Separator.from("\t"));
+        OutputFormatType formatType = interpreter.valueOf(OUTPUT_FORMAT_TYPE)
+                .orElse(OutputFormatType.LONG);
 
-        interpreter.valueOf(LABEL_PREFIX)
-                .ifPresent(header -> builder.enableLabel(header));
-
-        interpreter.valueOf(SEPARATOR_OUTPUT)
-                .ifPresent(separator -> builder.setSeparator(separator));
-
-        return builder.build();
+        switch (formatType) {
+            case LONG: {
+                var builder = new LongTypeFormatterBuilder(
+                        Separator.from("\t"));
+                interpreter.valueOf(LABEL_PREFIX)
+                        .ifPresent(header -> builder.enableLabel(header));
+                interpreter.valueOf(SEPARATOR_OUTPUT)
+                        .ifPresent(separator -> builder.setSeparator(separator));
+                return builder.build();
+            }
+            case MATRIX: {
+                var builder = new MatrixTypeFormatterBuilder(
+                        Separator.from("\t"));
+                interpreter.valueOf(SEPARATOR_OUTPUT)
+                        .ifPresent(separator -> builder.setSeparator(separator));
+                return builder.build();
+            }
+            default:
+                throw new ProgrammingBugException("Incomplete switch case.");
+        }
     }
 }

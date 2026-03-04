@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.20
+ * 2026.3.2
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
@@ -19,6 +19,7 @@ import matsu.num.statistics.kdeapp.exception.InputException;
 import matsu.num.statistics.kdeapp.format.CommentPrefix;
 import matsu.num.statistics.kdeapp.format.DelimitedLineParser;
 import matsu.num.statistics.kdeapp.format.Separator;
+import matsu.num.statistics.kdeapp.logging.AppLogger;
 
 /**
  * 2次元のカーネル密度推定に使うデータソースのローダー.
@@ -26,6 +27,9 @@ import matsu.num.statistics.kdeapp.format.Separator;
  * @author Matsuura Y.
  */
 final class Kde2dSourceLoader {
+
+    private static final AppLogger LOGGER =
+            AppLogger.getLogger(Kde2dSourceLoader.class);
 
     private final DoubleDataLoader loader;
     private final Path path;
@@ -53,7 +57,9 @@ final class Kde2dSourceLoader {
      */
     double[][] load() {
         try {
-            return loader.load(() -> Files.lines(path));
+            double[][] out = loader.load(() -> Files.lines(path));
+            LOGGER.info("load: \"" + path.toAbsolutePath().normalize() + "\"");
+            return out;
         } catch (IOException e) {
             throw new InputException(
                     e.getClass().getSimpleName() + ": " + e.getMessage());
