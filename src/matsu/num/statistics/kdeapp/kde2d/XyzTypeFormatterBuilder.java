@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.3
+ * 2026.3.5
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
@@ -18,11 +18,11 @@ import matsu.num.statistics.kerneldensity.output.Kde2dCharSVTextFormatter;
 import matsu.num.statistics.kerneldensity.output.Kde2dFormatter;
 
 /**
- * Long 型 (1行が1値を表す縦持ち形式) フォーマッターのミュータブルなビルダ.
+ * XYZ 型 (1行が1値を表す縦持ち形式) フォーマッターのミュータブルなビルダ.
  * 
  * @author Matsuura Y.
  */
-final class LongTypeFormatterBuilder {
+final class XyzTypeFormatterBuilder {
 
     private volatile Separator separator;
     private volatile String labelPrefix;
@@ -37,7 +37,7 @@ final class LongTypeFormatterBuilder {
      * @param separator 区切り文字
      * @throws NullPointerException 引数がnullの場合
      */
-    LongTypeFormatterBuilder(Separator separator) {
+    XyzTypeFormatterBuilder(Separator separator) {
         this.separator = Objects.requireNonNull(separator);
         labelPrefix = null;
     }
@@ -56,7 +56,7 @@ final class LongTypeFormatterBuilder {
      * @return {@code this}
      * @throws NullPointerException 引数がnullの場合
      */
-    LongTypeFormatterBuilder setSeparator(Separator separator) {
+    XyzTypeFormatterBuilder setSeparator(Separator separator) {
         this.separator = Objects.requireNonNull(separator);
         return this;
     }
@@ -75,7 +75,7 @@ final class LongTypeFormatterBuilder {
      * @param labelPrefix ラベルの先頭に付与する文字
      * @return {@code this}
      */
-    LongTypeFormatterBuilder enableLabel(char labelPrefix) {
+    XyzTypeFormatterBuilder enableLabel(char labelPrefix) {
         return this.enableLabel(String.valueOf(labelPrefix));
     }
 
@@ -94,7 +94,7 @@ final class LongTypeFormatterBuilder {
      * @return {@code this}
      * @throws NullPointerException 引数がnullの場合
      */
-    LongTypeFormatterBuilder enableLabel(String labelPrefix) {
+    XyzTypeFormatterBuilder enableLabel(String labelPrefix) {
         this.labelPrefix = Objects.requireNonNull(labelPrefix);
         return this;
     }
@@ -111,7 +111,7 @@ final class LongTypeFormatterBuilder {
      * 
      * @return {@code this}
      */
-    LongTypeFormatterBuilder disableLabel() {
+    XyzTypeFormatterBuilder disableLabel() {
         this.labelPrefix = null;
         return this;
     }

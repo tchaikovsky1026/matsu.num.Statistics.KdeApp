@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.3
+ * 2026.3.5
  */
 package matsu.num.statistics.kdeapp.kde2d.format;
 
@@ -26,7 +26,13 @@ public enum OutputFormatType {
     /**
      * 1行が1値を表す, 縦持ち形式を表現するシングルトンインスタンス.
      */
-    LONG("long"),
+    XYZ("xyz"),
+
+    /**
+     * 1行が1値を表す縦持ち形式で,
+     * メジャー値 (x値) のまとまりでブロック構造をとることを表現するシングルトンインスタンス.
+     */
+    XYZ_BLOCK("xyz-block"),
 
     /**
      * 値を2次元に並べて表す, 行列形式を表現するシングルトンインスタンス.
