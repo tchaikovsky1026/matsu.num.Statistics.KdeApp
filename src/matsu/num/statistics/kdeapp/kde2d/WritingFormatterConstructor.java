@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.3
+ * 2026.3.5
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
@@ -44,11 +44,11 @@ final class WritingFormatterConstructor implements ComponentConstructor<WritingF
     public WritingFormatter apply(ConsoleParameters interpreter) {
 
         OutputFormatType formatType = interpreter.valueOf(OUTPUT_FORMAT_TYPE)
-                .orElse(OutputFormatType.LONG);
+                .orElse(OutputFormatType.XYZ);
 
         switch (formatType) {
-            case LONG: {
-                var builder = new LongTypeFormatterBuilder(
+            case XYZ: {
+                var builder = new XyzTypeFormatterBuilder(
                         Separator.from("\t"));
                 interpreter.valueOf(LABEL_PREFIX)
                         .ifPresent(header -> builder.enableLabel(header));
