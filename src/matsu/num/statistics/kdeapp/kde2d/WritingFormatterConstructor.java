@@ -56,6 +56,14 @@ final class WritingFormatterConstructor implements ComponentConstructor<WritingF
                         .ifPresent(separator -> builder.setSeparator(separator));
                 return builder.build();
             }
+            case XYZ_BLOCK: {
+                var builder = new XyzBlockTypeFormatterBuilder(
+                        Separator.from("\t"));
+                builder.setBlankGap(1);
+                interpreter.valueOf(SEPARATOR_OUTPUT)
+                        .ifPresent(separator -> builder.setSeparator(separator));
+                return builder.build();
+            }
             case MATRIX: {
                 var builder = new MatrixTypeFormatterBuilder(
                         Separator.from("\t"));
