@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.5
+ * 2026.3.7
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
@@ -60,6 +60,8 @@ final class WritingFormatterConstructor implements ComponentConstructor<WritingF
                 var builder = new XyzBlockTypeFormatterBuilder(
                         Separator.from("\t"));
                 builder.setBlankGap(1);
+                interpreter.valueOf(LABEL_PREFIX)
+                        .ifPresent(header -> builder.enableLabel(header));
                 interpreter.valueOf(SEPARATOR_OUTPUT)
                         .ifPresent(separator -> builder.setSeparator(separator));
                 return builder.build();
