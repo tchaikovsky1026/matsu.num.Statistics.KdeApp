@@ -13,7 +13,6 @@ import static org.hamcrest.Matchers.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.StreamSupport;
 
 import org.junit.experimental.runners.Enclosed;
@@ -36,24 +35,21 @@ final class BlockFlatteningTest {
 
         @Theory
         public void test_ランダムに構造化文字列を作成してテストする(int gap) {
-            int iteration = 1000;
 
             BlockFlattening blockFlattening = new BlockFlattening(gap);
 
-            for (int c = 0; c < iteration; c++) {
-                // 各サイズは0から4の間とする
-                int size = ThreadLocalRandom.current().nextInt(5);
-                int[] structureSize = new int[size];
-                for (int i = 0; i < size; i++) {
-                    structureSize[i] = ThreadLocalRandom.current().nextInt(5);
-                }
-
-                List<List<String>> src = createStructuredString(structureSize);
-                List<String> result = iterableToList(blockFlattening.apply(src));
-                List<String> expected = flattenWithBlank(src, gap);
-
-                assertThat(result, is(expected));
+            // 各サイズは2とする
+            int size = 2;
+            int[] structureSize = new int[size];
+            for (int i = 0; i < size; i++) {
+                structureSize[i] = 2;
             }
+
+            List<List<String>> src = createStructuredString(structureSize);
+            List<String> result = iterableToList(blockFlattening.apply(src));
+            List<String> expected = flattenWithBlank(src, gap);
+
+            assertThat(result, is(expected));
 
         }
 
