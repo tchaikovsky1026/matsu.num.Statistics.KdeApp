@@ -6,15 +6,16 @@
  */
 
 /*
- * 2026.3.5
+ * 2026.3.7
  */
 package matsu.num.statistics.kdeapp.kde2d.format;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+
+import matsu.num.statistics.kdeapp.base.IterableFlattening;
 
 /**
  * ブロック化された文字列Iterable
@@ -22,28 +23,27 @@ import java.util.NoSuchElementException;
  * をフラット化して,
  * {@code Iterable<String>} に変換するヘルパ.
  * 
+ * <p>
+ * 構造の間に空行を挟む.
+ * </p>
+ * 
  * @author Matsuura Y.
  */
 public final class BlockFlattening {
 
-    private final int gap;
     private final Iterable<String> blanckLineIterable;
 
     /**
      * 唯一のコンストラクタ. <br>
      * ブロックの間に挟む空行の数を与える.
      * 
-     * @param gap ブロック間の空行の数
+     * @param blankGap ブロック間の空行の数
      * @throws IllegalArgumentException gap が負の場合
      */
-    public BlockFlattening(int gap) {
+    public BlockFlattening(int blankGap) {
         super();
 
-        if (gap < 0) {
-            throw new IllegalArgumentException("gap < 0");
-        }
-        this.gap = gap;
-        this.blanckLineIterable = new BlankLineIterable();
+        this.blanckLineIterable = new BlankLineIterable(blankGap);
     }
 
     /**
@@ -61,76 +61,41 @@ public final class BlockFlattening {
      * @throws NullPointerException 引数が null の場合
      */
     public Iterable<String> apply(Iterable<? extends Iterable<? extends String>> src) {
-        return new FlattenedIterable(src);
-    }
-
-    /**
-     * フラット化された Iterator の実装. <br>
-     * スレッドセーフでない.
-     */
-    private final class FlattenedIterable implements Iterable<String> {
-
-        private final List<Iterable<? extends String>> iterableList;
-
-        FlattenedIterable(Iterable<? extends Iterable<? extends String>> src) {
-            super();
-
-            List<Iterable<? extends String>> list = new ArrayList<>();
-            for (Iterator<? extends Iterable<? extends String>> oi = src.iterator();
-                    oi.hasNext();) {
-                list.add(oi.next());
-                if (oi.hasNext()) {
-                    list.add(blanckLineIterable);
-                }
-            }
-            this.iterableList = list;
-        }
-
-        @Override
-        public Iterator<String> iterator() {
-            return new FlattenedIterator();
-        }
-
-        private final class FlattenedIterator implements Iterator<String> {
-
-            private final Iterator<Iterable<? extends String>> outer = iterableList.iterator();
-            private Iterator<? extends String> inner = Collections.emptyIterator();
-
-            @Override
-            public boolean hasNext() {
-                normalize();
-                return inner.hasNext();
-            }
-
-            @Override
-            public String next() {
-                normalize();
-                return inner.next();
-            }
-
-            /**
-             * inner.hasNext == true となるまでイテレータを進める.
-             * ただし, outer, inner ともに hasNext == false となった場合は終了.
-             */
-            private void normalize() {
-                while (!inner.hasNext()) {
-                    if (!outer.hasNext()) {
-                        break;
-                    }
-                    inner = outer.next().iterator();
-                }
+        // 与えられたネストIterableを展開し, 間にブランクを挟む
+        List<Iterable<? extends String>> blankInsertedList = new ArrayList<>();
+        for (Iterator<? extends Iterable<? extends String>> oi = src.iterator();
+                oi.hasNext();) {
+            blankInsertedList.add(oi.next());
+            if (oi.hasNext()) {
+                blankInsertedList.add(blanckLineIterable);
             }
         }
+
+        return IterableFlattening.flatten(blankInsertedList);
     }
 
     /**
      * ブランク行を表すIterable. <br>
      * このクラスのインスタンスは使いまわしが可能.
      */
-    private final class BlankLineIterable implements Iterable<String> {
+    private static final class BlankLineIterable implements Iterable<String> {
 
-        BlankLineIterable() {
+        private final int blankGap;
+
+        /**
+         * 唯一のコンストラクタ. <br>
+         * ブロックの間に挟む空行の数を与える.
+         * 
+         * @param blankGap ブロック間の空行の数
+         * @throws IllegalArgumentException gap が負の場合
+         */
+        BlankLineIterable(int blankGap) {
             super();
+
+            if (blankGap < 0) {
+                throw new IllegalArgumentException("blank gap < 0");
+            }
+            this.blankGap = blankGap;
         }
 
         @Override
@@ -151,7 +116,7 @@ public final class BlockFlattening {
 
             @Override
             public boolean hasNext() {
-                return cursor < gap;
+                return cursor < blankGap;
             }
 
             @Override
