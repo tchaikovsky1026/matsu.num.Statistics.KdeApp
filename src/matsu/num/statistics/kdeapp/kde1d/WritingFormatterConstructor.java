@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.23
+ * 2026.3.9
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -17,7 +17,7 @@ import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 import matsu.num.statistics.kdeapp.format.Separator;
 
 /**
- * {@link WritingFormatter} の構築器.
+ * {@link WritingFormatterBk} の構築器.
  * 
  * <p>
  * 出力フォーマットは, 2 columns である. <br>
@@ -41,7 +41,7 @@ final class WritingFormatterConstructor implements ComponentConstructor<WritingF
     @Override
     public WritingFormatter apply(ConsoleParameters interpreter) {
 
-        WritingFormatter.Builder builder = new WritingFormatter.Builder(
+        var builder = new XyTypeFormatterBuilder(
                 Separator.from("\t"));
 
         interpreter.valueOf(

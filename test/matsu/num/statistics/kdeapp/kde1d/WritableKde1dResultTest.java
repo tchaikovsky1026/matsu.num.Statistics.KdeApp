@@ -45,7 +45,7 @@ final class WritableKde1dResultTest {
         @Before
         public void before_フォーマッターの準備() {
             // カンマ区切り, スラッシュがラベル
-            formatter = new WritingFormatter.Builder(separator)
+            formatter = new XyTypeFormatterBuilder(separator)
                     .disableLabel()
                     .build();
         }
@@ -94,7 +94,7 @@ final class WritableKde1dResultTest {
         @Before
         public void before_フォーマッターの準備() {
             // カンマ区切り, スラッシュがラベル
-            formatter = new WritingFormatter.Builder(separator)
+            formatter = new XyTypeFormatterBuilder(separator)
                     .enableLabel(labelHeader)
                     .build();
         }
@@ -152,7 +152,7 @@ final class WritableKde1dResultTest {
         @Before
         public void before_フォーマッターの準備() {
             // カンマ区切り, スラッシュがラベル
-            formatter = new WritingFormatter.Builder(separator)
+            formatter = new XyTypeFormatterBuilder(separator)
                     .enableLabel(labelHeader)
                     .build();
         }
