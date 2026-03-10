@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.23
+ * 2026.3.10
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -18,6 +18,7 @@ import matsu.num.statistics.kdeapp.command.ComponentConstructor;
 import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 import matsu.num.statistics.kdeapp.exception.ProgrammingBugException;
 import matsu.num.statistics.kdeapp.format.CommentPrefix;
+import matsu.num.statistics.kdeapp.kde1d.task.Kde1dSourceLoader;
 
 /**
  * {@link Kde1dSourceLoader} の構築器.

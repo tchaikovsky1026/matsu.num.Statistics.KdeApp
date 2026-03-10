@@ -6,9 +6,9 @@
  */
 
 /*
- * 2026.3.2
+ * 2026.3.10
  */
-package matsu.num.statistics.kdeapp.kde1d;
+package matsu.num.statistics.kdeapp.kde1d.task;
 
 import static java.nio.file.StandardOpenOption.*;
 
@@ -28,42 +28,42 @@ import matsu.num.statistics.kdeapp.logging.AppLogger;
  * 
  * @author Matsuura Y.
  */
-abstract class ResultOutput {
-
-    /**
-     * null-出力を表すシングルトンインスタンス.
-     */
-    private static final ResultOutput nullOutput = new ResultOutput() {
-
-        @Override
-        void write(WritableKde1dResult result, WritingFormatter writingFormatter) {
-            // 何もしない.
-        }
-    };
+public abstract class ResultOutput {
 
     /**
      * 強制上書きモードによる出力を返す.
      * 
+     * @param path 出力パス
+     * @return 出力
      * @throws NullPointerException 引数がnullを含む場合
      */
-    static ResultOutput forceOutput(Path path) {
+    public static ResultOutput forceOutput(Path path) {
         return new FileOutput(path, FileOutput.OverwriteOption.FORCE);
     }
 
     /**
      * 上書き禁止モードによる出力を返す.
      * 
+     * @param path 出力パス
+     * @return 出力
      * @throws NullPointerException 引数がnullを含む場合
      */
-    static ResultOutput regularOutput(Path path) {
+    public static ResultOutput regularOutput(Path path) {
         return new FileOutput(path, FileOutput.OverwriteOption.REGULAR);
     }
 
     /**
      * null-出力を返す.
+     * 
+     * @return null-出力
      */
-    static ResultOutput nullOutput() {
-        return nullOutput;
+    public static ResultOutput nullOutput() {
+        return new ResultOutput() {
+            @Override
+            public void write(WritableKde1dResult result, WritingFormatter writingFormatter) {
+                // 何もしない.
+            }
+        };
     }
 
     /**
@@ -82,7 +82,7 @@ abstract class ResultOutput {
      * @throws OutputException 例外が発生した場合
      * @throws NullPointerException 引数がnull (スローされない場合がある)
      */
-    abstract void write(WritableKde1dResult result, WritingFormatter writingFormatter);
+    public abstract void write(WritableKde1dResult result, WritingFormatter writingFormatter);
 
     /**
      * ファイルへの出力.
@@ -109,7 +109,7 @@ abstract class ResultOutput {
          * @throws NullPointerException {@inheritDoc}
          */
         @Override
-        void write(WritableKde1dResult result, WritingFormatter writingFormatter) {
+        public void write(WritableKde1dResult result, WritingFormatter writingFormatter) {
             try {
                 // 出力ディレクトリの構築
                 Path parent = path.getParent();

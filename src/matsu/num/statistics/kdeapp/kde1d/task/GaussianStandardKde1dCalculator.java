@@ -6,9 +6,9 @@
  */
 
 /*
- * 2026.2.17
+ * 2026.3.10
  */
-package matsu.num.statistics.kdeapp.kde1d;
+package matsu.num.statistics.kdeapp.kde1d.task;
 
 import java.util.Arrays;
 
@@ -23,11 +23,14 @@ import matsu.num.statistics.kerneldensity.output.FormattableKdeResult1D;
  * 
  * @author Matsuura Y.
  */
-final class GaussianStandardKde1dCalculator {
+public final class GaussianStandardKde1dCalculator {
 
     private final GaussianKd1D.Factory kde1dFactory = GaussianKd1D.Factory.withDefaultRule();
 
-    GaussianStandardKde1dCalculator() {
+    /**
+     * 唯一のコンストラクタ.
+     */
+    public GaussianStandardKde1dCalculator() {
     }
 
     /**
@@ -44,10 +47,11 @@ final class GaussianStandardKde1dCalculator {
      * </p>
      * 
      * @param source 入力ソース
+     * @return 結果
      * @throws CalculationException ソースが空の場合, infやNaNを含む場合
      * @throws NullPointerException 引数にnullが含まれる場合
      */
-    WritableKde1dResult calc(double[] source) {
+    public WritableKde1dResult calc(double[] source) {
         // 暫定的に, 描画区間を自動で定めるとする
         if (source.length == 0) {
             throw new CalculationException("source is empty");

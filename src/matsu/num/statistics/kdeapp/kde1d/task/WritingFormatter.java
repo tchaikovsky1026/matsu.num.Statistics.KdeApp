@@ -6,9 +6,9 @@
  */
 
 /*
- * 2026.3.9
+ * 2026.3.10
  */
-package matsu.num.statistics.kdeapp.kde1d;
+package matsu.num.statistics.kdeapp.kde1d.task;
 
 import matsu.num.statistics.kerneldensity.output.FormattableKdeResult1D;
 
@@ -17,7 +17,7 @@ import matsu.num.statistics.kerneldensity.output.FormattableKdeResult1D;
  * 
  * @author Matsuura Y.
  */
-interface WritingFormatter {
+public interface WritingFormatter {
 
     /**
      * kde1dの計算結果をフォーマットして文字列の形で返す.

@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.9
+ * 2026.3.10
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -15,6 +15,8 @@ import static matsu.num.statistics.kdeapp.kde1d.Commands.*;
 import matsu.num.statistics.kdeapp.command.ComponentConstructor;
 import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 import matsu.num.statistics.kdeapp.format.Separator;
+import matsu.num.statistics.kdeapp.kde1d.task.WritingFormatter;
+import matsu.num.statistics.kdeapp.kde1d.task.XyTypeFormatterBuilder;
 
 /**
  * {@link WritingFormatterBk} の構築器.

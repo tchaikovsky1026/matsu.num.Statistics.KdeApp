@@ -6,9 +6,9 @@
  */
 
 /*
- * 2026.3.9
+ * 2026.3.10
  */
-package matsu.num.statistics.kdeapp.kde1d;
+package matsu.num.statistics.kdeapp.kde1d.task;
 
 import java.util.Objects;
 
@@ -21,7 +21,7 @@ import matsu.num.statistics.kerneldensity.output.Kde1dCharSVTextFormatter;
  * 
  * @author Matsuura Y.
  */
-final class XyTypeFormatterBuilder {
+public final class XyTypeFormatterBuilder {
 
     private volatile Separator separator;
     private volatile String labelPrefix;
@@ -36,7 +36,7 @@ final class XyTypeFormatterBuilder {
      * @param separator 区切り文字
      * @throws NullPointerException 引数がnullの場合
      */
-    XyTypeFormatterBuilder(Separator separator) {
+    public XyTypeFormatterBuilder(Separator separator) {
         this.separator = Objects.requireNonNull(separator);
         labelPrefix = null;
     }
@@ -55,7 +55,7 @@ final class XyTypeFormatterBuilder {
      * @return {@code this}
      * @throws NullPointerException 引数がnullの場合
      */
-    XyTypeFormatterBuilder setSeparator(Separator separator) {
+    public XyTypeFormatterBuilder setSeparator(Separator separator) {
         this.separator = Objects.requireNonNull(separator);
         return this;
     }
@@ -74,7 +74,7 @@ final class XyTypeFormatterBuilder {
      * @param labelPrefix ラベルの先頭に付与する文字
      * @return {@code this}
      */
-    XyTypeFormatterBuilder enableLabel(char labelPrefix) {
+    public XyTypeFormatterBuilder enableLabel(char labelPrefix) {
         return this.enableLabel(String.valueOf(labelPrefix));
     }
 
@@ -93,7 +93,7 @@ final class XyTypeFormatterBuilder {
      * @return {@code this}
      * @throws NullPointerException 引数がnullの場合
      */
-    XyTypeFormatterBuilder enableLabel(String labelPrefix) {
+    public XyTypeFormatterBuilder enableLabel(String labelPrefix) {
         this.labelPrefix = Objects.requireNonNull(labelPrefix);
         return this;
     }
@@ -110,7 +110,7 @@ final class XyTypeFormatterBuilder {
      * 
      * @return {@code this}
      */
-    XyTypeFormatterBuilder disableLabel() {
+    public XyTypeFormatterBuilder disableLabel() {
         this.labelPrefix = null;
         return this;
     }
@@ -120,7 +120,7 @@ final class XyTypeFormatterBuilder {
      * 
      * @return フォーマッター
      */
-    WritingFormatter build() {
+    public WritingFormatter build() {
         Kde1dCharSVTextFormatter innerFormatter = Objects.isNull(labelPrefix)
                 ? Kde1dCharSVTextFormatter.labelless(separator.charValue())
                 : Kde1dCharSVTextFormatter.withLabelEscaped(separator.charValue(), labelPrefix);

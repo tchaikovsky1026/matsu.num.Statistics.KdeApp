@@ -6,9 +6,9 @@
  */
 
 /*
- * 2026.3.2
+ * 2026.3.10
  */
-package matsu.num.statistics.kdeapp.kde1d;
+package matsu.num.statistics.kdeapp.kde1d.task;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -25,7 +25,7 @@ import matsu.num.statistics.kdeapp.logging.AppLogger;
  * 
  * @author Matsuura Y.
  */
-final class Kde1dSourceLoader {
+public final class Kde1dSourceLoader {
 
     private static final AppLogger LOGGER =
             AppLogger.getLogger(Kde1dSourceLoader.class);
@@ -41,7 +41,7 @@ final class Kde1dSourceLoader {
      * @throws IllegalArgumentException コメント開始文字が空文字の場合
      * @throws NullPointerException 引数にnullを含む場合
      */
-    Kde1dSourceLoader(Path path, CommentPrefix commentPrefix) {
+    public Kde1dSourceLoader(Path path, CommentPrefix commentPrefix) {
         this.loader = new DoubleDataLoader(new LineParser(commentPrefix));
         this.path = Objects.requireNonNull(path);
     }
@@ -52,7 +52,7 @@ final class Kde1dSourceLoader {
      * @return データソース
      * @throws InputException ファイルアクセスで例外が発生した場合, ファイルのフォーマットが不正の場合
      */
-    double[] load() {
+    public double[] load() {
         try {
             double[] out = loader.load(() -> Files.lines(path));
             LOGGER.info("load: \"" + path.toAbsolutePath().normalize() + "\"");

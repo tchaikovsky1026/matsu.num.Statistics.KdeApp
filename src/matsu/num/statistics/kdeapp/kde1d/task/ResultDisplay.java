@@ -6,9 +6,9 @@
  */
 
 /*
- * 2026.2.17
+ * 2026.3.10
  */
-package matsu.num.statistics.kdeapp.kde1d;
+package matsu.num.statistics.kdeapp.kde1d.task;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -21,35 +21,32 @@ import matsu.num.statistics.kdeapp.exception.OutputException;
  * 
  * @author Matsuura Y.
  */
-abstract class ResultDisplay {
-
-    /**
-     * null-ディスプレイ出力を表すシングルトンインスタンス.
-     */
-    private static final ResultDisplay nullDisplay = new ResultDisplay() {
-
-        @Override
-        void write(WritableKde1dResult result, WritingFormatter writingFormatter) {
-            // 何もしない.
-        }
-    };
+public abstract class ResultDisplay {
 
     /**
      * 標準出力によるディスプレイ出力を返す.
      * 
      * @param out System.out
      * @param err System.err
+     * @return stdディスプレイ
      * @throws NullPointerException 引数がnullを含む場合
      */
-    static ResultDisplay stdout(PrintStream out, PrintStream err) {
+    public static ResultDisplay stdout(PrintStream out, PrintStream err) {
         return new StdOutput(out, err);
     }
 
     /**
      * null-ディスプレイ出力を返す.
+     * 
+     * @return null-ディスプレイ
      */
-    static ResultDisplay nullDisplay() {
-        return nullDisplay;
+    public static ResultDisplay nullDisplay() {
+        return new ResultDisplay() {
+            @Override
+            public void write(WritableKde1dResult result, WritingFormatter writingFormatter) {
+                // 何もしない.
+            }
+        };
     }
 
     /**
@@ -68,7 +65,7 @@ abstract class ResultDisplay {
      * @throws OutputException 例外が発生した場合
      * @throws NullPointerException 引数がnull (スローされない場合がある)
      */
-    abstract void write(WritableKde1dResult result, WritingFormatter writingFormatter);
+    public abstract void write(WritableKde1dResult result, WritingFormatter writingFormatter);
 
     /**
      * 標準出力.
@@ -95,7 +92,7 @@ abstract class ResultDisplay {
          * @throws NullPointerException {@inheritDoc }
          */
         @Override
-        void write(WritableKde1dResult result, WritingFormatter writingFormatter) {
+        public void write(WritableKde1dResult result, WritingFormatter writingFormatter) {
             if (result.write(new PrintWriter(out), writingFormatter)) {
                 throw new OutputException("System.out");
             }
