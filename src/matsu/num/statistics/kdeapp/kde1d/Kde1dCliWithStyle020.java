@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.10
+ * 2026.3.11
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -15,7 +15,7 @@ import java.io.PrintStream;
 import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 import matsu.num.statistics.kdeapp.exception.ApplicationException;
 import matsu.num.statistics.kdeapp.kde1d.task.GaussianStandardKde1dCalculator;
-import matsu.num.statistics.kdeapp.kde1d.task.Kde1dSourceLoader;
+import matsu.num.statistics.kdeapp.kde1d.task.Kde1dSourceReader;
 import matsu.num.statistics.kdeapp.kde1d.task.ResultDisplay;
 import matsu.num.statistics.kdeapp.kde1d.task.ResultOutput;
 import matsu.num.statistics.kdeapp.kde1d.task.WritableKde1dResult;
@@ -44,7 +44,7 @@ final class Kde1dCliWithStyle020 {
      * ソースとなるファイルパスをコマンドライン引数として受け取り, 標準出力で推定結果を出力する単純実行.
      * 
      * <p>
-     * 入力ファイルのフォーマットは, {@link Kde1dSourceLoaderConstructor} に従う. <br>
+     * 入力ファイルのフォーマットは, {@link SourceReaderConstructor} に従う. <br>
      * 出力フォーマットは, {@link WritingFormatterConstructor} に従う.
      * </p>
      * 
@@ -74,8 +74,8 @@ final class Kde1dCliWithStyle020 {
 
         ConsoleParameters interpretation = Commands.getInterpreter().interpret(args);
 
-        Kde1dSourceLoader loader =
-                new Kde1dSourceLoaderConstructor().apply(interpretation);
+        Kde1dSourceReader loader =
+                new SourceReaderConstructor().apply(interpretation);
         WritingFormatter writingFormatter =
                 new WritingFormatterConstructor().apply(interpretation);
         ResultOutput output =
@@ -83,7 +83,7 @@ final class Kde1dCliWithStyle020 {
         ResultDisplay stdout =
                 new ResultDisplayConstructor(out, err).apply(interpretation);
 
-        double[] source = loader.load();
+        double[] source = loader.read();
         WritableKde1dResult result = new GaussianStandardKde1dCalculator().calc(source);
         stdout.write(result, writingFormatter);
         output.write(result, writingFormatter);
