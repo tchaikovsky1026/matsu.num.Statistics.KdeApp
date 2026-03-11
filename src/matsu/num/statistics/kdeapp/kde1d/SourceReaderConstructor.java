@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.23
+ * 2026.3.11
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -18,9 +18,10 @@ import matsu.num.statistics.kdeapp.command.ComponentConstructor;
 import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 import matsu.num.statistics.kdeapp.exception.ProgrammingBugException;
 import matsu.num.statistics.kdeapp.format.CommentPrefix;
+import matsu.num.statistics.kdeapp.kde1d.task.Kde1dSourceReader;
 
 /**
- * {@link Kde1dSourceLoader} の構築器.
+ * {@link Kde1dSourceReader} の構築器.
  * 
  * <p>
  * 入力ファイルのフォーマットは, 次である.
@@ -34,19 +35,19 @@ import matsu.num.statistics.kdeapp.format.CommentPrefix;
  * 
  * @author Matsuura Y.
  */
-final class Kde1dSourceLoaderConstructor implements ComponentConstructor<Kde1dSourceLoader> {
+final class SourceReaderConstructor implements ComponentConstructor<Kde1dSourceReader> {
 
     /**
      * 唯一のコンストラクタ.
      */
-    Kde1dSourceLoaderConstructor() {
+    SourceReaderConstructor() {
     }
 
     /**
      * @throws NullPointerException {@inheritDoc }
      */
     @Override
-    public Kde1dSourceLoader apply(ConsoleParameters interpreter) {
+    public Kde1dSourceReader apply(ConsoleParameters interpreter) {
 
         // INPUT_FILE_PATH は必須パラメータなので必ず取得できる.
         Path path = interpreter.valueOf(INPUT_FILE_PATH)
@@ -54,6 +55,6 @@ final class Kde1dSourceLoaderConstructor implements ComponentConstructor<Kde1dSo
 
         CommentPrefix commentPrefix = interpreter.valueOf(COMMENT_PREFIX)
                 .orElse(CommentPrefix.of("#"));
-        return new Kde1dSourceLoader(path, commentPrefix);
+        return new Kde1dSourceReader(path, commentPrefix);
     }
 }

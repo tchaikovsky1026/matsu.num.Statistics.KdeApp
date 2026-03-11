@@ -6,9 +6,9 @@
  */
 
 /*
- * 2026.1.25
+ * 2026.3.10
  */
-package matsu.num.statistics.kdeapp.kde1d;
+package matsu.num.statistics.kdeapp.kde1d.task;
 
 import java.io.PrintWriter;
 import java.util.Objects;
@@ -20,7 +20,7 @@ import matsu.num.statistics.kerneldensity.output.FormattableKdeResult1D;
  * 
  * @author Matsuura Y.
  */
-final class WritableKde1dResult {
+public final class WritableKde1dResult {
 
     private final FormattableKdeResult1D kde1dResult;
 

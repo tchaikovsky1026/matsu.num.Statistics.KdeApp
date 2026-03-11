@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/mit-license.php
  */
 
-package matsu.num.statistics.kdeapp.kde1d;
+package matsu.num.statistics.kdeapp.kde1d.task;
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
