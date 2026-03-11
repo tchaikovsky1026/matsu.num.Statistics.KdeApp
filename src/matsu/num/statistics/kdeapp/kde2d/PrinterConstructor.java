@@ -11,21 +11,21 @@
 package matsu.num.statistics.kdeapp.kde2d;
 
 import static matsu.num.statistics.kdeapp.kde2d.Commands.*;
-import static matsu.num.statistics.kdeapp.kde2d.task.ResultDisplay.*;
 
 import java.io.PrintStream;
 import java.util.Objects;
 
 import matsu.num.statistics.kdeapp.command.ComponentConstructor;
 import matsu.num.statistics.kdeapp.command.ConsoleParameters;
-import matsu.num.statistics.kdeapp.kde2d.task.ResultDisplay;
+import matsu.num.statistics.kdeapp.kde2d.task.ResultDisplayPrinter;
+import matsu.num.statistics.kdeapp.kde2d.task.ResultWriter;
 
 /**
- * {@link ResultDisplay} の構築器.
+ * {@link ResultDisplayPrinter} の構築器.
  * 
  * @author Matsuura Y.
  */
-final class ResultDisplayConstructor implements ComponentConstructor<ResultDisplay> {
+final class PrinterConstructor implements ComponentConstructor<ResultWriter> {
 
     private final PrintStream out;
     private final PrintStream err;
@@ -37,7 +37,7 @@ final class ResultDisplayConstructor implements ComponentConstructor<ResultDispl
      * @param err System.err
      * @throws NullPointerException 引数がnull
      */
-    ResultDisplayConstructor(PrintStream out, PrintStream err) {
+    PrinterConstructor(PrintStream out, PrintStream err) {
         super();
         this.out = Objects.requireNonNull(out);
         this.err = Objects.requireNonNull(err);
@@ -47,10 +47,13 @@ final class ResultDisplayConstructor implements ComponentConstructor<ResultDispl
      * @throws NullPointerException {@inheritDoc }
      */
     @Override
-    public ResultDisplay apply(ConsoleParameters interpreter) {
+    public ResultWriter apply(ConsoleParameters interpreter) {
+        ResultWriter writer = ResultWriter.nullWriter();
 
-        return interpreter.contains(ECHO_OFF)
-                ? nullDisplay()
-                : stdout(out, err);
+        if (!interpreter.contains(ECHO_OFF)) {
+            writer = writer.andThen(new ResultDisplayPrinter(out, err));
+        }
+
+        return writer;
     }
 }

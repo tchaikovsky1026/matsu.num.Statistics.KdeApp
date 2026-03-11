@@ -16,8 +16,7 @@ import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 import matsu.num.statistics.kdeapp.exception.ApplicationException;
 import matsu.num.statistics.kdeapp.kde2d.task.GaussianStandardKde2dCalculator;
 import matsu.num.statistics.kdeapp.kde2d.task.Kde2dSourceReader;
-import matsu.num.statistics.kdeapp.kde2d.task.ResultDisplay;
-import matsu.num.statistics.kdeapp.kde2d.task.ResultOutput;
+import matsu.num.statistics.kdeapp.kde2d.task.ResultWriter;
 import matsu.num.statistics.kdeapp.kde2d.task.WritableKde2dResult;
 import matsu.num.statistics.kdeapp.kde2d.task.WritingFormatter;
 
@@ -78,15 +77,14 @@ final class Kde2dCliWithStyle050 {
                 new SourceReaderConstructor().apply(interpretation);
         WritingFormatter writingFormatter =
                 new WritingFormatterConstructor().apply(interpretation);
-        ResultOutput output =
-                new ResultOutputConstructor().apply(interpretation);
-        ResultDisplay stdout =
-                new ResultDisplayConstructor(out, err).apply(interpretation);
+        ResultWriter fileWriter =
+                new FileWriterConstructor().apply(interpretation);
+        ResultWriter printer =
+                new PrinterConstructor(out, err).apply(interpretation);
 
         double[][] source = loader.read();
         WritableKde2dResult result = new GaussianStandardKde2dCalculator().calc(source);
-        stdout.write(result, writingFormatter);
-        output.write(result, writingFormatter);
+        printer.andThen(fileWriter).write(result, writingFormatter);
 
         out.println("Bye.");
         return 0;
