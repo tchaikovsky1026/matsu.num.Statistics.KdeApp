@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.10
+ * 2026.3.11
  */
 package matsu.num.statistics.kdeapp.kde1d.task;
 
@@ -28,7 +28,7 @@ import matsu.num.statistics.kdeapp.logging.AppLogger;
  * 
  * @author Matsuura Y.
  */
-public abstract class ResultOutput {
+public abstract class ResultFileWriter implements ResultWriter {
 
     /**
      * 強制上書きモードによる出力を返す.
@@ -37,7 +37,7 @@ public abstract class ResultOutput {
      * @return 出力
      * @throws NullPointerException 引数がnullを含む場合
      */
-    public static ResultOutput forceOutput(Path path) {
+    public static ResultFileWriter forceWriter(Path path) {
         return new FileOutput(path, FileOutput.OverwriteOption.FORCE);
     }
 
@@ -48,46 +48,29 @@ public abstract class ResultOutput {
      * @return 出力
      * @throws NullPointerException 引数がnullを含む場合
      */
-    public static ResultOutput regularOutput(Path path) {
+    public static ResultFileWriter regularWriter(Path path) {
         return new FileOutput(path, FileOutput.OverwriteOption.REGULAR);
-    }
-
-    /**
-     * null-出力を返す.
-     * 
-     * @return null-出力
-     */
-    public static ResultOutput nullOutput() {
-        return new ResultOutput() {
-            @Override
-            public void write(WritableKde1dResult result, WritingFormatter writingFormatter) {
-                // 何もしない.
-            }
-        };
     }
 
     /**
      * 非公開のコンストラクタ. <br>
      * ネストしたクラスからの継承のみ許可.
      */
-    private ResultOutput() {
+    private ResultFileWriter() {
 
     }
 
     /**
-     * 書き込みを実行する.
-     * 
-     * @param result 結果
-     * @param writingFormatter フォーマッタ
-     * @throws OutputException 例外が発生した場合
-     * @throws NullPointerException 引数がnull (スローされない場合がある)
+     * @throws OutputException {@inheritDoc}
+     * @throws NullPointerException {@inheritDoc}
      */
+    @Override
     public abstract void write(WritableKde1dResult result, WritingFormatter writingFormatter);
 
     /**
      * ファイルへの出力.
      */
-    private static final class FileOutput extends ResultOutput {
+    private static final class FileOutput extends ResultFileWriter {
 
         private static final AppLogger LOGGER =
                 AppLogger.getLogger(FileOutput.class);
