@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.3
+ * 2026.3.12
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
@@ -14,6 +14,7 @@ import java.io.PrintStream;
 
 import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 import matsu.num.statistics.kdeapp.exception.ApplicationException;
+import matsu.num.statistics.kdeapp.kde2d.task.Kde2dSourceReader;
 
 /**
  * 最も単純な2次元カーネル密度推定を実行するクラス. <br>
@@ -38,7 +39,7 @@ final class Kde2dCliWithStyle050 {
      * ソースとなるファイルパスをコマンドライン引数として受け取り, 標準出力で推定結果を出力する単純実行.
      * 
      * <p>
-     * 入力ファイルのフォーマットは, {@link Kde2dSourceLoaderConstructor} に従う. <br>
+     * 入力ファイルのフォーマットは, {@link SourceReaderConstructor} に従う. <br>
      * 出力フォーマットは, {@link WritingFormatterConstructor} に従う.
      * </p>
      * 
@@ -68,8 +69,8 @@ final class Kde2dCliWithStyle050 {
 
         ConsoleParameters interpretation = Commands.getInterpreter().interpret(args);
 
-        Kde2dSourceLoader loader =
-                new Kde2dSourceLoaderConstructor().apply(interpretation);
+        Kde2dSourceReader loader =
+                new SourceReaderConstructor().apply(interpretation);
         WritingFormatter writingFormatter =
                 new WritingFormatterConstructor().apply(interpretation);
         ResultOutput output =
@@ -77,7 +78,7 @@ final class Kde2dCliWithStyle050 {
         ResultDisplay stdout =
                 new ResultDisplayConstructor(out, err).apply(interpretation);
 
-        double[][] source = loader.load();
+        double[][] source = loader.read();
         WritableKde2dResult result = new GaussianStandardKde2dCalculator().calc(source);
         stdout.write(result, writingFormatter);
         output.write(result, writingFormatter);
