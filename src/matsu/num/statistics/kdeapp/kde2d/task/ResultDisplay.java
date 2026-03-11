@@ -6,9 +6,9 @@
  */
 
 /*
- * 2026.2.17
+ * 2026.3.12
  */
-package matsu.num.statistics.kdeapp.kde2d;
+package matsu.num.statistics.kdeapp.kde2d.task;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -21,7 +21,7 @@ import matsu.num.statistics.kdeapp.exception.OutputException;
  * 
  * @author Matsuura Y.
  */
-abstract class ResultDisplay {
+public abstract class ResultDisplay {
 
     /**
      * null-ディスプレイ出力を表すシングルトンインスタンス.
@@ -29,7 +29,7 @@ abstract class ResultDisplay {
     private static final ResultDisplay nullDisplay = new ResultDisplay() {
 
         @Override
-        void write(WritableKde2dResult result, WritingFormatter writingFormatter) {
+        public void write(WritableKde2dResult result, WritingFormatter writingFormatter) {
             // 何もしない.
         }
     };
@@ -39,16 +39,19 @@ abstract class ResultDisplay {
      * 
      * @param out System.out
      * @param err System.err
+     * @return 出力
      * @throws NullPointerException 引数がnullを含む場合
      */
-    static ResultDisplay stdout(PrintStream out, PrintStream err) {
+    public static ResultDisplay stdout(PrintStream out, PrintStream err) {
         return new StdOutput(out, err);
     }
 
     /**
      * null-ディスプレイ出力を返す.
+     * 
+     * @return 出力
      */
-    static ResultDisplay nullDisplay() {
+    public static ResultDisplay nullDisplay() {
         return nullDisplay;
     }
 
@@ -68,7 +71,7 @@ abstract class ResultDisplay {
      * @throws OutputException 例外が発生した場合
      * @throws NullPointerException 引数がnull (スローされない場合がある)
      */
-    abstract void write(WritableKde2dResult result, WritingFormatter writingFormatter);
+    public abstract void write(WritableKde2dResult result, WritingFormatter writingFormatter);
 
     /**
      * 標準出力.
@@ -95,7 +98,7 @@ abstract class ResultDisplay {
          * @throws NullPointerException {@inheritDoc }
          */
         @Override
-        void write(WritableKde2dResult result, WritingFormatter writingFormatter) {
+        public void write(WritableKde2dResult result, WritingFormatter writingFormatter) {
             if (result.write(new PrintWriter(out), writingFormatter)) {
                 throw new OutputException("System.out");
             }

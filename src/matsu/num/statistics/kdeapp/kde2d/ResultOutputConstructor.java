@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.23
+ * 2026.3.12
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
@@ -14,6 +14,7 @@ import static matsu.num.statistics.kdeapp.kde2d.Commands.*;
 
 import matsu.num.statistics.kdeapp.command.ComponentConstructor;
 import matsu.num.statistics.kdeapp.command.ConsoleParameters;
+import matsu.num.statistics.kdeapp.kde2d.task.ResultOutput;
 
 /**
  * {@link ResultOutput} の構築器.

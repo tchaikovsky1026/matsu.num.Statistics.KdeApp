@@ -6,9 +6,9 @@
  */
 
 /*
- * 2026.3.7
+ * 2026.3.12
  */
-package matsu.num.statistics.kdeapp.kde2d;
+package matsu.num.statistics.kdeapp.kde2d.task;
 
 import java.util.Collections;
 import java.util.List;
@@ -29,7 +29,7 @@ import matsu.num.statistics.kerneldensity.output.StructuredCharSVTextFormatter;
  * 
  * @author Matsuura Y.
  */
-final class XyzBlockTypeFormatterBuilder {
+public final class XyzBlockTypeFormatterBuilder {
 
     private volatile Separator separator;
     private volatile int blankGap;
@@ -46,7 +46,7 @@ final class XyzBlockTypeFormatterBuilder {
      * @param separator 区切り文字
      * @throws NullPointerException 引数がnullの場合
      */
-    XyzBlockTypeFormatterBuilder(Separator separator) {
+    public XyzBlockTypeFormatterBuilder(Separator separator) {
         this.separator = Objects.requireNonNull(separator);
         blankGap = 1;
         labelPrefix = null;
@@ -66,7 +66,7 @@ final class XyzBlockTypeFormatterBuilder {
      * @return {@code this}
      * @throws NullPointerException 引数がnullの場合
      */
-    XyzBlockTypeFormatterBuilder setSeparator(Separator separator) {
+    public XyzBlockTypeFormatterBuilder setSeparator(Separator separator) {
         this.separator = Objects.requireNonNull(separator);
         return this;
     }
@@ -85,7 +85,7 @@ final class XyzBlockTypeFormatterBuilder {
      * @return {@code this}
      * @throws IllegalArgumentException ブランク行数が負の場合
      */
-    XyzBlockTypeFormatterBuilder setBlankGap(int blankGap) {
+    public XyzBlockTypeFormatterBuilder setBlankGap(int blankGap) {
         if (blankGap < 0) {
             throw new IllegalArgumentException("illegal blank gap: " + blankGap);
         }
@@ -107,7 +107,7 @@ final class XyzBlockTypeFormatterBuilder {
      * @param labelPrefix ラベルの先頭に付与する文字
      * @return {@code this}
      */
-    XyzBlockTypeFormatterBuilder enableLabel(char labelPrefix) {
+    public XyzBlockTypeFormatterBuilder enableLabel(char labelPrefix) {
         return this.enableLabel(String.valueOf(labelPrefix));
     }
 
@@ -126,7 +126,7 @@ final class XyzBlockTypeFormatterBuilder {
      * @return {@code this}
      * @throws NullPointerException 引数がnullの場合
      */
-    XyzBlockTypeFormatterBuilder enableLabel(String labelPrefix) {
+    public XyzBlockTypeFormatterBuilder enableLabel(String labelPrefix) {
         this.labelPrefix = Objects.requireNonNull(labelPrefix);
         return this;
     }
@@ -143,7 +143,7 @@ final class XyzBlockTypeFormatterBuilder {
      * 
      * @return {@code this}
      */
-    XyzBlockTypeFormatterBuilder disableLabel() {
+    public XyzBlockTypeFormatterBuilder disableLabel() {
         this.labelPrefix = null;
         return this;
     }
@@ -153,7 +153,7 @@ final class XyzBlockTypeFormatterBuilder {
      * 
      * @return フォーマッター
      */
-    WritingFormatter build() {
+    public WritingFormatter build() {
         return createFormatter(separator, blankGap, labelPrefix);
     }
 

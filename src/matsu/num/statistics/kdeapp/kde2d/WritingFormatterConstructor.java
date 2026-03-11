@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.7
+ * 2026.3.12
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
@@ -17,6 +17,10 @@ import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 import matsu.num.statistics.kdeapp.exception.ProgrammingBugException;
 import matsu.num.statistics.kdeapp.format.Separator;
 import matsu.num.statistics.kdeapp.kde2d.format.OutputFormatType;
+import matsu.num.statistics.kdeapp.kde2d.task.MatrixTypeFormatterBuilder;
+import matsu.num.statistics.kdeapp.kde2d.task.WritingFormatter;
+import matsu.num.statistics.kdeapp.kde2d.task.XyzBlockTypeFormatterBuilder;
+import matsu.num.statistics.kdeapp.kde2d.task.XyzTypeFormatterBuilder;
 
 /**
  * {@link WritingFormatter} の構築器.

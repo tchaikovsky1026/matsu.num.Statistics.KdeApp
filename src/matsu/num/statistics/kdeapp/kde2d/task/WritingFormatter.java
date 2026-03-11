@@ -6,9 +6,9 @@
  */
 
 /*
- * 2026.3.3
+ * 2026.3.12
  */
-package matsu.num.statistics.kdeapp.kde2d;
+package matsu.num.statistics.kdeapp.kde2d.task;
 
 import matsu.num.statistics.kerneldensity.output.FormattableKdeResult2D;
 
@@ -17,7 +17,7 @@ import matsu.num.statistics.kerneldensity.output.FormattableKdeResult2D;
  * 
  * @author Matsuura Y.
  */
-interface WritingFormatter {
+public interface WritingFormatter {
 
     /**
      * kde2dの計算結果をフォーマットして文字列の形で返す.

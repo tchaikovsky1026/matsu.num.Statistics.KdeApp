@@ -14,7 +14,12 @@ import java.io.PrintStream;
 
 import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 import matsu.num.statistics.kdeapp.exception.ApplicationException;
+import matsu.num.statistics.kdeapp.kde2d.task.GaussianStandardKde2dCalculator;
 import matsu.num.statistics.kdeapp.kde2d.task.Kde2dSourceReader;
+import matsu.num.statistics.kdeapp.kde2d.task.ResultDisplay;
+import matsu.num.statistics.kdeapp.kde2d.task.ResultOutput;
+import matsu.num.statistics.kdeapp.kde2d.task.WritableKde2dResult;
+import matsu.num.statistics.kdeapp.kde2d.task.WritingFormatter;
 
 /**
  * 最も単純な2次元カーネル密度推定を実行するクラス. <br>
