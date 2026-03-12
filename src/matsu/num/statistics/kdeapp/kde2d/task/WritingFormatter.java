@@ -45,6 +45,12 @@ public interface WritingFormatter {
         private volatile Separator separator;
         private volatile String labelPrefix;
 
+        /**
+         * 唯一のコンストラクタ.
+         * 
+         * @param separator 区切り文字
+         * @throws NullPointerException 引数がnullの場合
+         */
         protected Builder(Separator separator) {
             this.separator = Objects.requireNonNull(separator);
             labelPrefix = null;

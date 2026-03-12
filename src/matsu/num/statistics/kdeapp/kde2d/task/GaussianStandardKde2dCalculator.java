@@ -29,6 +29,9 @@ public final class GaussianStandardKde2dCalculator {
 
     private final GaussianKd2D.Factory kde2dFactory = GaussianKd2D.Factory.withDefaultRule();
 
+    /**
+     * 唯一のコンストラクタ.
+     */
     public GaussianStandardKde2dCalculator() {
     }
 
