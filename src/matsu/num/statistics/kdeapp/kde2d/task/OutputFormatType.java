@@ -51,6 +51,10 @@ public enum OutputFormatType {
     /**
      * このフォーマット形式のパラメータ指定用文字列を取得する.
      * 
+     * <p>
+     * このメソッドは, テストでしか使用されていない.
+     * </p>
+     * 
      * @return パラメータ指定用文字列
      */
     String representation() {
