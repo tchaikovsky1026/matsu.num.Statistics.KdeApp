@@ -19,6 +19,7 @@ import matsu.num.statistics.kdeapp.format.Separator;
 import matsu.num.statistics.kdeapp.kde2d.task.MatrixTypeFormatterBuilder;
 import matsu.num.statistics.kdeapp.kde2d.task.OutputFormatType;
 import matsu.num.statistics.kdeapp.kde2d.task.WritingFormatter;
+import matsu.num.statistics.kdeapp.kde2d.task.WritingFormatter.Builder;
 import matsu.num.statistics.kdeapp.kde2d.task.XyzBlockTypeFormatterBuilder;
 import matsu.num.statistics.kdeapp.kde2d.task.XyzTypeFormatterBuilder;
 
@@ -50,35 +51,30 @@ final class WritingFormatterConstructor implements ComponentConstructor<WritingF
         OutputFormatType formatType = interpreter.valueOf(OUTPUT_FORMAT_TYPE)
                 .orElse(OutputFormatType.XYZ);
 
+        Builder<? extends Builder<?>> builder;
+
         switch (formatType) {
             case XYZ: {
-                var builder = new XyzTypeFormatterBuilder(
-                        Separator.from("\t"));
-                interpreter.valueOf(LABEL_PREFIX)
-                        .ifPresent(header -> builder.enableLabel(header));
-                interpreter.valueOf(SEPARATOR_OUTPUT)
-                        .ifPresent(separator -> builder.setSeparator(separator));
-                return builder.build();
+                builder = new XyzTypeFormatterBuilder(Separator.from("\t"));
+                break;
             }
             case XYZ_BLOCK: {
-                var builder = new XyzBlockTypeFormatterBuilder(
-                        Separator.from("\t"));
-                builder.setBlankGap(1);
-                interpreter.valueOf(LABEL_PREFIX)
-                        .ifPresent(header -> builder.enableLabel(header));
-                interpreter.valueOf(SEPARATOR_OUTPUT)
-                        .ifPresent(separator -> builder.setSeparator(separator));
-                return builder.build();
+                builder = new XyzBlockTypeFormatterBuilder(Separator.from("\t"))
+                        .setBlankGap(1);
+                break;
             }
             case MATRIX: {
-                var builder = new MatrixTypeFormatterBuilder(
-                        Separator.from("\t"));
-                interpreter.valueOf(SEPARATOR_OUTPUT)
-                        .ifPresent(separator -> builder.setSeparator(separator));
-                return builder.build();
+                builder = new MatrixTypeFormatterBuilder(Separator.from("\t"));
+                break;
             }
             default:
                 throw new ProgrammingBugException("Incomplete switch case.");
         }
+
+        interpreter.valueOf(LABEL_PREFIX)
+                .ifPresent(header -> builder.enableLabel(header));
+        interpreter.valueOf(SEPARATOR_OUTPUT)
+                .ifPresent(separator -> builder.setSeparator(separator));
+        return builder.build();
     }
 }
