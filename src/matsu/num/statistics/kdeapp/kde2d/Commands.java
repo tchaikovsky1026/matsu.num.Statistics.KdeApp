@@ -27,7 +27,6 @@ import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 import matsu.num.statistics.kdeapp.command.NoArgumentCommand;
 import matsu.num.statistics.kdeapp.format.CommentPrefix;
 import matsu.num.statistics.kdeapp.format.Separator;
-import matsu.num.statistics.kdeapp.kde2d.task.OutputFormatType;
 
 /**
  * kde2d で取り扱う, コマンドに関するルールなど.
@@ -127,10 +126,10 @@ final class Commands {
      * インスタンス生成時にバリデーションされる.
      * </p>
      */
-    public static final ArgumentRequiringCommand<OutputFormatType> OUTPUT_FORMAT_TYPE =
+    public static final ArgumentRequiringCommand<FormatterBuilderSupplier> OUTPUT_FORMAT_TYPE =
             ArgumentRequiringCommand.of(
-                    "OUTPUT_FORMAT_TYPE", OutputFormatType.class,
-                    OutputFormatType::from,
+                    "OUTPUT_FORMAT_TYPE", FormatterBuilderSupplier.class,
+                    FormatterBuilderSupplier::from,
                     "--format-output", "-format-o");
 
     /**
