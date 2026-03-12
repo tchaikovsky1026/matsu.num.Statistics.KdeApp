@@ -6,9 +6,9 @@
  */
 
 /*
- * 2026.3.3
+ * 2026.3.12
  */
-package matsu.num.statistics.kdeapp.kde2d;
+package matsu.num.statistics.kdeapp.kde2d.task;
 
 import java.util.Objects;
 
@@ -22,7 +22,7 @@ import matsu.num.statistics.kerneldensity.output.MatrixCharSVTextFormatter;
  * 
  * @author Matsuura Y.
  */
-final class MatrixTypeFormatterBuilder {
+public final class MatrixTypeFormatterBuilder {
     private volatile Separator separator;
 
     /**
@@ -31,7 +31,7 @@ final class MatrixTypeFormatterBuilder {
      * @param separator 区切り文字
      * @throws NullPointerException 引数がnullの場合
      */
-    MatrixTypeFormatterBuilder(Separator separator) {
+    public MatrixTypeFormatterBuilder(Separator separator) {
         this.separator = Objects.requireNonNull(separator);
     }
 
@@ -49,7 +49,7 @@ final class MatrixTypeFormatterBuilder {
      * @return {@code this}
      * @throws NullPointerException 引数がnullの場合
      */
-    MatrixTypeFormatterBuilder setSeparator(Separator separator) {
+    public MatrixTypeFormatterBuilder setSeparator(Separator separator) {
         this.separator = Objects.requireNonNull(separator);
         return this;
     }
@@ -59,7 +59,7 @@ final class MatrixTypeFormatterBuilder {
      * 
      * @return フォーマッター
      */
-    WritingFormatter build() {
+    public WritingFormatter build() {
         return createFormatter(separator);
     }
 

@@ -6,9 +6,9 @@
  */
 
 /*
- * 2026.2.22
+ * 2026.3.12
  */
-package matsu.num.statistics.kdeapp.kde2d;
+package matsu.num.statistics.kdeapp.kde2d.task;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -6,6 +6,6 @@
  */
 
 /**
- * kde2d のフォーマットに関わるパッケージ.
+ * kde2d に関係した, 処理の要素を扱う.
  */
-package matsu.num.statistics.kdeapp.kde2d.format;
+package matsu.num.statistics.kdeapp.kde2d.task;

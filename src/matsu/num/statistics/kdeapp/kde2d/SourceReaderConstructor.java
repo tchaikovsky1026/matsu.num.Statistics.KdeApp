@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.23
+ * 2026.3.12
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
@@ -19,9 +19,10 @@ import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 import matsu.num.statistics.kdeapp.exception.ProgrammingBugException;
 import matsu.num.statistics.kdeapp.format.CommentPrefix;
 import matsu.num.statistics.kdeapp.format.Separator;
+import matsu.num.statistics.kdeapp.kde2d.task.Kde2dSourceReader;
 
 /**
- * {@link Kde2dSourceLoader} の構築器.
+ * {@link Kde2dSourceReader} の構築器.
  * 
  * <p>
  * 入力ファイルのフォーマットは, 次である.
@@ -35,19 +36,19 @@ import matsu.num.statistics.kdeapp.format.Separator;
  * 
  * @author Matsuura Y.
  */
-final class Kde2dSourceLoaderConstructor implements ComponentConstructor<Kde2dSourceLoader> {
+final class SourceReaderConstructor implements ComponentConstructor<Kde2dSourceReader> {
 
     /**
      * 唯一のコンストラクタ.
      */
-    Kde2dSourceLoaderConstructor() {
+    SourceReaderConstructor() {
     }
 
     /**
      * @throws NullPointerException {@inheritDoc }
      */
     @Override
-    public Kde2dSourceLoader apply(ConsoleParameters interpreter) {
+    public Kde2dSourceReader apply(ConsoleParameters interpreter) {
 
         // INPUT_FILE_PATH は必須パラメータなので必ず取得できる.
         Path path = interpreter.valueOf(INPUT_FILE_PATH)
@@ -57,6 +58,6 @@ final class Kde2dSourceLoaderConstructor implements ComponentConstructor<Kde2dSo
                 .orElse(CommentPrefix.of("#"));
         Separator separator = interpreter.valueOf(SEPARATOR_INPUT)
                 .orElse(Separator.from("\t"));
-        return new Kde2dSourceLoader(path, separator, commentPrefix);
+        return new Kde2dSourceReader(path, separator, commentPrefix);
     }
 }

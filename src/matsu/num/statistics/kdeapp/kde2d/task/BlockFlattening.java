@@ -6,9 +6,9 @@
  */
 
 /*
- * 2026.3.7
+ * 2026.3.12
  */
-package matsu.num.statistics.kdeapp.kde2d.format;
+package matsu.num.statistics.kdeapp.kde2d.task;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -29,7 +29,7 @@ import matsu.num.statistics.kdeapp.base.IterableFlattening;
  * 
  * @author Matsuura Y.
  */
-public final class BlockFlattening {
+final class BlockFlattening {
 
     private final Iterable<String> blanckLineIterable;
 
@@ -40,7 +40,7 @@ public final class BlockFlattening {
      * @param blankGap ブロック間の空行の数
      * @throws IllegalArgumentException gap が負の場合
      */
-    public BlockFlattening(int blankGap) {
+    BlockFlattening(int blankGap) {
         super();
 
         this.blanckLineIterable = new BlankLineIterable(blankGap);
@@ -60,7 +60,7 @@ public final class BlockFlattening {
      * @return フラット化した Iterable
      * @throws NullPointerException 引数が null の場合
      */
-    public Iterable<String> apply(Iterable<? extends Iterable<? extends String>> src) {
+    Iterable<String> apply(Iterable<? extends Iterable<? extends String>> src) {
         // 与えられたネストIterableを展開し, 間にブランクを挟む
         List<Iterable<? extends String>> blankInsertedList = new ArrayList<>();
         for (Iterator<? extends Iterable<? extends String>> oi = src.iterator();

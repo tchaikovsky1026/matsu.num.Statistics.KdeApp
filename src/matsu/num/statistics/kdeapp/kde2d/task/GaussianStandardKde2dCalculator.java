@@ -6,9 +6,9 @@
  */
 
 /*
- * 2026.2.17
+ * 2026.3.12
  */
-package matsu.num.statistics.kdeapp.kde2d;
+package matsu.num.statistics.kdeapp.kde2d.task;
 
 import java.util.Arrays;
 
@@ -25,11 +25,11 @@ import matsu.num.statistics.kerneldensity.output.FormattableKdeResult2D;
  * 
  * @author Matsuura Y.
  */
-final class GaussianStandardKde2dCalculator {
+public final class GaussianStandardKde2dCalculator {
 
     private final GaussianKd2D.Factory kde2dFactory = GaussianKd2D.Factory.withDefaultRule();
 
-    GaussianStandardKde2dCalculator() {
+    public GaussianStandardKde2dCalculator() {
     }
 
     /**
@@ -46,10 +46,11 @@ final class GaussianStandardKde2dCalculator {
      * </p>
      * 
      * @param source 入力ソース
+     * @return 計算結果
      * @throws CalculationException ソースが空の場合, infやNaNを含む場合
      * @throws NullPointerException 引数にnullが含まれる場合
      */
-    WritableKde2dResult calc(double[][] source) {
+    public WritableKde2dResult calc(double[][] source) {
         if (source.length != 2) {
             throw new ProgrammingBugException("source.length != 2");
         }
