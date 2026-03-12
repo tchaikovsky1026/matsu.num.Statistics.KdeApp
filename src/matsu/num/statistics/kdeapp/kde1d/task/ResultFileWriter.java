@@ -28,7 +28,52 @@ import matsu.num.statistics.kdeapp.logging.AppLogger;
  * 
  * @author Matsuura Y.
  */
-public abstract class ResultFileWriter implements ResultWriter {
+public final class ResultFileWriter implements ResultWriter {
+
+    private static final AppLogger LOGGER =
+            AppLogger.getLogger(ResultFileWriter.class);
+
+    private final OverwriteOption outputOption;
+    private final Path path;
+
+    /**
+     * 非公開のコンストラクタ.
+     * 
+     * @param forceOverwrite 強制上書きするかどうかに関するオプション
+     * @throws NullPointerException 引数がnullを含む場合
+     */
+    private ResultFileWriter(Path path, OverwriteOption outputOption) {
+        this.path = Objects.requireNonNull(path);
+        this.outputOption = Objects.requireNonNull(outputOption);
+    }
+
+    /**
+     * @throws OutputException {@inheritDoc}
+     * @throws NullPointerException {@inheritDoc}
+     */
+    @Override
+    public void write(WritableKde1dResult result, WritingFormatter writingFormatter) {
+        try {
+            // 出力ディレクトリの構築
+            Path parent = path.getParent();
+            if (Objects.nonNull(parent)) {
+                Files.createDirectories(parent);
+            }
+
+            // 結果の出力
+            try (PrintWriter output = new PrintWriter(
+                    Files.newBufferedWriter(path, outputOption.openOption, WRITE, TRUNCATE_EXISTING))) {
+                if (result.write(output, writingFormatter)) {
+                    throw new IOException("write to " + path.toString());
+                }
+            }
+
+            LOGGER.info("output to file: \"" + path.toAbsolutePath().normalize() + "\"");
+        } catch (InvalidPathException | IOException e) {
+            throw new OutputException(
+                    e.getClass().getSimpleName() + ": " + e.getMessage());
+        }
+    }
 
     /**
      * 強制上書きモードによる出力を返す.
@@ -38,7 +83,7 @@ public abstract class ResultFileWriter implements ResultWriter {
      * @throws NullPointerException 引数がnullを含む場合
      */
     public static ResultFileWriter forceWriter(Path path) {
-        return new FileOutput(path, FileOutput.OverwriteOption.FORCE);
+        return new ResultFileWriter(path, OverwriteOption.FORCE);
     }
 
     /**
@@ -49,92 +94,28 @@ public abstract class ResultFileWriter implements ResultWriter {
      * @throws NullPointerException 引数がnullを含む場合
      */
     public static ResultFileWriter regularWriter(Path path) {
-        return new FileOutput(path, FileOutput.OverwriteOption.REGULAR);
+        return new ResultFileWriter(path, OverwriteOption.REGULAR);
     }
 
     /**
-     * 非公開のコンストラクタ. <br>
-     * ネストしたクラスからの継承のみ許可.
+     * 出力の上書きに関するオプション.
      */
-    private ResultFileWriter() {
-
-    }
-
-    /**
-     * @throws OutputException {@inheritDoc}
-     * @throws NullPointerException {@inheritDoc}
-     */
-    @Override
-    public abstract void write(WritableKde1dResult result, WritingFormatter writingFormatter);
-
-    /**
-     * ファイルへの出力.
-     */
-    private static final class FileOutput extends ResultFileWriter {
-
-        private static final AppLogger LOGGER =
-                AppLogger.getLogger(FileOutput.class);
-
-        private final OverwriteOption outputOption;
-        private final Path path;
+    private static enum OverwriteOption {
 
         /**
-         * @param forceOverwrite 強制上書きするかどうかに関するオプション
-         * @throws NullPointerException 引数がnullを含む場合
+         * 上書き禁止モードによる出力.
          */
-        FileOutput(Path path, OverwriteOption outputOption) {
-            this.path = Objects.requireNonNull(path);
-            this.outputOption = Objects.requireNonNull(outputOption);
-        }
+        REGULAR(CREATE_NEW),
 
         /**
-         * @throws OutputException {@inheritDoc}
-         * @throws NullPointerException {@inheritDoc}
+         * 強制上書きモードによる出力.
          */
-        @Override
-        public void write(WritableKde1dResult result, WritingFormatter writingFormatter) {
-            try {
-                // 出力ディレクトリの構築
-                Path parent = path.getParent();
-                if (Objects.nonNull(parent)) {
-                    Files.createDirectories(parent);
-                }
+        FORCE(CREATE);
 
-                // 結果の出力
-                try (PrintWriter output = new PrintWriter(
-                        Files.newBufferedWriter(path, outputOption.openOption, WRITE, TRUNCATE_EXISTING))) {
-                    if (result.write(output, writingFormatter)) {
-                        throw new IOException("write to " + path.toString());
-                    }
-                }
+        private final OpenOption openOption;
 
-                LOGGER.info("output to file: \"" + path.toAbsolutePath().normalize() + "\"");
-            } catch (InvalidPathException | IOException e) {
-                throw new OutputException(
-                        e.getClass().getSimpleName() + ": " + e.getMessage());
-            }
-        }
-
-        /**
-         * 出力の上書きに関するオプション.
-         */
-        private static enum OverwriteOption {
-
-            /**
-             * 上書き禁止モードによる出力.
-             */
-            REGULAR(CREATE_NEW),
-
-            /**
-             * 強制上書きモードによる出力.
-             */
-            FORCE(CREATE);
-
-            private final OpenOption openOption;
-
-            private OverwriteOption(OpenOption openOption) {
-                this.openOption = openOption;
-            }
+        private OverwriteOption(OpenOption openOption) {
+            this.openOption = openOption;
         }
     }
 }
