@@ -28,11 +28,10 @@ import matsu.num.statistics.kerneldensity.output.StructuredCharSVTextFormatter;
  * 
  * @author Matsuura Y.
  */
-public final class XyzBlockTypeFormatterBuilder {
+public final class XyzBlockTypeFormatterBuilder
+        extends WritingFormatter.Builder<XyzBlockTypeFormatterBuilder> {
 
-    private volatile Separator separator;
     private volatile int blankGap;
-    private volatile String labelPrefix;
 
     /**
      * 区切り文字を与えて, ビルダインスタンスを立ち上げる.
@@ -46,28 +45,8 @@ public final class XyzBlockTypeFormatterBuilder {
      * @throws NullPointerException 引数がnullの場合
      */
     public XyzBlockTypeFormatterBuilder(Separator separator) {
-        this.separator = Objects.requireNonNull(separator);
+        super(separator);
         blankGap = 1;
-        labelPrefix = null;
-    }
-
-    /**
-     * 区切り文字に引数の値を用いるように変更する.
-     * 
-     * <p>
-     * <i>
-     * {@code this}
-     * をリターンするので注意.
-     * </i>
-     * </p>
-     * 
-     * @param separator 区切り文字
-     * @return {@code this}
-     * @throws NullPointerException 引数がnullの場合
-     */
-    public XyzBlockTypeFormatterBuilder setSeparator(Separator separator) {
-        this.separator = Objects.requireNonNull(separator);
-        return this;
     }
 
     /**
@@ -89,82 +68,16 @@ public final class XyzBlockTypeFormatterBuilder {
             throw new IllegalArgumentException("illegal blank gap: " + blankGap);
         }
         this.blankGap = blankGap;
+        return this.self();
+    }
+
+    @Override
+    protected XyzBlockTypeFormatterBuilder self() {
         return this;
     }
 
-    /**
-     * ラベル出力に関し, 出力する設定に変更する
-     * (ラベルの先頭に付与する文字を与える).
-     * 
-     * <p>
-     * <i>
-     * {@code this}
-     * をリターンするので注意.
-     * </i>
-     * </p>
-     * 
-     * @param labelPrefix ラベルの先頭に付与する文字
-     * @return {@code this}
-     */
-    public XyzBlockTypeFormatterBuilder enableLabel(char labelPrefix) {
-        return this.enableLabel(String.valueOf(labelPrefix));
-    }
-
-    /**
-     * ラベル出力に関し, 出力する設定に変更する
-     * (ラベルの先頭に付与する文字列を与える).
-     * 
-     * <p>
-     * <i>
-     * {@code this}
-     * をリターンするので注意.
-     * </i>
-     * </p>
-     * 
-     * @param labelPrefix ラベルの先頭に付与する文字列
-     * @return {@code this}
-     * @throws NullPointerException 引数がnullの場合
-     */
-    public XyzBlockTypeFormatterBuilder enableLabel(String labelPrefix) {
-        this.labelPrefix = Objects.requireNonNull(labelPrefix);
-        return this;
-    }
-
-    /**
-     * {@code this} のラベル出力に関し, 出力しない設定に変更する.
-     * 
-     * <p>
-     * <i>
-     * {@code this}
-     * をリターンするので注意.
-     * </i>
-     * </p>
-     * 
-     * @return {@code this}
-     */
-    public XyzBlockTypeFormatterBuilder disableLabel() {
-        this.labelPrefix = null;
-        return this;
-    }
-
-    /**
-     * フォーマッターをビルドする.
-     * 
-     * @return フォーマッター
-     */
-    public WritingFormatter build() {
-        return createFormatter(separator, blankGap, labelPrefix);
-    }
-
-    /**
-     * フォーマッターを生成するstaticメソッド.
-     * build メソッドから呼ばれることを想定.
-     * 
-     * <p>
-     * labelPrefix が null の場合はラベル出力しない.
-     * </p>
-     */
-    private static WritingFormatter createFormatter(Separator separator, int blankGap, String labelPrefix) {
+    @Override
+    protected WritingFormatter buildConcrete(Separator separator, String labelPrefix) {
         Kde2dFormatter<Iterable<Iterable<String>>> innerFormatter =
                 StructuredCharSVTextFormatter.of(separator.charValue());
         BlockFlattening flattening = new BlockFlattening(blankGap);

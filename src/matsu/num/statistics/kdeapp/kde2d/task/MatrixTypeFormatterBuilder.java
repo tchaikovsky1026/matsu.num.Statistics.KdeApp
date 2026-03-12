@@ -10,8 +10,6 @@
  */
 package matsu.num.statistics.kdeapp.kde2d.task;
 
-import java.util.Objects;
-
 import matsu.num.statistics.kdeapp.format.Separator;
 import matsu.num.statistics.kerneldensity.output.FormattableKdeResult2D;
 import matsu.num.statistics.kerneldensity.output.Kde2dFormatter;
@@ -22,8 +20,8 @@ import matsu.num.statistics.kerneldensity.output.MatrixCharSVTextFormatter;
  * 
  * @author Matsuura Y.
  */
-public final class MatrixTypeFormatterBuilder {
-    private volatile Separator separator;
+public final class MatrixTypeFormatterBuilder
+        extends WritingFormatter.Builder<MatrixTypeFormatterBuilder> {
 
     /**
      * 区切り文字を与えて, ビルダインスタンスを立ち上げる.
@@ -32,42 +30,16 @@ public final class MatrixTypeFormatterBuilder {
      * @throws NullPointerException 引数がnullの場合
      */
     public MatrixTypeFormatterBuilder(Separator separator) {
-        this.separator = Objects.requireNonNull(separator);
+        super(separator);
     }
 
-    /**
-     * 区切り文字に引数の値を用いるように変更する.
-     * 
-     * <p>
-     * <i>
-     * {@code this}
-     * をリターンするので注意.
-     * </i>
-     * </p>
-     * 
-     * @param separator 区切り文字
-     * @return {@code this}
-     * @throws NullPointerException 引数がnullの場合
-     */
-    public MatrixTypeFormatterBuilder setSeparator(Separator separator) {
-        this.separator = Objects.requireNonNull(separator);
+    @Override
+    protected MatrixTypeFormatterBuilder self() {
         return this;
     }
 
-    /**
-     * フォーマッターをビルドする.
-     * 
-     * @return フォーマッター
-     */
-    public WritingFormatter build() {
-        return createFormatter(separator);
-    }
-
-    /**
-     * フォーマッターを生成するstaticメソッド.
-     * build メソッドから呼ばれることを想定.
-     */
-    private static WritingFormatter createFormatter(Separator separator) {
+    @Override
+    protected WritingFormatter buildConcrete(Separator separator, String labelPrefix) {
         Kde2dFormatter<Iterable<String>> innerFormatter =
                 MatrixCharSVTextFormatter.of(separator.charValue());
 
