@@ -54,8 +54,9 @@ final class Kde2dCliWithStyle050 {
      * @param args コマンドライン引数
      * @return 終了コード
      * @throws ApplicationException アプリケーション例外がスローされた場合
+     * @throws Exception 予期しない例外がスローされた場合
      */
-    int run(String[] args) {
+    int run(String[] args) throws Exception {
         return run(args, System.out, System.err);
     }
 
@@ -66,8 +67,9 @@ final class Kde2dCliWithStyle050 {
      * @param out System.out
      * @param err System.err
      * @throws ApplicationException アプリケーション例外がスローされた場合
+     * @throws Exception 予期しない例外がスローされた場合
      */
-    int run(String[] args, PrintStream out, PrintStream err) {
+    int run(String[] args, PrintStream out, PrintStream err) throws Exception {
 
         out.println("kde2d...");
 
