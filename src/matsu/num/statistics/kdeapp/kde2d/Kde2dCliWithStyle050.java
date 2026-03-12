@@ -44,7 +44,7 @@ final class Kde2dCliWithStyle050 {
      * 
      * <p>
      * 入力ファイルのフォーマットは, {@link SourceReaderConstructor} に従う. <br>
-     * 出力フォーマットは, {@link WritingFormatterConstructor} に従う.
+     * 出力フォーマットは, {@link FormatterConstructor} に従う.
      * </p>
      * 
      * <p>
@@ -76,7 +76,7 @@ final class Kde2dCliWithStyle050 {
         Kde2dSourceReader loader =
                 new SourceReaderConstructor().apply(interpretation);
         WritingFormatter writingFormatter =
-                new WritingFormatterConstructor().apply(interpretation);
+                new FormatterConstructor().apply(interpretation);
         ResultWriter fileWriter =
                 new FileWriterConstructor().apply(interpretation);
         ResultWriter printer =
