@@ -22,7 +22,6 @@ package matsu.num.statistics.kdeapp.command;
  * @author Matsuura Y.
  * @param <T> 構築されるインスタンスの型
  */
-@FunctionalInterface
 public interface ComponentConstructor<T> {
 
     /**
