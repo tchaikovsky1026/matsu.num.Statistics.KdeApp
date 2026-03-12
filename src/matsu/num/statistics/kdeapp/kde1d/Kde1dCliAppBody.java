@@ -41,7 +41,7 @@ final class Kde1dCliAppBody {
                 AppLogger.init("kde1d");
             }
             LoggerHolder.LOGGER.info("start kde1d");
-            exitCode = new Kde1dCliWithStyle020().run(args);
+            exitCode = new Kde1dCliRunner().run(args);
         } catch (ApplicationException ae) {
             exitCode = ae.getExitCode();
             LoggerHolder.LOGGER.severe(ae.toStringForLogging(), ae);
