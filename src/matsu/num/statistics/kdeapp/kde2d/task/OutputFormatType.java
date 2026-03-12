@@ -6,9 +6,9 @@
  */
 
 /*
- * 2026.3.5
+ * 2026.3.12
  */
-package matsu.num.statistics.kdeapp.kde2d.format;
+package matsu.num.statistics.kdeapp.kde2d.task;
 
 import java.util.HashMap;
 import java.util.Map;

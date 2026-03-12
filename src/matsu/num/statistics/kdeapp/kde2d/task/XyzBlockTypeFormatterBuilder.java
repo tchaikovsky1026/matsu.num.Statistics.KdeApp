@@ -17,7 +17,6 @@ import java.util.function.Function;
 
 import matsu.num.statistics.kdeapp.base.IterableFlattening;
 import matsu.num.statistics.kdeapp.format.Separator;
-import matsu.num.statistics.kdeapp.kde2d.format.BlockFlattening;
 import matsu.num.statistics.kerneldensity.output.FormattableKdeResult2D;
 import matsu.num.statistics.kerneldensity.output.Kde2dCharSVTextFormatter;
 import matsu.num.statistics.kerneldensity.output.Kde2dFormatter;

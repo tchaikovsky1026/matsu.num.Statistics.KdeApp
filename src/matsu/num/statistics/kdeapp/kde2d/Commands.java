@@ -27,7 +27,7 @@ import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 import matsu.num.statistics.kdeapp.command.NoArgumentCommand;
 import matsu.num.statistics.kdeapp.format.CommentPrefix;
 import matsu.num.statistics.kdeapp.format.Separator;
-import matsu.num.statistics.kdeapp.kde2d.format.OutputFormatType;
+import matsu.num.statistics.kdeapp.kde2d.task.OutputFormatType;
 
 /**
  * kde2d で取り扱う, コマンドに関するルールなど.
