@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.3
+ * 2026.3.16
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
@@ -23,11 +23,11 @@ import java.util.Set;
 
 import matsu.num.statistics.kdeapp.command.ArgumentRequiringCommand;
 import matsu.num.statistics.kdeapp.command.CommandAssignmentRule;
+import matsu.num.statistics.kdeapp.command.ConsoleOptionCommand;
 import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 import matsu.num.statistics.kdeapp.command.NoArgumentCommand;
 import matsu.num.statistics.kdeapp.format.CommentPrefix;
 import matsu.num.statistics.kdeapp.format.Separator;
-import matsu.num.statistics.kdeapp.kde2d.format.OutputFormatType;
 
 /**
  * kde2d で取り扱う, コマンドに関するルールなど.
@@ -53,7 +53,7 @@ final class Commands {
             ArgumentRequiringCommand.of(
                     "INPUT_FILE_PATH", Path.class,
                     Path::of,
-                    "--input-file", "-f");
+                    "--input", "--in");
 
     /**
      * 強制上書きモードによる出力ファイルの指定を表現するシングルトンインスタンス.
@@ -66,7 +66,7 @@ final class Commands {
             ArgumentRequiringCommand.of(
                     "OUTPUT_FORCE_FILE_PATH", Path.class,
                     Path::of,
-                    "--output-force", "-out-f");
+                    "--output-force", "--out-force");
 
     /**
      * 上書き禁止モードである出力ファイルの指定を表現するシングルトンインスタンス.
@@ -79,7 +79,7 @@ final class Commands {
             ArgumentRequiringCommand.of(
                     "OUTPUT_FILE_PATH", Path.class,
                     Path::of,
-                    "--output", "-out");
+                    "--output", "--out");
 
     /**
      * 入力のコメント行の prefix の指定を表現するシングルトンインスタンス.
@@ -88,11 +88,11 @@ final class Commands {
      * インスタンス生成時にバリデーションされる.
      * </p>
      */
-    public static final ArgumentRequiringCommand<CommentPrefix> COMMENT_PREFIX =
+    public static final ArgumentRequiringCommand<CommentPrefix> INPUT_COMMENT_PREFIX =
             ArgumentRequiringCommand.of(
-                    "COMMENT_PREFIX", CommentPrefix.class,
+                    "INPUT_COMMENT_PREFIX", CommentPrefix.class,
                     CommentPrefix::of,
-                    "--comment-prefix");
+                    "--input-comment-prefix", "--in-comment-prefix");
 
     /**
      * 入力ファイルの区切り文字の指定を表現するシングルトンインスタンス.
@@ -101,11 +101,11 @@ final class Commands {
      * インスタンス生成時にバリデーションされる.
      * </p>
      */
-    public static final ArgumentRequiringCommand<Separator> SEPARATOR_INPUT =
+    public static final ArgumentRequiringCommand<Separator> INPUT_SEPARATOR =
             ArgumentRequiringCommand.of(
-                    "SEPARATOR_INPUT", Separator.class,
+                    "INPUT_SEPARATOR", Separator.class,
                     Separator::from,
-                    "--separator-in", "-sep-i");
+                    "--input-separator", "--in-sep");
 
     /**
      * 出力ファイルの区切り文字の指定を表現するシングルトンインスタンス.
@@ -114,11 +114,11 @@ final class Commands {
      * インスタンス生成時にバリデーションされる.
      * </p>
      */
-    public static final ArgumentRequiringCommand<Separator> SEPARATOR_OUTPUT =
+    public static final ArgumentRequiringCommand<Separator> OUTPUT_SEPARATOR =
             ArgumentRequiringCommand.of(
-                    "SEPARATOR_OUTPUT", Separator.class,
+                    "OUTPUT_SEPARATOR", Separator.class,
                     Separator::from,
-                    "--separator-out", "-sep-o");
+                    "--output-separator", "--out-sep");
 
     /**
      * 出力フォーマットの形式の指定を表現するシングルトンインスタンス.
@@ -127,11 +127,11 @@ final class Commands {
      * インスタンス生成時にバリデーションされる.
      * </p>
      */
-    public static final ArgumentRequiringCommand<OutputFormatType> OUTPUT_FORMAT_TYPE =
+    public static final ArgumentRequiringCommand<FormatterBuilderSupplier> OUTPUT_FORMAT_TYPE =
             ArgumentRequiringCommand.of(
-                    "OUTPUT_FORMAT_TYPE", OutputFormatType.class,
-                    OutputFormatType::from,
-                    "--format-output", "-format-o");
+                    "OUTPUT_FORMAT_TYPE", FormatterBuilderSupplier.class,
+                    FormatterBuilderSupplier::from,
+                    "--output-format", "--out-format");
 
     /**
      * 出力のラベルに付与する prefix の指定を表現するシングルトンインスタンス.
@@ -140,8 +140,10 @@ final class Commands {
      * 引数はバリデーションされない.
      * </p>
      */
-    public static final ArgumentRequiringCommand<String> LABEL_PREFIX =
-            identifying("LABEL_PREFIX", "--label-prefix");
+    public static final ArgumentRequiringCommand<String> OUTPUT_LABEL_PREFIX =
+            identifying(
+                    "OUTPUT_LABEL_PREFIX",
+                    "--output-label-prefix", "--out-label-prefix");
 
     /**
      * コマンドの指定に関するルール.
@@ -164,6 +166,18 @@ final class Commands {
                 Set.copyOf(NoArgCommandsHolder.values),
                 Set.copyOf(ArgumentRequiringCommandsHolder.values),
                 COMMAND_ASSIGNMENT_RULE);
+    }
+
+    /**
+     * このクラスで扱われているコマンドのリストを取得する.
+     * 
+     * @return コマンドリスト
+     */
+    static List<ConsoleOptionCommand> getCommands() {
+        List<ConsoleOptionCommand> list = new ArrayList<>();
+        list.addAll(NoArgCommandsHolder.values);
+        list.addAll(ArgumentRequiringCommandsHolder.values);
+        return list;
     }
 
     private Commands() {
