@@ -53,7 +53,7 @@ final class SourceReaderConstructor implements ComponentConstructor<Kde1dSourceR
         Path path = interpreter.valueOf(INPUT_FILE_PATH)
                 .orElseThrow(() -> new ProgrammingBugException("unreachable"));
 
-        CommentPrefix commentPrefix = interpreter.valueOf(COMMENT_PREFIX)
+        CommentPrefix commentPrefix = interpreter.valueOf(INPUT_COMMENT_PREFIX)
                 .orElse(CommentPrefix.of("#"));
         return new Kde1dSourceReader(path, commentPrefix);
     }
