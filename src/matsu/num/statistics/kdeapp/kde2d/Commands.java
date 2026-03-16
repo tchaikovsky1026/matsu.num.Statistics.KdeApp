@@ -23,6 +23,7 @@ import java.util.Set;
 
 import matsu.num.statistics.kdeapp.command.ArgumentRequiringCommand;
 import matsu.num.statistics.kdeapp.command.CommandAssignmentRule;
+import matsu.num.statistics.kdeapp.command.ConsoleOptionCommand;
 import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 import matsu.num.statistics.kdeapp.command.NoArgumentCommand;
 import matsu.num.statistics.kdeapp.format.CommentPrefix;
@@ -165,6 +166,18 @@ final class Commands {
                 Set.copyOf(NoArgCommandsHolder.values),
                 Set.copyOf(ArgumentRequiringCommandsHolder.values),
                 COMMAND_ASSIGNMENT_RULE);
+    }
+
+    /**
+     * このクラスで扱われているコマンドのリストを取得する.
+     * 
+     * @return コマンドリスト
+     */
+    static List<ConsoleOptionCommand> getCommands() {
+        List<ConsoleOptionCommand> list = new ArrayList<>();
+        list.addAll(NoArgCommandsHolder.values);
+        list.addAll(ArgumentRequiringCommandsHolder.values);
+        return list;
     }
 
     private Commands() {
