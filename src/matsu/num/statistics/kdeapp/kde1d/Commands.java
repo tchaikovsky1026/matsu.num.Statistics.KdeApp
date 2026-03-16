@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.20
+ * 2026.3.16
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -52,7 +52,7 @@ final class Commands {
             ArgumentRequiringCommand.of(
                     "INPUT_FILE_PATH", Path.class,
                     Path::of,
-                    "--input-file", "-f");
+                    "--input", "--in");
 
     /**
      * 強制上書きモードによる出力ファイルの指定を表現するシングルトンインスタンス.
@@ -65,7 +65,7 @@ final class Commands {
             ArgumentRequiringCommand.of(
                     "OUTPUT_FORCE_FILE_PATH", Path.class,
                     Path::of,
-                    "--output-force", "-out-f");
+                    "--output-force", "--out-force");
 
     /**
      * 上書き禁止モードである出力ファイルの指定を表現するシングルトンインスタンス.
@@ -78,7 +78,7 @@ final class Commands {
             ArgumentRequiringCommand.of(
                     "OUTPUT_FILE_PATH", Path.class,
                     Path::of,
-                    "--output", "-out");
+                    "--output", "--out");
 
     /**
      * 入力のコメント行の prefix の指定を表現するシングルトンインスタンス.
@@ -87,11 +87,11 @@ final class Commands {
      * インスタンス生成時にバリデーションされる.
      * </p>
      */
-    public static final ArgumentRequiringCommand<CommentPrefix> COMMENT_PREFIX =
+    public static final ArgumentRequiringCommand<CommentPrefix> INPUT_COMMENT_PREFIX =
             ArgumentRequiringCommand.of(
-                    "COMMENT_PREFIX", CommentPrefix.class,
+                    "INPUT_COMMENT_PREFIX", CommentPrefix.class,
                     CommentPrefix::of,
-                    "--comment-prefix");
+                    "--input-comment-prefix", "--in-comment-prefix");
 
     /**
      * 区切り文字の指定を表現するシングルトンインスタンス.
@@ -100,11 +100,11 @@ final class Commands {
      * インスタンス生成時にバリデーションされる.
      * </p>
      */
-    public static final ArgumentRequiringCommand<Separator> SEPARATOR =
+    public static final ArgumentRequiringCommand<Separator> OUTPUT_SEPARATOR =
             ArgumentRequiringCommand.of(
-                    "SEPARATOR", Separator.class,
+                    "OUTPUT_SEPARATOR", Separator.class,
                     Separator::from,
-                    "--separator", "-sep");
+                    "--output-separator", "--out-sep");
 
     /**
      * 出力のラベルに付与する prefix の指定を表現するシングルトンインスタンス.
@@ -113,8 +113,8 @@ final class Commands {
      * 引数はバリデーションされない.
      * </p>
      */
-    public static final ArgumentRequiringCommand<String> LABEL_PREFIX =
-            identifying("LABEL_PREFIX", "--label-prefix");
+    public static final ArgumentRequiringCommand<String> OUTPUT_LABEL_PREFIX =
+            identifying("OUTPUT_LABEL_PREFIX", "--output-label-prefix", "--out-label-prefix");
 
     /**
      * コマンドの指定に関するルール.
