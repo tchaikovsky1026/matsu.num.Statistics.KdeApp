@@ -39,9 +39,9 @@ final class FormatterConstructor implements ComponentConstructor<WritingFormatte
                 .orElse(FormatterBuilderSupplier.XYZ)
                 .createBuilder();
 
-        interpreter.valueOf(LABEL_PREFIX)
+        interpreter.valueOf(OUTPUT_LABEL_PREFIX)
                 .ifPresent(header -> builder.enableLabel(header));
-        interpreter.valueOf(SEPARATOR_OUTPUT)
+        interpreter.valueOf(OUTPUT_SEPARATOR)
                 .ifPresent(separator -> builder.setSeparator(separator));
         return builder.build();
     }

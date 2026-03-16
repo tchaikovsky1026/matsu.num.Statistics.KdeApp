@@ -59,7 +59,7 @@ final class Kde2dCliRunnerTest {
                             new String[] {
                                     INPUT_FILE_PATH.commandString(), inputFile.toString(),
                                     OUTPUT_FORCE_FILE_PATH.commandString(), outputFile.toString(),
-                                    SEPARATOR_INPUT.commandString(), ","
+                                    INPUT_SEPARATOR.commandString(), ","
                             }, out, err),
                     is(0));
         }

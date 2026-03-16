@@ -54,9 +54,9 @@ final class SourceReaderConstructor implements ComponentConstructor<Kde2dSourceR
         Path path = interpreter.valueOf(INPUT_FILE_PATH)
                 .orElseThrow(() -> new ProgrammingBugException("unreachable"));
 
-        CommentPrefix commentPrefix = interpreter.valueOf(COMMENT_PREFIX)
+        CommentPrefix commentPrefix = interpreter.valueOf(INPUT_COMMENT_PREFIX)
                 .orElse(CommentPrefix.of("#"));
-        Separator separator = interpreter.valueOf(SEPARATOR_INPUT)
+        Separator separator = interpreter.valueOf(INPUT_SEPARATOR)
                 .orElse(Separator.from("\t"));
         return new Kde2dSourceReader(path, separator, commentPrefix);
     }
