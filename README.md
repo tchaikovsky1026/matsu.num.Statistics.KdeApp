@@ -47,21 +47,38 @@ chmod +x kde1d.sh
 ### Usage
 
 #### Parameter
-パラメータは次の形で与える.
+使用するパラメータは次である.
 
-##### `--input-file <入力ファイルパス>` または `-f <入力ファイルパス>`
+- `--input FILE` / `--in FILE`
+- `--input-comment-prefix STR` / `--in-comment-prefix STR`
+- `--output FILE` / `--out FILE`, または `--output-force FILE` / `--out-force FILE`
+- `--output-separator CHAR` / `--out-sep CHAR`
+- `--output-label-prefix STR` / `--out-label-prefix STR`
+- `--echo-off`
+
+##### `--input FILE` / `--in FILE`
 入力ファイルパスを指定するコマンドである.
 このパラメータは必ず指定されなければならない.
 指定されない場合, 例外がスローされる.
 
-##### `--comment-prefix <文字列>`
+##### `--input-comment-prefix STR` / `--in-comment-prefix STR`
 入力ファイルのコメント行の開始文字列を指定するコマンドである.
 指定されない場合, `#` がコメント開始文字列となる.
 
 Prefixに空文字は禁止されている.
 Prefix, 入力ファイルの各行の前後の空白は無視される.
 
-##### `--separator <文字>` または `-sep <文字>`
+##### `--output FILE` / `--out FILE`, または `--output-force FILE` / `--out-force FILE`
+結果のファイル出力を行うコマンドである.
+`--output` はファイルが存在した場合はエラーとなり,
+`--output-force` はファイルが存在した場合は上書きする.
+ファイルパスまでのディレクトリは自動で生成される.
+
+`--output-force`, `--output`
+はどちらかしか指定できない.
+どちらも指定されない場合, ファイル出力されない.
+
+##### `--output-separator CHAR` / `--out-sep CHAR`
 出力における区切り文字を指定するコマンドである.
 指定されない場合, `\t` が区切り文字となる.
 
@@ -69,23 +86,9 @@ Prefix, 入力ファイルの各行の前後の空白は無視される.
 - ASCII 1文字
 - エスケープシーケンス: `"\t"`, `"\\"`
 
-##### `--label-prefix <文字列>`
+##### `--output-label-prefix STR` / `--out-label-prefix STR`
 出力のラベル行の先頭につける文字列を指定するコマンドである.
 指定されない場合, ラベルを出力しない.
-
-##### `--output-force <出力ファイルパス>` または `-out-f <出力ファイルパス>`
-結果のファイル強制出力を行うコマンドである.
-ファイルが存在しても, 出力を試みる.
-ファイルパスまでのディレクトリは自動で生成される.
-
-##### `--output <出力ファイルパス>` または `-out <出力ファイルパス>`
-結果のファイル出力を行うコマンドであるが,
-ファイルが存在した場合は例外をスローする.
-ファイルパスまでのディレクトリは自動で生成される.
-
-`--output-force`, `--output`
-はどちらかしか指定できない.
-どちらも指定されない場合, ファイル出力されない.
 
 ##### `--echo-off`
 結果を標準出力しないようにするコマンドである.
@@ -153,25 +156,48 @@ chmod +x kde2d.sh
 ### Usage
 
 #### Parameter
-パラメータは次の形で与える.
+使用するパラメータは次である.
 
-##### `--input-file <入力ファイルパス>` または `-f <入力ファイルパス>`
+- `--input FILE` / `--in FILE`
+- `--input-comment-prefix STR` / `--in-comment-prefix STR` 
+- `--input-separator CHAR` / `--in-sep CHAR`
+- `--output FILE` / `--out FILE`, または `--output-force FILE` / `--out-force FILE`
+- `--output-separator CHAR` / `--out-sep CHAR`
+- `--output-format FORMAT` / `--out-format FORMAT`
+- `--output-label-prefix STR` / `--out-label-prefix STR`
+- `--echo-off`
+
+##### `--input FILE` / `--in FILE`
 入力ファイルパスを指定するコマンドである.
 このパラメータは必ず指定されなければならない.
 指定されない場合, 例外がスローされる.
 
-##### `--comment-prefix <文字列>`
+##### `--input-comment-prefix STR` / `--in-comment-prefix STR`
 入力ファイルのコメント行の開始文字列を指定するコマンドである.
 指定されない場合, `#` がコメント開始文字列となる.
 
 Prefixに空文字は禁止されている.
 Prefix, 入力ファイルの各行の前後の空白は無視される.
 
-##### `--separator-in <文字>` または `-sep-i <文字>`
+##### `--input-separator CHAR` / `--in-sep CHAR`
 入力ファイルにおける区切り文字を指定するコマンドである.
 指定されない場合, `\t` が区切り文字となる.
 
-##### `--separator-out <文字>` または `-sep-o <文字>`
+区切り文字に指定できる文字パターンは次の通りである.
+- ASCII 1文字
+- エスケープシーケンス: `"\t"`, `"\\"`
+
+##### `--output FILE` / `--out FILE`, または `--output-force FILE` / `--out-force FILE`
+結果のファイル出力を行うコマンドである.
+`--output` はファイルが存在した場合はエラーとなり,
+`--output-force` はファイルが存在した場合は上書きする.
+ファイルパスまでのディレクトリは自動で生成される.
+
+`--output-force`, `--output`
+はどちらかしか指定できない.
+どちらも指定されない場合, ファイル出力されない.
+
+##### `--output-separator CHAR` / `--out-sep CHAR`
 出力における区切り文字を指定するコマンドである.
 指定されない場合, `\t` が区切り文字となる.
 
@@ -179,25 +205,7 @@ Prefix, 入力ファイルの各行の前後の空白は無視される.
 - ASCII 1文字
 - エスケープシーケンス: `"\t"`, `"\\"`
 
-##### `--label-prefix <文字列>`
-出力のラベル行の先頭につける文字列を指定するコマンドである.
-指定されない場合, ラベルを出力しない.
-
-##### `--output-force <出力ファイルパス>` または `-out-f <出力ファイルパス>`
-結果のファイル強制出力を行うコマンドである.
-ファイルが存在しても, 出力を試みる.
-ファイルパスまでのディレクトリは自動で生成される.
-
-##### `--output <出力ファイルパス>` または `-out <出力ファイルパス>`
-結果のファイル出力を行うコマンドであるが,
-ファイルが存在した場合は例外をスローする.
-ファイルパスまでのディレクトリは自動で生成される.
-
-`--output-force`, `--output`
-はどちらかしか指定できない.
-どちらも指定されない場合, ファイル出力されない.
-
-##### `--format-output <出力フォーマット形式名>` または `-format-o <出力フォーマット形式名>`
+##### `--output-format FORMAT` / `--out-format FORMAT`
 結果出力のフォーマット形式を指定する.
 形式名は次の通りである.
 
@@ -207,6 +215,10 @@ Prefix, 入力ファイルの各行の前後の空白は無視される.
 
 それぞれの形式に対する出力例は後述.
 指定されない場合は `xyz` となる.
+
+##### `--output-label-prefix STR` / `--out-label-prefix STR`
+出力のラベル行の先頭につける文字列を指定するコマンドである.
+指定されない場合, ラベルを出力しない.
 
 ##### `--echo-off`
 結果を標準出力しないようにするコマンドである.
