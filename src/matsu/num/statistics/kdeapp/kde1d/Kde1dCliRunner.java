@@ -8,34 +8,30 @@
 /*
  * 2026.3.12
  */
-package matsu.num.statistics.kdeapp.kde2d;
+package matsu.num.statistics.kdeapp.kde1d;
 
 import java.io.PrintStream;
 
 import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 import matsu.num.statistics.kdeapp.exception.ApplicationException;
-import matsu.num.statistics.kdeapp.kde2d.task.GaussianStandardKde2dCalculator;
-import matsu.num.statistics.kdeapp.kde2d.task.Kde2dSourceReader;
-import matsu.num.statistics.kdeapp.kde2d.task.ResultWriter;
-import matsu.num.statistics.kdeapp.kde2d.task.WritableKde2dResult;
-import matsu.num.statistics.kdeapp.kde2d.task.WritingFormatter;
+import matsu.num.statistics.kdeapp.kde1d.task.GaussianStandardKde1dCalculator;
+import matsu.num.statistics.kdeapp.kde1d.task.Kde1dSourceReader;
+import matsu.num.statistics.kdeapp.kde1d.task.ResultWriter;
+import matsu.num.statistics.kdeapp.kde1d.task.WritableKde1dResult;
+import matsu.num.statistics.kdeapp.kde1d.task.WritingFormatter;
 
 /**
- * 最も単純な2次元カーネル密度推定を実行するクラス. <br>
+ * 最も単純な1次元カーネル密度推定を実行するクラス. <br>
  * 実行される処理を扱う.
- * 
- * <p>
- * コンソールパラメータは, version 0.5.0 以降のスタイルとする.
- * </p>
  * 
  * @author Matsuura Y.
  */
-final class Kde2dCliWithStyle050 {
+final class Kde1dCliRunner {
 
     /**
      * 唯一のコンストラクタ.
      */
-    Kde2dCliWithStyle050() {
+    Kde1dCliRunner() {
         super();
     }
 
@@ -44,7 +40,7 @@ final class Kde2dCliWithStyle050 {
      * 
      * <p>
      * 入力ファイルのフォーマットは, {@link SourceReaderConstructor} に従う. <br>
-     * 出力フォーマットは, {@link FormatterConstructor} に従う.
+     * 出力フォーマットは, {@link WritingFormatterConstructor} に従う.
      * </p>
      * 
      * <p>
@@ -54,8 +50,9 @@ final class Kde2dCliWithStyle050 {
      * @param args コマンドライン引数
      * @return 終了コード
      * @throws ApplicationException アプリケーション例外がスローされた場合
+     * @throws Exception 予期しない例外がスローされた場合
      */
-    int run(String[] args) {
+    int run(String[] args) throws Exception {
         return run(args, System.out, System.err);
     }
 
@@ -66,24 +63,25 @@ final class Kde2dCliWithStyle050 {
      * @param out System.out
      * @param err System.err
      * @throws ApplicationException アプリケーション例外がスローされた場合
+     * @throws Exception 予期しない例外がスローされた場合
      */
-    int run(String[] args, PrintStream out, PrintStream err) {
+    int run(String[] args, PrintStream out, PrintStream err) throws Exception {
 
-        out.println("kde2d...");
+        out.println("kde1d...");
 
         ConsoleParameters interpretation = Commands.getInterpreter().interpret(args);
 
-        Kde2dSourceReader loader =
+        Kde1dSourceReader loader =
                 new SourceReaderConstructor().apply(interpretation);
         WritingFormatter writingFormatter =
-                new FormatterConstructor().apply(interpretation);
+                new WritingFormatterConstructor().apply(interpretation);
         ResultWriter fileWriter =
                 new FileWriterConstructor().apply(interpretation);
         ResultWriter printer =
                 new PrinterConstructor(out, err).apply(interpretation);
 
-        double[][] source = loader.read();
-        WritableKde2dResult result = new GaussianStandardKde2dCalculator().calc(source);
+        double[] source = loader.read();
+        WritableKde1dResult result = new GaussianStandardKde1dCalculator().calc(source);
         printer.andThen(fileWriter).write(result, writingFormatter);
 
         out.println("Bye.");

@@ -41,7 +41,7 @@ final class Kde2dCliAppBody {
                 AppLogger.init("kde2d");
             }
             LoggerHolder.LOGGER.info("start kde2d");
-            exitCode = new Kde2dCliWithStyle050().run(args);
+            exitCode = new Kde2dCliRunner().run(args);
         } catch (ApplicationException ae) {
             exitCode = ae.getExitCode();
             LoggerHolder.LOGGER.severe(ae.toStringForLogging(), ae);
