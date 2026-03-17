@@ -6,13 +6,14 @@
  */
 
 /*
- * 2026.2.27
+ * 2026.3.17
  */
 package matsu.num.statistics.kdeapp.command;
 
 import static java.util.stream.Collectors.*;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -81,12 +82,27 @@ public abstract sealed class ConsoleOptionCommand
 
     /**
      * コマンド文字列表現のリストを得る. <br>
-     * おそらくイミュータブルである.
+     * 順番は不明である. <br>
+     * コピーではないかもしれないので, 戻り値に対して変更を加えるようなメソッドを実行してはならない.
      * 
      * @return 文字列表現リスト
      */
     final List<String> representations() {
         return List.copyOf(representations);
+    }
+
+    /**
+     * コンパレータによって並び変えられたコマンド文字列表現のリストを得る. <br>
+     * コピーではないかもしれないので, 戻り値に対して変更を加えるようなメソッドを実行してはならない.
+     * 
+     * @param comparator コンパレータ
+     * @return 文字列表現リスト
+     * @throws NullPointerException 引数がnullの場合
+     */
+    public final List<String> representations(Comparator<String> comparator) {
+        return representations.stream()
+                .sorted(comparator)
+                .toList();
     }
 
     /**
