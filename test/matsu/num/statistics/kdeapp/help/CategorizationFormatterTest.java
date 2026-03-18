@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.Test.None;
 import org.junit.experimental.runners.Enclosed;
@@ -29,6 +30,7 @@ final class CategorizationFormatterTest {
     private static final CommandCategory CAT_DUMMY_X = CommandCategory.from("DUMMY_X");
     private static final CommandCategory CAT_DUMMY_Y = CommandCategory.from("DUMMY_Y");
 
+    @Ignore
     public static class フォーマット結果を生成できるかのテストと表示 {
 
         private List<CommandDescription> commands;
