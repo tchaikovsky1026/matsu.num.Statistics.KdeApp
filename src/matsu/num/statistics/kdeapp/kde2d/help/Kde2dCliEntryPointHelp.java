@@ -11,7 +11,7 @@
 package matsu.num.statistics.kdeapp.kde2d.help;
 
 /**
- * kde1d のヘルプ表示用エントリーポイント.
+ * kde2d のヘルプ表示用エントリーポイント.
  * 
  * @author Matsuura Y.
  */
