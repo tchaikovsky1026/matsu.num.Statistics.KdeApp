@@ -34,7 +34,7 @@ import matsu.num.statistics.kdeapp.format.Separator;
  * 
  * @author Matsuura Y.
  */
-final class Commands {
+public final class Commands {
 
     /**
      * 結果を標準出力しないことを表現するシングルトンインスタンス.
