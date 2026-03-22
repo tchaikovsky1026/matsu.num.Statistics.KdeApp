@@ -85,6 +85,11 @@ final class CommandDescriptions {
      */
     static final CommandDescription OUTPUT_LABEL_PREFIX;
 
+    /**
+     * ラベルを出力しないことを表現するシングルトンインスタンス.
+     */
+    static final CommandDescription OUTPUT_NO_LABEL;
+
     static {
         List<CommandDescription> list = new ArrayList<CommandDescription>();
 
@@ -150,6 +155,13 @@ final class CommandDescriptions {
                         "prefix added to the label line",
                         catOutput);
         list.add(OUTPUT_LABEL_PREFIX);
+
+        OUTPUT_NO_LABEL =
+                CommandDescription.of(
+                        Commands.OUTPUT_NO_LABEL,
+                        "does not write label to the output file",
+                        catOutput);
+        list.add(OUTPUT_NO_LABEL);
 
         ECHO_OFF =
                 CommandDescription.of(
