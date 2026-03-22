@@ -56,6 +56,11 @@ final class CommandDescriptions {
     static final CommandDescription OUTPUT_FILE_PATH;
 
     /**
+     * ファイル出力しないことを表現するシングルトンインスタンス.
+     */
+    static final CommandDescription OUTPUT_NONE;
+
+    /**
      * 入力のコメント行の prefix の指定を表現するシングルトンインスタンス.
      */
     static final CommandDescription INPUT_COMMENT_PREFIX;
@@ -117,6 +122,13 @@ final class CommandDescriptions {
                         "overwrite the output file if it exists",
                         catOutput);
         list.add(OUTPUT_FORCE_FILE_PATH);
+
+        OUTPUT_NONE =
+                CommandDescription.of(
+                        Commands.OUTPUT_NONE,
+                        "does not output result to file",
+                        catOutput);
+        list.add(OUTPUT_NONE);
 
         OUTPUT_SEPARATOR =
                 CommandDescription.of(

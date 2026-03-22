@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.16
+ * 2026.3.22
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -88,6 +88,14 @@ public final class Commands {
                     "--output", "--out");
 
     /**
+     * ファイル出力しないことを表現するシングルトンインスタンス.
+     */
+    public static final NoArgumentCommand OUTPUT_NONE =
+            NoArgumentCommand.of(
+                    "OUTPUT_NONE",
+                    "--output-none", "--out-none");
+
+    /**
      * 入力のコメント行の prefix の指定を表現するシングルトンインスタンス.
      * 
      * <p>
@@ -131,7 +139,7 @@ public final class Commands {
     static {
         COMMAND_ASSIGNMENT_RULE = composite(
                 singleRequiredRule(INPUT_FILE_PATH),
-                singleOptionalRule(OUTPUT_FILE_PATH, OUTPUT_FORCE_FILE_PATH),
+                singleOptionalRule(OUTPUT_FILE_PATH, OUTPUT_FORCE_FILE_PATH, OUTPUT_NONE),
                 singleOptionalRule(ECHO_OFF, ECHO_ON));
     }
 
