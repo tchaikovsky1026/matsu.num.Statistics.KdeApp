@@ -43,6 +43,12 @@ public final class Commands {
             NoArgumentCommand.of("ECHO_OFF", "--echo-off");
 
     /**
+     * 結果を標準出力することを表現するシングルトンインスタンス.
+     */
+    public static final NoArgumentCommand ECHO_ON =
+            NoArgumentCommand.of("ECHO_ON", "--echo-on");
+
+    /**
      * 入力ファイルの指定を表現するシングルトンインスタンス.
      * 
      * <p>
@@ -153,7 +159,8 @@ public final class Commands {
     static {
         COMMAND_ASSIGNMENT_RULE = composite(
                 singleRequiredRule(INPUT_FILE_PATH),
-                singleOptionalRule(OUTPUT_FILE_PATH, OUTPUT_FORCE_FILE_PATH));
+                singleOptionalRule(OUTPUT_FILE_PATH, OUTPUT_FORCE_FILE_PATH),
+                singleOptionalRule(ECHO_OFF, ECHO_ON));
     }
 
     /**

@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.18
+ * 2026.3.22
  */
 package matsu.num.statistics.kdeapp.kde2d.help;
 
@@ -34,6 +34,11 @@ final class CommandDescriptions {
      * 結果を標準出力しないことを表現するシングルトンインスタンス.
      */
     static final CommandDescription ECHO_OFF;
+
+    /**
+     * 結果を標準出力することを表現するシングルトンインスタンス.
+     */
+    static final CommandDescription ECHO_ON;
 
     /**
      * 入力ファイルの指定を表現するシングルトンインスタンス.
@@ -140,6 +145,13 @@ final class CommandDescriptions {
                         "not display the result to stdout",
                         catOther);
         list.add(ECHO_OFF);
+
+        ECHO_ON =
+                CommandDescription.of(
+                        Commands.ECHO_ON,
+                        "display the result to stdout",
+                        catOther);
+        list.add(ECHO_ON);
 
         commands = List.copyOf(list);
     }
