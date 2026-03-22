@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.16
+ * 2026.3.22
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
@@ -43,6 +43,12 @@ public final class Commands {
             NoArgumentCommand.of("ECHO_OFF", "--echo-off");
 
     /**
+     * 結果を標準出力することを表現するシングルトンインスタンス.
+     */
+    public static final NoArgumentCommand ECHO_ON =
+            NoArgumentCommand.of("ECHO_ON", "--echo-on");
+
+    /**
      * 入力ファイルの指定を表現するシングルトンインスタンス.
      * 
      * <p>
@@ -67,6 +73,14 @@ public final class Commands {
                     "OUTPUT_FORCE_FILE_PATH", Path.class,
                     Path::of,
                     "--output-force", "--out-force");
+
+    /**
+     * ファイル出力しないことを表現するシングルトンインスタンス.
+     */
+    public static final NoArgumentCommand OUTPUT_NONE =
+            NoArgumentCommand.of(
+                    "OUTPUT_NONE",
+                    "--output-none", "--out-none");
 
     /**
      * 上書き禁止モードである出力ファイルの指定を表現するシングルトンインスタンス.
@@ -146,6 +160,14 @@ public final class Commands {
                     "--output-label-prefix", "--out-label-prefix");
 
     /**
+     * ラベルを出力しないことを表現するシングルトンインスタンス.
+     */
+    public static final NoArgumentCommand OUTPUT_NO_LABEL =
+            NoArgumentCommand.of(
+                    "OUTPUT_NO_LABEL",
+                    "--output-no-label", "--out-no-label");
+
+    /**
      * コマンドの指定に関するルール.
      */
     private static final CommandAssignmentRule COMMAND_ASSIGNMENT_RULE;
@@ -153,7 +175,9 @@ public final class Commands {
     static {
         COMMAND_ASSIGNMENT_RULE = composite(
                 singleRequiredRule(INPUT_FILE_PATH),
-                singleOptionalRule(OUTPUT_FILE_PATH, OUTPUT_FORCE_FILE_PATH));
+                singleOptionalRule(OUTPUT_FILE_PATH, OUTPUT_FORCE_FILE_PATH, OUTPUT_NONE),
+                singleOptionalRule(OUTPUT_LABEL_PREFIX, OUTPUT_NO_LABEL),
+                singleOptionalRule(ECHO_OFF, ECHO_ON));
     }
 
     /**

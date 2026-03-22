@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.12
+ * 2026.3.22
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
@@ -39,6 +39,7 @@ final class FormatterConstructor implements ComponentConstructor<WritingFormatte
                 .orElse(FormatterBuilderSupplier.XYZ)
                 .createBuilder();
 
+        // OUTPUT_NO_LABEL はチェックしていない
         interpreter.valueOf(OUTPUT_LABEL_PREFIX)
                 .ifPresent(header -> builder.enableLabel(header));
         interpreter.valueOf(OUTPUT_SEPARATOR)

@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.10
+ * 2026.3.22
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -46,6 +46,7 @@ final class WritingFormatterConstructor implements ComponentConstructor<WritingF
         var builder = new XyTypeFormatterBuilder(
                 Separator.from("\t"));
 
+        // OUTPUT_NO_LABEL はチェックしていない
         interpreter.valueOf(
                 OUTPUT_LABEL_PREFIX)
                 .ifPresent(header -> builder.enableLabel(header));

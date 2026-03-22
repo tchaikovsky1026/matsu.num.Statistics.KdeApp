@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.12
+ * 2026.3.22
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
@@ -42,6 +42,7 @@ final class FileWriterConstructor implements ComponentConstructor<ResultWriter> 
          * この2個の出力はコンソールパラメータの解釈時に排他検証されているので,
          * ここは else 処理しなくてよい.
          */
+        // OUTPUT_NONEはチェックしていない
         interpreter.valueOf(OUTPUT_FORCE_FILE_PATH)
                 .map(ResultFileWriter::forceWriter)
                 .ifPresent(container::add);

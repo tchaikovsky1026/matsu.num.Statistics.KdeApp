@@ -50,6 +50,7 @@ final class PrinterConstructor implements ComponentConstructor<ResultWriter> {
     public ResultWriter apply(ConsoleParameters interpreter) {
         ResultWriter writer = ResultWriter.nullWriter();
 
+        // ECHO_ON の方はチェックしていない
         if (!interpreter.contains(ECHO_OFF)) {
             writer = writer.andThen(new ResultDisplayPrinter(out, err));
         }
