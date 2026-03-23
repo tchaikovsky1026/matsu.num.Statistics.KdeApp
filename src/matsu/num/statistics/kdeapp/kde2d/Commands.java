@@ -43,7 +43,7 @@ public final class Commands {
     public static final NoArgumentCommand<?> ECHO_OFF =
             NoArgumentCommand.of(
                     "ECHO_OFF",
-                    Properties.ECHO, DummySupplier.instance(),
+                    Properties.ECHO, DummySupplier.instance(new Object()),
                     "--echo-off");
 
     /**
@@ -52,7 +52,7 @@ public final class Commands {
     public static final NoArgumentCommand<?> ECHO_ON =
             NoArgumentCommand.of(
                     "ECHO_ON",
-                    Properties.ECHO, DummySupplier.instance(),
+                    Properties.ECHO, DummySupplier.instance(new Object()),
                     "--echo-on");
 
     /**
@@ -100,7 +100,7 @@ public final class Commands {
     public static final NoArgumentCommand<?> OUTPUT_NONE =
             NoArgumentCommand.of(
                     "OUTPUT_NONE", Properties.OUTPUT_FILE,
-                    DummySupplier.instance(),
+                    DummySupplier.instance(Path.of("dummy")),
                     "--output-none", "--out-none");
 
     /**
@@ -175,7 +175,7 @@ public final class Commands {
             NoArgumentCommand.of(
                     "OUTPUT_NO_LABEL",
                     Properties.OUTPUT_LABEL_PREFIX,
-                    DummySupplier.instance(),
+                    DummySupplier.instance(""),
                     "--output-no-label", "--out-no-label");
 
     /**

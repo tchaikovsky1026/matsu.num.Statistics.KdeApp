@@ -24,17 +24,17 @@ public final class DummyCommandListForTesting {
 
     public static final NoArgumentCommand<?> DUMMY_NO_ARG_1 =
             NoArgumentCommand.of(
-                    "DUMMY_NO_ARG_1", DUMMY_PROPERTY, DummySupplierForTesting.instance(),
+                    "DUMMY_NO_ARG_1", DUMMY_PROPERTY, DummySupplierForTesting.instance(""),
                     "--dummy-no-arg-1", "-d-na-1");
 
     public static final NoArgumentCommand<?> DUMMY_NO_ARG_2 =
             NoArgumentCommand.of(
-                    "DUMMY_NO_ARG_2", DUMMY_PROPERTY, DummySupplierForTesting.instance(),
+                    "DUMMY_NO_ARG_2", DUMMY_PROPERTY, DummySupplierForTesting.instance(""),
                     "--dummy-no-arg-2", "-d-na-2");
 
     public static final NoArgumentCommand<?> DUMMY_NO_ARG_3 =
             NoArgumentCommand.of(
-                    "DUMMY_NO_ARG_3", DUMMY_PROPERTY, DummySupplierForTesting.instance(),
+                    "DUMMY_NO_ARG_3", DUMMY_PROPERTY, DummySupplierForTesting.instance(""),
                     "--dummy-no-arg-3", "-d-na-3");
 
     public static final ArgumentRequiringCommand<?> DUMMY_ARG_1 =

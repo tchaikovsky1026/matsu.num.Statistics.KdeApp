@@ -27,7 +27,7 @@ public final class Properties {
      * コンパイルエラーを回避するために, 暫定的に定数を用意する.
      */
 
-    public static final PropertyKey<?> ECHO = PropertyKey.of(Object.class);
+    public static final PropertyKey<Object> ECHO = PropertyKey.of(Object.class);
 
     public static final PropertyKey<Path> INPUT_FILE = PropertyKey.of(Path.class);
     public static final PropertyKey<Path> OUTPUT_FILE = PropertyKey.of(Path.class);

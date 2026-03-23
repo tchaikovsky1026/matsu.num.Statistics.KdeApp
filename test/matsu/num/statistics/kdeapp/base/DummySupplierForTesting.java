@@ -10,6 +10,7 @@
  */
 package matsu.num.statistics.kdeapp.base;
 
+import java.util.Objects;
 import java.util.function.Supplier;
 
 /**
@@ -27,11 +28,12 @@ public final class DummySupplierForTesting {
      * ダミーサプライヤを返す.
      * 
      * @param <T> 値型
+     * @param obj getされるインスタンス
      * @return サプライヤ
+     * @throws NullPointerException 引数がnull
      */
-    public static <T> Supplier<T> instance() {
-        return () -> {
-            throw new UnsupportedOperationException("dummy supplier");
-        };
+    public static <T> Supplier<T> instance(T obj) {
+        Objects.requireNonNull(obj);
+        return () -> obj;
     }
 }

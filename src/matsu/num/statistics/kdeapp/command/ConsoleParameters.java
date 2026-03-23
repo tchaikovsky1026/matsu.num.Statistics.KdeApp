@@ -20,6 +20,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
+import matsu.num.statistics.kdeapp.config.ConfigProperty;
 import matsu.num.statistics.kdeapp.exception.IllegalParameterException;
 import matsu.num.statistics.kdeapp.logging.AppLogger;
 
@@ -52,11 +53,15 @@ public final class ConsoleParameters {
     private final Map<ArgumentRequiringCommand<?>, Object> argCommandMapper;
     private final Set<NoArgumentCommand<?>> noArgCommandSet;
 
+    private final ConfigProperty properties;
+
     private ConsoleParameters(
             Map<ArgumentRequiringCommand<?>, Object> argCommandMapper,
-            Set<NoArgumentCommand<?>> noArgCommandSet) {
+            Set<NoArgumentCommand<?>> noArgCommandSet,
+            ConfigProperty properties) {
         this.argCommandMapper = Objects.requireNonNull(argCommandMapper);
         this.noArgCommandSet = Objects.requireNonNull(noArgCommandSet);
+        this.properties = Objects.requireNonNull(properties);
     }
 
     /**
@@ -85,6 +90,15 @@ public final class ConsoleParameters {
      */
     public boolean contains(NoArgumentCommand<?> option) {
         return noArgCommandSet.contains(Objects.requireNonNull(option));
+    }
+
+    /**
+     * プロパティとして返す.
+     * 
+     * @return プロパティ
+     */
+    public ConfigProperty toProperties() {
+        return properties;
     }
 
     /**
@@ -139,11 +153,15 @@ public final class ConsoleParameters {
             final int size = args.length;
 
             int cursor = 0;
-            Map<ArgumentRequiringCommand<?>, Object> argCommandMapper =
-                    new HashMap<>();
 
-            // 引数なしコマンドの設定されているものセット
+            // コマンドの重複を検出するためのコマンドセット
+            Set<ConsoleOptionCommand<?>> commandSet = new HashSet<>();
+
+            // コマンドの登録状況
+            // (最終的に, このMapとSetは削除するはず)
+            Map<ArgumentRequiringCommand<?>, Object> argCommandMapper = new HashMap<>();
             Set<NoArgumentCommand<?>> noArgCommandSet = new HashSet<>();
+            var propertyBuilder = new ConfigProperty.Builder();
 
             LOGGER.info("=== Console parameter interpreting ===");
 
@@ -161,10 +179,13 @@ public final class ConsoleParameters {
                     cursor++;
 
                     // すでにコマンドが登録されていたら例外スロー
-                    if (!noArgCommandSet.add(noArgCommand)) {
+                    if (!commandSet.add(noArgCommand)) {
                         throw new IllegalParameterException(
                                 "duplicate: <" + noArgCommand.commandString() + ">");
                     }
+
+                    noArgCommandSet.add(noArgCommand);
+                    register(propertyBuilder, noArgCommand);
 
                     continue;
                 }
@@ -187,14 +208,16 @@ public final class ConsoleParameters {
                                     + "arg=\"" + commandParameter + "\"");
 
                     // すでにコマンドが登録されていたら例外スロー
-                    // コンバートに失敗した場合, 例外スロー
-                    if (Objects.nonNull(
-                            argCommandMapper.put(
-                                    argCommand,
-                                    argCommand.convertArg(Objects.requireNonNull(commandParameter))))) {
+                    if (!commandSet.add(argCommand)) {
                         throw new IllegalParameterException(
                                 "duplicate: <" + argCommand.commandString() + ">");
                     }
+
+                    argCommandMapper.put(
+                            argCommand,
+                            argCommand.convertArg(Objects.requireNonNull(commandParameter)));
+                    register(propertyBuilder, argCommand, commandParameter);
+
                     cursor++;
 
                     continue;
@@ -206,12 +229,29 @@ public final class ConsoleParameters {
             }
 
             // パラメータの指定に関するルールでバリデーション
-            Set<ConsoleOptionCommand<?>> commandSet = new HashSet<>(noArgCommandSet);
-            commandSet.addAll(argCommandMapper.keySet());
             rule.validate(commandSet);
 
             LOGGER.info("============== interpreted.");
-            return new ConsoleParameters(argCommandMapper, noArgCommandSet);
+            return new ConsoleParameters(argCommandMapper, noArgCommandSet, propertyBuilder.build());
+        }
+
+        /**
+         * 
+         * @param <T>
+         * @param propertyBuilder
+         * @param noArgCommand
+         * @return
+         */
+        private static <T> T register(
+                ConfigProperty.Builder propertyBuilder,
+                NoArgumentCommand<T> noArgCommand) {
+            return propertyBuilder.put(noArgCommand.propertyKey(), noArgCommand.get());
+        }
+
+        private static <T> T register(ConfigProperty.Builder propertyBuilder,
+                ArgumentRequiringCommand<T> argCommand,
+                String commandParameter) {
+            return propertyBuilder.put(argCommand.propertyKey(), argCommand.convertArg(commandParameter));
         }
 
         /**

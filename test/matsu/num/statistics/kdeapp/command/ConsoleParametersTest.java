@@ -26,6 +26,7 @@ import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
 import matsu.num.statistics.kdeapp.base.DummySupplierForTesting;
+import matsu.num.statistics.kdeapp.config.PropertyKey;
 import matsu.num.statistics.kdeapp.exception.IllegalParameterException;
 
 /**
@@ -41,7 +42,7 @@ final class ConsoleParametersTest {
 
             // ArgCommandとコマンド文字列が重複するNoArgCommand
             NoArgumentCommand<?> command = NoArgumentCommand.of(
-                    "DUMMY_4", DUMMY_PROPERTY, DummySupplierForTesting.instance(),
+                    "DUMMY_4", PropertyKey.of(String.class), DummySupplierForTesting.instance(""),
                     DUMMY_ARG_1.commandString());
 
             ConsoleParameters.Interpreter.of(

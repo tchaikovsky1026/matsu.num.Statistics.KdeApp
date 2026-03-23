@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.22
+ * 2026.3.23
  */
 package matsu.num.statistics.kdeapp.config;
 
@@ -89,23 +89,20 @@ public final class ConfigProperty {
         /**
          * キーと値を登録する.
          * 
-         * <p>
-         * メソッドチェーンできるように, this を返す.
-         * </p>
-         * 
          * @param <T> 値の型
          * @param key キー
          * @param value 値
-         * @return this
+         * @return すでに登録されていた場合は古い値, 未登録の場合はnull
          * @throws IllegalStateException 既にビルドされている場合
          * @throws NullPointerException 引数にnullが含まれる場合
          */
-        public <T> Builder put(PropertyKey<T> key, T value) {
+        public <T> T put(PropertyKey<T> key, T value) {
             validateIfCanBuild();
-            // キャストを試みて型を喧噪する
+            // キャストを試みて型を検査する
             // ジェネリクスが適切に使われているなら, キャストは成功する
-            map.put(key, key.cast(Objects.requireNonNull(value)));
-            return this;
+
+            return key.cast( // 登録済みの場合は古い値が戻る
+                    map.put(key, key.cast(Objects.requireNonNull(value))));
         }
 
         /**
