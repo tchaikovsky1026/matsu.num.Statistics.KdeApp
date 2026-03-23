@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.22
+ * 2026.3.23
  */
 package matsu.num.statistics.kdeapp.config;
 
@@ -37,7 +37,7 @@ public final class PropertyKey<T> {
      * @return キャストされたobj
      * @throws ClassCastException キャストに失敗した場合
      */
-    T cast(Object valueObj) {
+    public T cast(Object valueObj) {
         return this.valueType.cast(valueObj);
     }
 

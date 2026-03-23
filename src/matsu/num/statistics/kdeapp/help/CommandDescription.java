@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.17
+ * 2026.3.23
  */
 package matsu.num.statistics.kdeapp.help;
 
@@ -31,7 +31,7 @@ import matsu.num.statistics.kdeapp.command.NoArgumentCommand;
  */
 public final class CommandDescription {
 
-    private final ConsoleOptionCommand command;
+    private final ConsoleOptionCommand<?> command;
     private final String description;
     private final CommandCategory category;
 
@@ -47,7 +47,7 @@ public final class CommandDescription {
      * @throws NullPointerException null非許容な引数が与えられた場合
      */
     private CommandDescription(
-            ConsoleOptionCommand command, String description, CommandCategory category,
+            ConsoleOptionCommand<?> command, String description, CommandCategory category,
             UnaryOperator<String> mapperToUsageSyntax) {
         super();
         this.command = Objects.requireNonNull(command);
@@ -92,7 +92,7 @@ public final class CommandDescription {
      * @throws NullPointerException null非許容な引数が与えられた場合
      */
     public static CommandDescription of(
-            NoArgumentCommand command, String description, CommandCategory category) {
+            NoArgumentCommand<?> command, String description, CommandCategory category) {
         return new CommandDescription(
                 command, description, category,
                 UnaryOperator.identity());

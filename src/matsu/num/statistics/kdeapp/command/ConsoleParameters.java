@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.2
+ * 2026.3.23
  */
 package matsu.num.statistics.kdeapp.command;
 
@@ -50,11 +50,11 @@ import matsu.num.statistics.kdeapp.logging.AppLogger;
 public final class ConsoleParameters {
 
     private final Map<ArgumentRequiringCommand<?>, Object> argCommandMapper;
-    private final Set<NoArgumentCommand> noArgCommandSet;
+    private final Set<NoArgumentCommand<?>> noArgCommandSet;
 
     private ConsoleParameters(
             Map<ArgumentRequiringCommand<?>, Object> argCommandMapper,
-            Set<NoArgumentCommand> noArgCommandSet) {
+            Set<NoArgumentCommand<?>> noArgCommandSet) {
         this.argCommandMapper = Objects.requireNonNull(argCommandMapper);
         this.noArgCommandSet = Objects.requireNonNull(noArgCommandSet);
     }
@@ -83,7 +83,7 @@ public final class ConsoleParameters {
      * @return オプションの値, 指定されていない場合は空.
      * @throws NullPointerException 引数がnullの場合
      */
-    public boolean contains(NoArgumentCommand option) {
+    public boolean contains(NoArgumentCommand<?> option) {
         return noArgCommandSet.contains(Objects.requireNonNull(option));
     }
 
@@ -100,7 +100,7 @@ public final class ConsoleParameters {
         private static final AppLogger LOGGER =
                 AppLogger.getLogger(Interpreter.class);
 
-        private final Map<String, NoArgumentCommand> mapperToNoArgCommand;
+        private final Map<String, NoArgumentCommand<?>> mapperToNoArgCommand;
         private final Map<String, ArgumentRequiringCommand<?>> mapperToArgCommand;
         private final CommandAssignmentRule rule;
 
@@ -112,7 +112,7 @@ public final class ConsoleParameters {
          * コマンド文字列が重複しないことを呼び出し元で確かめる必要がある.
          * </p>
          */
-        private Interpreter(Map<String, NoArgumentCommand> mapperToNoArgCommand,
+        private Interpreter(Map<String, NoArgumentCommand<?>> mapperToNoArgCommand,
                 Map<String, ArgumentRequiringCommand<?>> mapperToArgCommand,
                 CommandAssignmentRule rule) {
             super();
@@ -143,7 +143,7 @@ public final class ConsoleParameters {
                     new HashMap<>();
 
             // 引数なしコマンドの設定されているものセット
-            Set<NoArgumentCommand> noArgCommandSet = new HashSet<>();
+            Set<NoArgumentCommand<?>> noArgCommandSet = new HashSet<>();
 
             LOGGER.info("=== Console parameter interpreting ===");
 
@@ -153,7 +153,7 @@ public final class ConsoleParameters {
                 Objects.requireNonNull(commandAsString);
 
                 // 引数なしコマンドを検索
-                NoArgumentCommand noArgCommand =
+                NoArgumentCommand<?> noArgCommand =
                         mapperToNoArgCommand.get(commandAsString);
                 if (Objects.nonNull(noArgCommand)) {
                     LOGGER.info("command=\"" + noArgCommand.commandString() + "\"");
@@ -206,7 +206,7 @@ public final class ConsoleParameters {
             }
 
             // パラメータの指定に関するルールでバリデーション
-            Set<ConsoleOptionCommand> commandSet = new HashSet<>(noArgCommandSet);
+            Set<ConsoleOptionCommand<?>> commandSet = new HashSet<>(noArgCommandSet);
             commandSet.addAll(argCommandMapper.keySet());
             rule.validate(commandSet);
 
@@ -234,11 +234,11 @@ public final class ConsoleParameters {
          * @throws NullPointerException 引数にnullを含む場合
          */
         public static Interpreter of(
-                Set<? extends NoArgumentCommand> noArgCommands,
+                Set<? extends NoArgumentCommand<?>> noArgCommands,
                 Set<? extends ArgumentRequiringCommand<?>> argCommands,
                 CommandAssignmentRule rule) {
 
-            Map<String, NoArgumentCommand> mapperToNoArgCommand =
+            Map<String, NoArgumentCommand<?>> mapperToNoArgCommand =
                     ConsoleOptionCommand.toCommandMapper(noArgCommands);
             Map<String, ArgumentRequiringCommand<?>> mapperToArgCommand =
                     ConsoleOptionCommand.toCommandMapper(argCommands);

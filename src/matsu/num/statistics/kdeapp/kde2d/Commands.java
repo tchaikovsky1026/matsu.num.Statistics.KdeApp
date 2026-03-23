@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.22
+ * 2026.3.23
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import matsu.num.statistics.kdeapp.base.DummySupplier;
 import matsu.num.statistics.kdeapp.command.ArgumentRequiringCommand;
 import matsu.num.statistics.kdeapp.command.CommandAssignmentRule;
 import matsu.num.statistics.kdeapp.command.ConsoleOptionCommand;
@@ -39,14 +40,20 @@ public final class Commands {
     /**
      * 結果を標準出力しないことを表現するシングルトンインスタンス.
      */
-    public static final NoArgumentCommand ECHO_OFF =
-            NoArgumentCommand.of("ECHO_OFF", "--echo-off");
+    public static final NoArgumentCommand<?> ECHO_OFF =
+            NoArgumentCommand.of(
+                    "ECHO_OFF",
+                    Properties.ECHO, DummySupplier.instance(),
+                    "--echo-off");
 
     /**
      * 結果を標準出力することを表現するシングルトンインスタンス.
      */
-    public static final NoArgumentCommand ECHO_ON =
-            NoArgumentCommand.of("ECHO_ON", "--echo-on");
+    public static final NoArgumentCommand<?> ECHO_ON =
+            NoArgumentCommand.of(
+                    "ECHO_ON",
+                    Properties.ECHO, DummySupplier.instance(),
+                    "--echo-on");
 
     /**
      * 入力ファイルの指定を表現するシングルトンインスタンス.
@@ -57,7 +64,7 @@ public final class Commands {
      */
     public static final ArgumentRequiringCommand<Path> INPUT_FILE_PATH =
             ArgumentRequiringCommand.of(
-                    "INPUT_FILE_PATH", Path.class,
+                    "INPUT_FILE_PATH", Properties.INPUT_FILE,
                     Path::of,
                     "--input", "--in");
 
@@ -70,17 +77,9 @@ public final class Commands {
      */
     public static final ArgumentRequiringCommand<Path> OUTPUT_FORCE_FILE_PATH =
             ArgumentRequiringCommand.of(
-                    "OUTPUT_FORCE_FILE_PATH", Path.class,
+                    "OUTPUT_FORCE_FILE_PATH", Properties.OUTPUT_FILE,
                     Path::of,
                     "--output-force", "--out-force");
-
-    /**
-     * ファイル出力しないことを表現するシングルトンインスタンス.
-     */
-    public static final NoArgumentCommand OUTPUT_NONE =
-            NoArgumentCommand.of(
-                    "OUTPUT_NONE",
-                    "--output-none", "--out-none");
 
     /**
      * 上書き禁止モードである出力ファイルの指定を表現するシングルトンインスタンス.
@@ -91,9 +90,18 @@ public final class Commands {
      */
     public static final ArgumentRequiringCommand<Path> OUTPUT_FILE_PATH =
             ArgumentRequiringCommand.of(
-                    "OUTPUT_FILE_PATH", Path.class,
+                    "OUTPUT_FILE_PATH", Properties.OUTPUT_FILE,
                     Path::of,
                     "--output", "--out");
+
+    /**
+     * ファイル出力しないことを表現するシングルトンインスタンス.
+     */
+    public static final NoArgumentCommand<?> OUTPUT_NONE =
+            NoArgumentCommand.of(
+                    "OUTPUT_NONE", Properties.OUTPUT_FILE,
+                    DummySupplier.instance(),
+                    "--output-none", "--out-none");
 
     /**
      * 入力のコメント行の prefix の指定を表現するシングルトンインスタンス.
@@ -104,7 +112,7 @@ public final class Commands {
      */
     public static final ArgumentRequiringCommand<CommentPrefix> INPUT_COMMENT_PREFIX =
             ArgumentRequiringCommand.of(
-                    "INPUT_COMMENT_PREFIX", CommentPrefix.class,
+                    "INPUT_COMMENT_PREFIX", Properties.COMMENT_PREFIX,
                     CommentPrefix::of,
                     "--input-comment-prefix", "--in-comment-prefix");
 
@@ -117,7 +125,7 @@ public final class Commands {
      */
     public static final ArgumentRequiringCommand<Separator> INPUT_SEPARATOR =
             ArgumentRequiringCommand.of(
-                    "INPUT_SEPARATOR", Separator.class,
+                    "INPUT_SEPARATOR", Properties.INPUT_SEPARATOR,
                     Separator::from,
                     "--input-separator", "--in-sep");
 
@@ -130,7 +138,7 @@ public final class Commands {
      */
     public static final ArgumentRequiringCommand<Separator> OUTPUT_SEPARATOR =
             ArgumentRequiringCommand.of(
-                    "OUTPUT_SEPARATOR", Separator.class,
+                    "OUTPUT_SEPARATOR", Properties.OUTPUT_SEPARATOR,
                     Separator::from,
                     "--output-separator", "--out-sep");
 
@@ -143,7 +151,7 @@ public final class Commands {
      */
     public static final ArgumentRequiringCommand<FormatterBuilderSupplier> OUTPUT_FORMAT_TYPE =
             ArgumentRequiringCommand.of(
-                    "OUTPUT_FORMAT_TYPE", FormatterBuilderSupplier.class,
+                    "OUTPUT_FORMAT_TYPE", Properties.OUTPUT_FORMAT_TYPE,
                     FormatterBuilderSupplier::from,
                     "--output-format", "--out-format");
 
@@ -157,14 +165,17 @@ public final class Commands {
     public static final ArgumentRequiringCommand<String> OUTPUT_LABEL_PREFIX =
             identifying(
                     "OUTPUT_LABEL_PREFIX",
+                    Properties.OUTPUT_LABEL_PREFIX,
                     "--output-label-prefix", "--out-label-prefix");
 
     /**
      * ラベルを出力しないことを表現するシングルトンインスタンス.
      */
-    public static final NoArgumentCommand OUTPUT_NO_LABEL =
+    public static final NoArgumentCommand<?> OUTPUT_NO_LABEL =
             NoArgumentCommand.of(
                     "OUTPUT_NO_LABEL",
+                    Properties.OUTPUT_LABEL_PREFIX,
+                    DummySupplier.instance(),
                     "--output-no-label", "--out-no-label");
 
     /**
@@ -197,8 +208,8 @@ public final class Commands {
      * 
      * @return コマンドリスト
      */
-    static List<ConsoleOptionCommand> getCommands() {
-        List<ConsoleOptionCommand> list = new ArrayList<>();
+    static List<ConsoleOptionCommand<?>> getCommands() {
+        List<ConsoleOptionCommand<?>> list = new ArrayList<>();
         list.addAll(NoArgCommandsHolder.values);
         list.addAll(ArgumentRequiringCommandsHolder.values);
         return list;
@@ -244,11 +255,12 @@ public final class Commands {
          * オプションコマンドの集合. <br>
          * 不変になるようにすること.
          */
-        static final Collection<NoArgumentCommand> values;
+        static final Collection<NoArgumentCommand<?>> values;
 
         static {
-            List<NoArgumentCommand> constantFieldList = new ArrayList<>();
+            List<NoArgumentCommand<?>> constantFieldList = new ArrayList<>();
 
+            @SuppressWarnings("rawtypes")
             Class<NoArgumentCommand> clazz = NoArgumentCommand.class;
 
             // staticかつ互換性のあるフィールドのみが対象

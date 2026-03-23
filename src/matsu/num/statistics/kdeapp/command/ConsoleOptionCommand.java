@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.17
+ * 2026.3.23
  */
 package matsu.num.statistics.kdeapp.command;
 
@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+
+import matsu.num.statistics.kdeapp.config.PropertyKey;
 
 /**
  * コンソールオプションコマンドを表現するクラス.
@@ -34,11 +36,13 @@ import java.util.Set;
  * </p>
  * 
  * @author Matsuura Y.
+ * @param <T> このコマンドによって得られる値の型, see {@link PropertyKey}
  */
-public abstract sealed class ConsoleOptionCommand
+public abstract sealed class ConsoleOptionCommand<T>
         permits ArgumentRequiringCommand, NoArgumentCommand {
 
     private final String enumString;
+    private final PropertyKey<T> propertyKey;
 
     private final String commandRepresentation;
     private final Set<String> representations;
@@ -48,18 +52,20 @@ public abstract sealed class ConsoleOptionCommand
      * パッケージ外での継承が許可されないので非公開である.
      * 
      * @param enumString インスタンスの文字列表現
+     * @param propertyKey 対応するプロパティキー
      * @param commandRepresentation コマンドの正式な文字列表現
      * @param otherRepresentations 正式表現以外の文字列表現
      * @throws IllegalArgumentException ブランクを含む場合
      * @throws NullPointerException 引数にnullが含まれる場合
      */
-    ConsoleOptionCommand(String enumString,
+    ConsoleOptionCommand(String enumString, PropertyKey<T> propertyKey,
             String commandRepresentation, String... otherRepresentations) {
 
         this.enumString = enumString;
         if (this.enumString.isBlank()) {
             throw new IllegalArgumentException("enumString is blank");
         }
+        this.propertyKey = Objects.requireNonNull(propertyKey);
 
         this.commandRepresentation = Objects.requireNonNull(commandRepresentation);
         this.representations = new HashSet<>();
@@ -89,6 +95,15 @@ public abstract sealed class ConsoleOptionCommand
      */
     final List<String> representations() {
         return List.copyOf(representations);
+    }
+
+    /**
+     * このコマンドに対応付けられるプロパティキーを返す.
+     * 
+     * @return プロパティキー
+     */
+    final PropertyKey<T> propertyKey() {
+        return propertyKey;
     }
 
     /**
@@ -143,7 +158,7 @@ public abstract sealed class ConsoleOptionCommand
      * @throws IllegalArgumentException コマンド文字列に重複がある場合
      * @throws NullPointerException 引数にnullが含まれる場合
      */
-    static <T extends ConsoleOptionCommand>
+    static <T extends ConsoleOptionCommand<?>>
             Map<String, T> toCommandMapper(Collection<? extends T> commands) {
 
         // フラット化
@@ -169,7 +184,7 @@ public abstract sealed class ConsoleOptionCommand
     }
 
     // コマンドインスタンスとコマンド文字列のペアを表現するクラス
-    private static final class Pair<T extends ConsoleOptionCommand> {
+    private static final class Pair<T extends ConsoleOptionCommand<?>> {
         final T command;
         final String representation;
 
