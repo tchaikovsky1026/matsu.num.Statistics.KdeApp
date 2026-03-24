@@ -13,12 +13,13 @@ package matsu.num.statistics.kdeapp.command;
 import static java.util.stream.Collectors.*;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import matsu.num.statistics.kdeapp.config.ConfigProperty;
+import matsu.num.statistics.kdeapp.config.PropertyKey;
 import matsu.num.statistics.kdeapp.exception.IllegalParameterException;
 import matsu.num.statistics.kdeapp.logging.AppLogger;
 
@@ -188,7 +189,9 @@ public final class ConsoleParameterInterpreter {
      * </p>
      * 
      * <p>
-     * 渡されたコマンド集合の中で, コマンド文字列 (representation) が重複してはならない.
+     * 渡されたコマンド集合の中で, コマンド文字列 (representation) が重複してはならない. <br>
+     * コマンドが紐づくプロパティキー ({@link PropertyKey}) について,
+     * 異なるプロパティキーに同じプロパティ名が付与されていてはならない.
      * </p>
      * 
      * @param noArgCommands 解釈される引数なしコマンドの集合
@@ -203,39 +206,22 @@ public final class ConsoleParameterInterpreter {
             Set<? extends ArgumentRequiringCommand<?>> argCommands,
             CommandAssignmentRule rule) {
 
+        Set<ConsoleOptionCommand<?>> commands =
+                Stream.of(noArgCommands, argCommands)
+                        .flatMap(set -> set.stream())
+                        .collect(toSet());
+
+        // 文字列に関する重複の確認
+        ConsoleOptionCommand.requireNoRepresentationDuplicates(commands);
+        PropertyKey.requireNoNameDuplicates(commands, c -> c.propertyKey());
+
         Map<String, NoArgumentCommand<?>> mapperToNoArgCommand =
                 ConsoleOptionCommand.toCommandMapper(noArgCommands);
         Map<String, ArgumentRequiringCommand<?>> mapperToArgCommand =
                 ConsoleOptionCommand.toCommandMapper(argCommands);
 
-        validateCommandDuplication(
-                mapperToNoArgCommand.keySet(), mapperToArgCommand.keySet());
-
         return new ConsoleParameterInterpreter(
                 mapperToNoArgCommand, mapperToArgCommand,
                 Objects.requireNonNull(rule));
-    }
-
-    /**
-     * {@link NoArgumentCommand} と {@link ArgumentRequiringCommand}
-     * の文字列表現に重複がないことを確かめる.
-     * 
-     * @throws IllegalArgumentException コマンド文字列が重複する場合
-     * @throws NullPointerException nullを含む場合
-     */
-    private static void validateCommandDuplication(
-            Set<String> noArgCommandRepresentations,
-            Set<String> argCommandRepresentations) {
-
-        Map<String, Long> duplicationMap =
-                List.of(noArgCommandRepresentations, argCommandRepresentations)
-                        .stream()
-                        .flatMap(set -> set.stream())
-                        .collect(groupingBy(s -> s, counting()));
-        for (Map.Entry<String, Long> e : duplicationMap.entrySet()) {
-            if (e.getValue().longValue() >= 2) {
-                throw new IllegalArgumentException("duplicate representation: " + e.getKey());
-            }
-        }
     }
 }

@@ -42,7 +42,8 @@ final class ConsoleParametersTest {
 
             // ArgCommandとコマンド文字列が重複するNoArgCommand
             NoArgumentCommand<?> command = NoArgumentCommand.of(
-                    "DUMMY_4", PropertyKey.of(String.class), DummySupplierForTesting.instance(""),
+                    "DUMMY_4", PropertyKey.of("dummy-4", String.class),
+                    DummySupplierForTesting.instance(""),
                     DUMMY_ARG_1.commandString());
 
             ConsoleParameterInterpreter.of(
