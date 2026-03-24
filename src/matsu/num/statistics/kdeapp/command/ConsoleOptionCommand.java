@@ -55,7 +55,7 @@ public abstract sealed class ConsoleOptionCommand<T>
      * @param propertyKey 対応するプロパティキー
      * @param commandRepresentation コマンドの正式な文字列表現
      * @param otherRepresentations 正式表現以外の文字列表現
-     * @throws IllegalArgumentException ブランクを含む場合
+     * @throws IllegalArgumentException 文字列表現に空白を含む場合
      * @throws NullPointerException 引数にnullが含まれる場合
      */
     ConsoleOptionCommand(String enumString, PropertyKey<T> propertyKey,
@@ -72,8 +72,9 @@ public abstract sealed class ConsoleOptionCommand<T>
         this.representations.add(commandRepresentation);
         this.representations.addAll(List.of(otherRepresentations));
 
-        if (this.representations.stream().anyMatch(String::isBlank)) {
-            throw new IllegalArgumentException(this.toString() + ": blank representation");
+        if (this.representations.stream().anyMatch(
+                r -> r.chars().anyMatch(Character::isWhitespace))) {
+            throw new IllegalArgumentException(this.toString() + " includes white space");
         }
     }
 

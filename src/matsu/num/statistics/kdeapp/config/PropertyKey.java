@@ -31,9 +31,21 @@ public final class PropertyKey<T> {
     private final String propertyName;
     private final Class<T> valueType;
 
+    /**
+     * 唯一のコンストラクタ.
+     *
+     * @param propertyName プロパティ名
+     * @param valueType 値の型
+     * @throws IllegalArgumentException 文字列表現に空白を含む場合
+     * @throws NullPointerException 引数にnullが含まれる場合
+     */
     private PropertyKey(String propertyName, Class<T> valueType) {
         this.valueType = Objects.requireNonNull(valueType);
         this.propertyName = propertyName;
+
+        if (propertyName.chars().anyMatch(Character::isWhitespace)) {
+            throw new IllegalArgumentException(this.toString() + " includes white space");
+        }
     }
 
     /**
@@ -89,6 +101,7 @@ public final class PropertyKey<T> {
      * @param propertyName プロパティ名
      * @param valueType 値の型
      * @return プロパティキー
+     * @throws IllegalArgumentException 文字列表現に空白を含む場合
      * @throws NullPointerException 引数がnullの場合
      */
     public static <T> PropertyKey<T> of(String propertyName, Class<T> valueType) {
@@ -99,11 +112,19 @@ public final class PropertyKey<T> {
      * 与えたクラス (clazz) に定義されている {@link PropertyKey} 型のstaticフィールドの値を得る. <br>
      * ただし, clazz とフィールドは {@code public} でなければならない.
      * 
+     * <p>
+     * 
+     * </p>
+     * 
      * @param clazz clazz
      * @return clazz クラスに定義された public static な {@link PropertyKey} フィールドの値
+     * @throws IllegalArgumentException プロパティ名に重複がある場合
+     * @throws NullPointerException 引数にnullを含む場合
      */
     public static Set<PropertyKey<?>> constantsOf(Class<?> clazz) {
         Set<PropertyKey<?>> constantFieldSet = new HashSet<>();
+        Set<String> nameSet = new HashSet<>();
+
         @SuppressWarnings("rawtypes")
         Class<PropertyKey> type = PropertyKey.class;
 
@@ -113,7 +134,11 @@ public final class PropertyKey<T> {
                 continue;
             }
             try {
-                constantFieldSet.add(type.cast(f.get(null)));
+                PropertyKey<?> p = type.cast(f.get(null));
+                constantFieldSet.add(p);
+                if (!nameSet.add(p.propertyName())) {
+                    throw new IllegalArgumentException("duplicate property name: " + p.propertyName());
+                }
             } catch (IllegalAccessException | ClassCastException ignore) {
                 //無関係なフィールドなら無視する
             }
