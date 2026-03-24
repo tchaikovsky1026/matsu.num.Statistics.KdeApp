@@ -34,10 +34,9 @@ public final class Properties {
     public static final PropertyKey<CommentPrefix> INPUT_COMMENT_PREFIX = PropertyKey.of(CommentPrefix.class);
 
     public static final PropertyKey<OutputFileConfig> OUTPUT_FILE = PropertyKey.of(OutputFileConfig.class);
-
     public static final PropertyKey<Separator> OUTPUT_SEPARATOR = PropertyKey.of(Separator.class);
-
-    public static final PropertyKey<String> OUTPUT_LABEL_PREFIX = PropertyKey.of(String.class);
+    public static final PropertyKey<OutputLabelPrefixConfig> OUTPUT_LABEL_PREFIX =
+            PropertyKey.of(OutputLabelPrefixConfig.class);
 
     public static final ConfigProperty DEFAULT_PROPERTY;
 
@@ -47,6 +46,8 @@ public final class Properties {
         builder.put(ECHO, true);
         builder.put(INPUT_COMMENT_PREFIX, CommentPrefix.of("#"));
         builder.put(OUTPUT_FILE, OutputFileConfig.none());
+        builder.put(OUTPUT_SEPARATOR, Separator.from("\t"));
+        builder.put(OUTPUT_LABEL_PREFIX, OutputLabelPrefixConfig.nonLabel());
 
         DEFAULT_PROPERTY = builder.build();
     }

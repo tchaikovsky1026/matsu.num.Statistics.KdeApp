@@ -35,11 +35,9 @@ public final class Properties {
     public static final PropertyKey<Separator> INPUT_SEPARATOR = PropertyKey.of(Separator.class);
 
     public static final PropertyKey<OutputFileConfig> OUTPUT_FILE = PropertyKey.of(OutputFileConfig.class);
-
     public static final PropertyKey<Separator> OUTPUT_SEPARATOR = PropertyKey.of(Separator.class);
-
-    public static final PropertyKey<String> OUTPUT_LABEL_PREFIX = PropertyKey.of(String.class);
-
+    public static final PropertyKey<OutputLabelPrefixConfig> OUTPUT_LABEL_PREFIX =
+            PropertyKey.of(OutputLabelPrefixConfig.class);
     public static final PropertyKey<FormatterBuilderSupplier> OUTPUT_FORMAT_TYPE =
             PropertyKey.of(FormatterBuilderSupplier.class);
 
@@ -53,6 +51,9 @@ public final class Properties {
         builder.put(INPUT_SEPARATOR, Separator.from("\t"));
         
         builder.put(OUTPUT_FILE, OutputFileConfig.none());
+        builder.put(OUTPUT_SEPARATOR, Separator.from("\t"));
+        builder.put(OUTPUT_LABEL_PREFIX, OutputLabelPrefixConfig.nonLabel());
+        builder.put(OUTPUT_FORMAT_TYPE, FormatterBuilderSupplier.XYZ);
 
         DEFAULT_PROPERTY = builder.build();
     }

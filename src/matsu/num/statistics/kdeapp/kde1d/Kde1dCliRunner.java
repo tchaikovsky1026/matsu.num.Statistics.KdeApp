@@ -12,7 +12,6 @@ package matsu.num.statistics.kdeapp.kde1d;
 
 import java.io.PrintStream;
 
-import matsu.num.statistics.kdeapp.command.ConsoleParameters;
 import matsu.num.statistics.kdeapp.config.ConfigProperty;
 import matsu.num.statistics.kdeapp.exception.ApplicationException;
 import matsu.num.statistics.kdeapp.kde1d.task.GaussianStandardKde1dCalculator;
@@ -70,14 +69,13 @@ final class Kde1dCliRunner {
 
         out.println("kde1d...");
 
-        ConsoleParameters interpretation = Commands.getInterpreter().interpret(args);
-        ConfigProperty property = interpretation.toProperties()
+        ConfigProperty property = Commands.getInterpreter().interpret(args).toProperties()
                 .withDefaults(Properties.DEFAULT_PROPERTY);
 
         Kde1dSourceReader loader =
                 new SourceReaderConstructor().apply(property);
         WritingFormatter writingFormatter =
-                new WritingFormatterConstructor().apply(interpretation);
+                new WritingFormatterConstructor().apply(property);
         ResultWriter fileWriter =
                 new FileWriterConstructor().apply(property);
         ResultWriter printer =

@@ -10,7 +10,6 @@
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
-import static matsu.num.statistics.kdeapp.command.ArgumentRequiringCommand.*;
 import static matsu.num.statistics.kdeapp.command.CommandAssignmentRule.*;
 
 import java.lang.reflect.Field;
@@ -21,7 +20,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import matsu.num.statistics.kdeapp.base.DummySupplier;
 import matsu.num.statistics.kdeapp.command.ArgumentRequiringCommand;
 import matsu.num.statistics.kdeapp.command.CommandAssignmentRule;
 import matsu.num.statistics.kdeapp.command.ConsoleOptionCommand;
@@ -101,10 +99,6 @@ public final class Commands {
 
     /**
      * 出力ファイルの区切り文字の指定を表現するシングルトンインスタンス.
-     * 
-     * <p>
-     * インスタンス生成時にバリデーションされる.
-     * </p>
      */
     public static final ArgumentRequiringCommand<Separator> OUTPUT_SEPARATOR =
             ArgumentRequiringCommand.of(
@@ -113,40 +107,31 @@ public final class Commands {
                     "--output-separator", "--out-sep");
 
     /**
+     * 出力のラベルに付与する prefix の指定を表現するシングルトンインスタンス.
+     */
+    public static final ArgumentRequiringCommand<OutputLabelPrefixConfig> OUTPUT_LABEL_PREFIX =
+            ArgumentRequiringCommand.of(
+                    "OUTPUT_LABEL_PREFIX", Properties.OUTPUT_LABEL_PREFIX,
+                    OutputLabelPrefixConfig::withLabel,
+                    "--output-label-prefix", "--out-label-prefix");
+
+    /**
+     * ラベルを出力しないことを表現するシングルトンインスタンス.
+     */
+    public static final NoArgumentCommand<OutputLabelPrefixConfig> OUTPUT_NO_LABEL =
+            NoArgumentCommand.of(
+                    "OUTPUT_NO_LABEL", Properties.OUTPUT_LABEL_PREFIX,
+                    () -> OutputLabelPrefixConfig.nonLabel(),
+                    "--output-no-label", "--out-no-label");
+
+    /**
      * 出力フォーマットの形式の指定を表現するシングルトンインスタンス.
-     * 
-     * <p>
-     * インスタンス生成時にバリデーションされる.
-     * </p>
      */
     public static final ArgumentRequiringCommand<FormatterBuilderSupplier> OUTPUT_FORMAT_TYPE =
             ArgumentRequiringCommand.of(
                     "OUTPUT_FORMAT_TYPE", Properties.OUTPUT_FORMAT_TYPE,
                     FormatterBuilderSupplier::from,
                     "--output-format", "--out-format");
-
-    /**
-     * 出力のラベルに付与する prefix の指定を表現するシングルトンインスタンス.
-     * 
-     * <p>
-     * 引数はバリデーションされない.
-     * </p>
-     */
-    public static final ArgumentRequiringCommand<String> OUTPUT_LABEL_PREFIX =
-            identifying(
-                    "OUTPUT_LABEL_PREFIX",
-                    Properties.OUTPUT_LABEL_PREFIX,
-                    "--output-label-prefix", "--out-label-prefix");
-
-    /**
-     * ラベルを出力しないことを表現するシングルトンインスタンス.
-     */
-    public static final NoArgumentCommand<?> OUTPUT_NO_LABEL =
-            NoArgumentCommand.of(
-                    "OUTPUT_NO_LABEL",
-                    Properties.OUTPUT_LABEL_PREFIX,
-                    DummySupplier.instance(""),
-                    "--output-no-label", "--out-no-label");
 
     /**
      * コマンドの指定に関するルール.
