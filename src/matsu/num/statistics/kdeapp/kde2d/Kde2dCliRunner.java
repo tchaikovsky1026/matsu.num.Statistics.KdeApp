@@ -6,13 +6,13 @@
  */
 
 /*
- * 2026.3.12
+ * 2026.3.24
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
 import java.io.PrintStream;
 
-import matsu.num.statistics.kdeapp.command.ConsoleParameters;
+import matsu.num.statistics.kdeapp.config.ConfigProperty;
 import matsu.num.statistics.kdeapp.exception.ApplicationException;
 import matsu.num.statistics.kdeapp.kde2d.task.GaussianStandardKde2dCalculator;
 import matsu.num.statistics.kdeapp.kde2d.task.Kde2dSourceReader;
@@ -69,16 +69,17 @@ final class Kde2dCliRunner {
 
         out.println("kde2d...");
 
-        ConsoleParameters interpretation = Commands.getInterpreter().interpret(args);
+        ConfigProperty property = Commands.getInterpreter().interpret(args)
+                .withDefaults(Properties.DEFAULT_PROPERTY);
 
         Kde2dSourceReader loader =
-                new SourceReaderConstructor().apply(interpretation);
+                new SourceReaderConstructor().apply(property);
         WritingFormatter writingFormatter =
-                new FormatterConstructor().apply(interpretation);
+                new FormatterConstructor().apply(property);
         ResultWriter fileWriter =
-                new FileWriterConstructor().apply(interpretation);
+                new FileWriterConstructor().apply(property);
         ResultWriter printer =
-                new PrinterConstructor(out, err).apply(interpretation);
+                new PrinterConstructor(out, err).apply(property);
 
         double[][] source = loader.read();
         WritableKde2dResult result = new GaussianStandardKde2dCalculator().calc(source);

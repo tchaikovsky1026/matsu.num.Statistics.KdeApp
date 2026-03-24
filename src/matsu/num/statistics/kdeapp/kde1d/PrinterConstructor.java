@@ -6,17 +6,16 @@
  */
 
 /*
- * 2026.3.11
+ * 2026.3.24
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
-import static matsu.num.statistics.kdeapp.kde1d.Commands.*;
+import static matsu.num.statistics.kdeapp.kde1d.Properties.*;
 
 import java.io.PrintStream;
 import java.util.Objects;
 
-import matsu.num.statistics.kdeapp.command.ComponentConstructor;
-import matsu.num.statistics.kdeapp.command.ConsoleParameters;
+import matsu.num.statistics.kdeapp.config.ConfigProperty;
 import matsu.num.statistics.kdeapp.kde1d.task.ResultDisplayPrinter;
 import matsu.num.statistics.kdeapp.kde1d.task.ResultWriter;
 
@@ -25,7 +24,7 @@ import matsu.num.statistics.kdeapp.kde1d.task.ResultWriter;
  * 
  * @author Matsuura Y.
  */
-final class PrinterConstructor implements ComponentConstructor<ResultWriter> {
+final class PrinterConstructor {
 
     private final PrintStream out;
     private final PrintStream err;
@@ -46,15 +45,9 @@ final class PrinterConstructor implements ComponentConstructor<ResultWriter> {
     /**
      * @throws NullPointerException {@inheritDoc }
      */
-    @Override
-    public ResultWriter apply(ConsoleParameters interpreter) {
-        ResultWriter writer = ResultWriter.nullWriter();
-
-        // ECHO_ON の方はチェックしていない
-        if (!interpreter.contains(ECHO_OFF)) {
-            writer = writer.andThen(new ResultDisplayPrinter(out, err));
-        }
-
-        return writer;
+    ResultWriter apply(ConfigProperty property) {
+        return property.get(ECHO)
+                ? new ResultDisplayPrinter(out, err)
+                : ResultWriter.nullWriter();
     }
 }

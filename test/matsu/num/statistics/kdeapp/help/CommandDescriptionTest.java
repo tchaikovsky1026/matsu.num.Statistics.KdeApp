@@ -60,7 +60,7 @@ final class CommandDescriptionTest {
         private final CommandCategory category = CommandCategory.from("Dummy");
 
         @DataPoints
-        public static NoArgumentCommand[] noArgCommands = {
+        public static NoArgumentCommand<?>[] noArgCommands = {
                 DUMMY_NO_ARG_1,
                 DUMMY_NO_ARG_2,
                 DUMMY_NO_ARG_3
@@ -75,7 +75,7 @@ final class CommandDescriptionTest {
 
         @Theory
         public void test_usageSyntaxが文字列の多い順_noArg(
-                NoArgumentCommand command) {
+                NoArgumentCommand<?> command) {
             List<String> list = CommandDescription.of(command, "", category).getUsageSyntaxes();
             assertThat(isDescending(list, comparingInt(String::length)), is(true));
         }

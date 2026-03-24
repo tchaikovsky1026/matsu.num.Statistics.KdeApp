@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.2.18
+ * 2026.3.23
  */
 package matsu.num.statistics.kdeapp.command;
 
@@ -46,7 +46,7 @@ public sealed abstract class CommandAssignmentRule {
      * @throws IllegalParameterException パラメータが不正であった場合
      * @throws NullPointerException 引数にnullが含まれる場合 (スローされない場合もある)
      */
-    public abstract void validate(Set<? extends ConsoleOptionCommand> allCommands);
+    public abstract void validate(Set<? extends ConsoleOptionCommand<?>> allCommands);
 
     /**
      * コマンドの集合のうち, 0個または1個指定されるべきコマンドであることを要求するルールを作成する.
@@ -57,7 +57,7 @@ public sealed abstract class CommandAssignmentRule {
      * @throws NullPointerException 引数にnullが含まれる場合
      */
     public static CommandAssignmentRule singleOptionalRule(
-            ConsoleOptionCommand one, ConsoleOptionCommand... others) {
+            ConsoleOptionCommand<?> one, ConsoleOptionCommand<?>... others) {
         return new SingleOptionalRule(one, others);
     }
 
@@ -70,7 +70,7 @@ public sealed abstract class CommandAssignmentRule {
      * @throws NullPointerException 引数にnullが含まれる場合
      */
     public static CommandAssignmentRule singleRequiredRule(
-            ConsoleOptionCommand one, ConsoleOptionCommand... others) {
+            ConsoleOptionCommand<?> one, ConsoleOptionCommand<?>... others) {
         return new SingleRequiredRule(one, others);
     }
 
@@ -81,7 +81,7 @@ public sealed abstract class CommandAssignmentRule {
      * @return 禁止コマンドルール
      * @throws NullPointerException 引数がnullの場合
      */
-    public static CommandAssignmentRule prohibitedCommandRule(ConsoleOptionCommand prohibitedCommand) {
+    public static CommandAssignmentRule prohibitedCommandRule(ConsoleOptionCommand<?> prohibitedCommand) {
         return new ProhibitedCommandRule(prohibitedCommand);
     }
 
@@ -125,7 +125,7 @@ public sealed abstract class CommandAssignmentRule {
         }
 
         @Override
-        public void validate(Set<? extends ConsoleOptionCommand> allCommands) {
+        public void validate(Set<? extends ConsoleOptionCommand<?>> allCommands) {
             // バリデーションはしない, nullチェックもしない
         }
     }
@@ -135,7 +135,7 @@ public sealed abstract class CommandAssignmentRule {
      */
     private static final class ProhibitedCommandRule extends CommandAssignmentRule {
 
-        private final ConsoleOptionCommand prohibitedCommand;
+        private final ConsoleOptionCommand<?> prohibitedCommand;
 
         /**
          * 与えたコマンドを禁止するルールを作成する.
@@ -143,7 +143,7 @@ public sealed abstract class CommandAssignmentRule {
          * @param prohibitedCommand 禁止コマンド
          * @throws NullPointerException 引数がnullの場合
          */
-        ProhibitedCommandRule(ConsoleOptionCommand prohibitedCommand) {
+        ProhibitedCommandRule(ConsoleOptionCommand<?> prohibitedCommand) {
             super();
             this.prohibitedCommand = prohibitedCommand;
         }
@@ -153,7 +153,7 @@ public sealed abstract class CommandAssignmentRule {
          * @throws NullPointerException {@inheritDoc }
          */
         @Override
-        public void validate(Set<? extends ConsoleOptionCommand> allCommands) {
+        public void validate(Set<? extends ConsoleOptionCommand<?>> allCommands) {
             if (allCommands.contains(prohibitedCommand)) {
                 throw new IllegalParameterException(
                         "prohibited command: " + prohibitedCommand.commandString());
@@ -197,7 +197,7 @@ public sealed abstract class CommandAssignmentRule {
          * @throws NullPointerException {@inheritDoc}
          */
         @Override
-        public void validate(Set<? extends ConsoleOptionCommand> allCommands) {
+        public void validate(Set<? extends ConsoleOptionCommand<?>> allCommands) {
             ruleElements.stream()
                     .forEach(rule -> rule.validate(allCommands));
         }
@@ -208,7 +208,7 @@ public sealed abstract class CommandAssignmentRule {
      */
     private static abstract sealed class GroupingRule extends CommandAssignmentRule {
 
-        private final Set<ConsoleOptionCommand> managedCommands;
+        private final Set<ConsoleOptionCommand<?>> managedCommands;
 
         /**
          * 唯一のコンストラクタ.
@@ -219,10 +219,10 @@ public sealed abstract class CommandAssignmentRule {
          * 
          * @throws NullPointerException 引数にnullが含まれる場合
          */
-        GroupingRule(ConsoleOptionCommand one, ConsoleOptionCommand... others) {
+        GroupingRule(ConsoleOptionCommand<?> one, ConsoleOptionCommand<?>... others) {
             super();
 
-            List<ConsoleOptionCommand> list = new ArrayList<>();
+            List<ConsoleOptionCommand<?>> list = new ArrayList<>();
             list.add(one);
             list.addAll(List.of(others));
             this.managedCommands = Set.copyOf(list);
@@ -233,7 +233,7 @@ public sealed abstract class CommandAssignmentRule {
          * @throws NullPointerException {@inheritDoc }
          */
         @Override
-        public final void validate(Set<? extends ConsoleOptionCommand> allCommands) {
+        public final void validate(Set<? extends ConsoleOptionCommand<?>> allCommands) {
             // managedOptions との共通部分 (興味あるコマンド) でバリデーション
             this.validateConcrete(
                     this.managedCommands.stream()
@@ -258,7 +258,7 @@ public sealed abstract class CommandAssignmentRule {
          * @param interestedCommands オプションで指定されたうちの, 興味あるコマンド
          * @throws IllegalParameterException パラメータが不正であった場合
          */
-        abstract void validateConcrete(Set<? extends ConsoleOptionCommand> interestedCommands);
+        abstract void validateConcrete(Set<? extends ConsoleOptionCommand<?>> interestedCommands);
 
         /**
          * 管理対象のコマンドを列挙した文字列表現を返す.
@@ -280,7 +280,7 @@ public sealed abstract class CommandAssignmentRule {
         /**
          * @throws NullPointerException 引数にnullが含まれる場合
          */
-        SingleOptionalRule(ConsoleOptionCommand one, ConsoleOptionCommand... others) {
+        SingleOptionalRule(ConsoleOptionCommand<?> one, ConsoleOptionCommand<?>... others) {
             super(one, others);
         }
 
@@ -288,7 +288,7 @@ public sealed abstract class CommandAssignmentRule {
          * @throws IllegalParameterException {@inheritDoc }
          */
         @Override
-        void validateConcrete(Set<? extends ConsoleOptionCommand> interestedCommands) {
+        void validateConcrete(Set<? extends ConsoleOptionCommand<?>> interestedCommands) {
             if (interestedCommands.size() >= 2) {
                 throw new IllegalParameterException(
                         "exclusive commands: " + managedCommands());
@@ -304,7 +304,7 @@ public sealed abstract class CommandAssignmentRule {
         /**
          * @throws NullPointerException 引数にnullが含まれる場合
          */
-        SingleRequiredRule(ConsoleOptionCommand one, ConsoleOptionCommand... others) {
+        SingleRequiredRule(ConsoleOptionCommand<?> one, ConsoleOptionCommand<?>... others) {
             super(one, others);
         }
 
@@ -312,7 +312,7 @@ public sealed abstract class CommandAssignmentRule {
          * @throws IllegalParameterException {@inheritDoc }
          */
         @Override
-        void validateConcrete(Set<? extends ConsoleOptionCommand> interestedCommands) {
+        void validateConcrete(Set<? extends ConsoleOptionCommand<?>> interestedCommands) {
             if (interestedCommands.size() != 1) {
                 throw new IllegalParameterException(
                         "required and exclusive commands: " + managedCommands());
