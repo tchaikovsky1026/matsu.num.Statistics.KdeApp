@@ -21,7 +21,7 @@ import matsu.num.statistics.kdeapp.format.CommentPrefix;
 import matsu.num.statistics.kdeapp.format.Separator;
 
 /**
- * プロパティ.
+ * このパッケージで扱うプロパティ.
  * 
  * @author Matsuura Y.
  */
@@ -31,18 +31,23 @@ public final class Properties {
      * コンパイルエラーを回避するために, 暫定的に定数を用意する.
      */
 
-    public static final PropertyKey<Boolean> ECHO = PropertyKey.of(Boolean.class);
+    public static final PropertyKey<Boolean> ECHO = PropertyKey.of("echo", Boolean.class);
 
-    public static final PropertyKey<Path> INPUT_FILE_PATH = PropertyKey.of(Path.class);
-    public static final PropertyKey<CommentPrefix> INPUT_COMMENT_PREFIX = PropertyKey.of(CommentPrefix.class);
-    public static final PropertyKey<Separator> INPUT_SEPARATOR = PropertyKey.of(Separator.class);
+    public static final PropertyKey<Path> INPUT_FILE_PATH = PropertyKey.of(
+            "input-file", Path.class);
+    public static final PropertyKey<CommentPrefix> INPUT_COMMENT_PREFIX = PropertyKey.of(
+            "input-comment-prefix", CommentPrefix.class);
+    public static final PropertyKey<Separator> INPUT_SEPARATOR = PropertyKey.of(
+            "input-separator", Separator.class);
 
-    public static final PropertyKey<OutputFileConfig> OUTPUT_FILE = PropertyKey.of(OutputFileConfig.class);
-    public static final PropertyKey<Separator> OUTPUT_SEPARATOR = PropertyKey.of(Separator.class);
-    public static final PropertyKey<OutputLabelPrefixConfig> OUTPUT_LABEL_PREFIX =
-            PropertyKey.of(OutputLabelPrefixConfig.class);
-    public static final PropertyKey<FormatterBuilderSupplier> OUTPUT_FORMAT_TYPE =
-            PropertyKey.of(FormatterBuilderSupplier.class);
+    public static final PropertyKey<OutputFileConfig> OUTPUT_FILE = PropertyKey.of(
+            "output-file", OutputFileConfig.class);
+    public static final PropertyKey<Separator> OUTPUT_SEPARATOR = PropertyKey.of(
+            "output-separator", Separator.class);
+    public static final PropertyKey<OutputLabelPrefixConfig> OUTPUT_LABEL_PREFIX = PropertyKey.of(
+            "output-label-prefix", OutputLabelPrefixConfig.class);
+    public static final PropertyKey<FormatterBuilderSupplier> OUTPUT_FORMAT_TYPE = PropertyKey.of(
+            "output-format", FormatterBuilderSupplier.class);
 
     public static final ConfigProperty DEFAULT_PROPERTY;
 

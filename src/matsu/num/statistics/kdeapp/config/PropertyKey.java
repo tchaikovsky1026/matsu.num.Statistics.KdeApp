@@ -28,10 +28,21 @@ import java.util.Set;
  */
 public final class PropertyKey<T> {
 
+    private final String propertyName;
     private final Class<T> valueType;
 
-    private PropertyKey(Class<T> valueType) {
+    private PropertyKey(String propertyName, Class<T> valueType) {
         this.valueType = Objects.requireNonNull(valueType);
+        this.propertyName = propertyName;
+    }
+
+    /**
+     * このインスタンスのプロパティ名を返す.
+     * 
+     * @return プロパティ名
+     */
+    public String propertyName() {
+        return propertyName;
     }
 
     /**
@@ -64,15 +75,24 @@ public final class PropertyKey<T> {
     }
 
     /**
+     * このインスタンスの文字列表現を返す.
+     */
+    @Override
+    public String toString() {
+        return propertyName();
+    }
+
+    /**
      * プロパティキーを返す.
      * 
      * @param <T> 扱う値の型
+     * @param propertyName プロパティ名
      * @param valueType 値の型
      * @return プロパティキー
      * @throws NullPointerException 引数がnullの場合
      */
-    public static <T> PropertyKey<T> of(Class<T> valueType) {
-        return new PropertyKey<T>(valueType);
+    public static <T> PropertyKey<T> of(String propertyName, Class<T> valueType) {
+        return new PropertyKey<T>(propertyName, valueType);
     }
 
     /**
