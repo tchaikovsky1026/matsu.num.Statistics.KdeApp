@@ -6,17 +6,15 @@
  */
 
 /*
- * 2026.3.12
+ * 2026.3.24
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
-import static matsu.num.statistics.kdeapp.kde2d.Commands.*;
+import static matsu.num.statistics.kdeapp.kde2d.Properties.*;
 
 import java.nio.file.Path;
 
-import matsu.num.statistics.kdeapp.command.ComponentConstructor;
-import matsu.num.statistics.kdeapp.command.ConsoleParameters;
-import matsu.num.statistics.kdeapp.exception.ProgrammingBugException;
+import matsu.num.statistics.kdeapp.config.ConfigProperty;
 import matsu.num.statistics.kdeapp.format.CommentPrefix;
 import matsu.num.statistics.kdeapp.format.Separator;
 import matsu.num.statistics.kdeapp.kde2d.task.Kde2dSourceReader;
@@ -36,7 +34,7 @@ import matsu.num.statistics.kdeapp.kde2d.task.Kde2dSourceReader;
  * 
  * @author Matsuura Y.
  */
-final class SourceReaderConstructor implements ComponentConstructor<Kde2dSourceReader> {
+final class SourceReaderConstructor {
 
     /**
      * 唯一のコンストラクタ.
@@ -47,17 +45,10 @@ final class SourceReaderConstructor implements ComponentConstructor<Kde2dSourceR
     /**
      * @throws NullPointerException {@inheritDoc }
      */
-    @Override
-    public Kde2dSourceReader apply(ConsoleParameters interpreter) {
-
-        // INPUT_FILE_PATH は必須パラメータなので必ず取得できる.
-        Path path = interpreter.valueOf(INPUT_FILE_PATH)
-                .orElseThrow(() -> new ProgrammingBugException("unreachable"));
-
-        CommentPrefix commentPrefix = interpreter.valueOf(INPUT_COMMENT_PREFIX)
-                .orElse(CommentPrefix.of("#"));
-        Separator separator = interpreter.valueOf(INPUT_SEPARATOR)
-                .orElse(Separator.from("\t"));
+    Kde2dSourceReader apply(ConfigProperty property) {
+        Path path = property.get(INPUT_FILE_PATH);
+        CommentPrefix commentPrefix = property.get(INPUT_COMMENT_PREFIX);
+        Separator separator = property.get(INPUT_SEPARATOR);
         return new Kde2dSourceReader(path, separator, commentPrefix);
     }
 }

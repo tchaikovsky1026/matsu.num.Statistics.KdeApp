@@ -30,10 +30,11 @@ public final class Properties {
 
     public static final PropertyKey<Boolean> ECHO = PropertyKey.of(Boolean.class);
 
-    public static final PropertyKey<Path> INPUT_FILE = PropertyKey.of(Path.class);
+    public static final PropertyKey<Path> INPUT_FILE_PATH = PropertyKey.of(Path.class);
+    public static final PropertyKey<CommentPrefix> INPUT_COMMENT_PREFIX = PropertyKey.of(CommentPrefix.class);
+    
     public static final PropertyKey<Path> OUTPUT_FILE = PropertyKey.of(Path.class);
 
-    public static final PropertyKey<CommentPrefix> COMMENT_PREFIX = PropertyKey.of(CommentPrefix.class);
 
     public static final PropertyKey<Separator> OUTPUT_SEPARATOR = PropertyKey.of(Separator.class);
 
@@ -45,6 +46,7 @@ public final class Properties {
         var builder = new ConfigProperty.Builder();
 
         builder.put(ECHO, true);
+        builder.put(INPUT_COMMENT_PREFIX, CommentPrefix.of("#"));
 
         DEFAULT_PROPERTY = builder.build();
     }

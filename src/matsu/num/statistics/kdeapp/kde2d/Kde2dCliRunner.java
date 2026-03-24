@@ -75,7 +75,7 @@ final class Kde2dCliRunner {
                 .withDefaults(Properties.DEFAULT_PROPERTY);
 
         Kde2dSourceReader loader =
-                new SourceReaderConstructor().apply(interpretation);
+                new SourceReaderConstructor().apply(property);
         WritingFormatter writingFormatter =
                 new FormatterConstructor().apply(interpretation);
         ResultWriter fileWriter =

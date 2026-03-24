@@ -75,7 +75,7 @@ final class Kde1dCliRunner {
                 .withDefaults(Properties.DEFAULT_PROPERTY);
 
         Kde1dSourceReader loader =
-                new SourceReaderConstructor().apply(interpretation);
+                new SourceReaderConstructor().apply(property);
         WritingFormatter writingFormatter =
                 new WritingFormatterConstructor().apply(interpretation);
         ResultWriter fileWriter =

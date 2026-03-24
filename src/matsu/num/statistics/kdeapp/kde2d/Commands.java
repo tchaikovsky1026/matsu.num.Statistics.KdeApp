@@ -51,16 +51,27 @@ public final class Commands {
 
     /**
      * 入力ファイルの指定を表現するシングルトンインスタンス.
-     * 
-     * <p>
-     * 引数は {@link Path} への変換される.
-     * </p>
      */
     public static final ArgumentRequiringCommand<Path> INPUT_FILE_PATH =
             ArgumentRequiringCommand.of(
-                    "INPUT_FILE_PATH", Properties.INPUT_FILE,
-                    Path::of,
+                    "INPUT_FILE_PATH", Properties.INPUT_FILE_PATH, Path::of,
                     "--input", "--in");
+
+    /**
+     * 入力のコメント行の prefix の指定を表現するシングルトンインスタンス.
+     */
+    public static final ArgumentRequiringCommand<CommentPrefix> INPUT_COMMENT_PREFIX =
+            ArgumentRequiringCommand.of(
+                    "INPUT_COMMENT_PREFIX", Properties.INPUT_COMMENT_PREFIX, CommentPrefix::of,
+                    "--input-comment-prefix", "--in-comment-prefix");
+
+    /**
+     * 入力ファイルの区切り文字の指定を表現するシングルトンインスタンス.
+     */
+    public static final ArgumentRequiringCommand<Separator> INPUT_SEPARATOR =
+            ArgumentRequiringCommand.of(
+                    "INPUT_SEPARATOR", Properties.INPUT_SEPARATOR, Separator::from,
+                    "--input-separator", "--in-sep");
 
     /**
      * 強制上書きモードによる出力ファイルの指定を表現するシングルトンインスタンス.
@@ -96,32 +107,6 @@ public final class Commands {
                     "OUTPUT_NONE", Properties.OUTPUT_FILE,
                     DummySupplier.instance(Path.of("dummy")),
                     "--output-none", "--out-none");
-
-    /**
-     * 入力のコメント行の prefix の指定を表現するシングルトンインスタンス.
-     * 
-     * <p>
-     * インスタンス生成時にバリデーションされる.
-     * </p>
-     */
-    public static final ArgumentRequiringCommand<CommentPrefix> INPUT_COMMENT_PREFIX =
-            ArgumentRequiringCommand.of(
-                    "INPUT_COMMENT_PREFIX", Properties.COMMENT_PREFIX,
-                    CommentPrefix::of,
-                    "--input-comment-prefix", "--in-comment-prefix");
-
-    /**
-     * 入力ファイルの区切り文字の指定を表現するシングルトンインスタンス.
-     * 
-     * <p>
-     * インスタンス生成時にバリデーションされる.
-     * </p>
-     */
-    public static final ArgumentRequiringCommand<Separator> INPUT_SEPARATOR =
-            ArgumentRequiringCommand.of(
-                    "INPUT_SEPARATOR", Properties.INPUT_SEPARATOR,
-                    Separator::from,
-                    "--input-separator", "--in-sep");
 
     /**
      * 出力ファイルの区切り文字の指定を表現するシングルトンインスタンス.
