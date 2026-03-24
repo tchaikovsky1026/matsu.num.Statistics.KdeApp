@@ -69,7 +69,7 @@ final class Kde2dCliRunner {
 
         out.println("kde2d...");
 
-        ConfigProperty property = Commands.getInterpreter().interpret(args).toProperties()
+        ConfigProperty property = Commands.getInterpreter().interpret(args)
                 .withDefaults(Properties.DEFAULT_PROPERTY);
 
         Kde2dSourceReader loader =

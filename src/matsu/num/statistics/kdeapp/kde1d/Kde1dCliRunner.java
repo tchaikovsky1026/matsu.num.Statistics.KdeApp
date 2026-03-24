@@ -69,7 +69,7 @@ final class Kde1dCliRunner {
 
         out.println("kde1d...");
 
-        ConfigProperty property = Commands.getInterpreter().interpret(args).toProperties()
+        ConfigProperty property = Commands.getInterpreter().interpret(args)
                 .withDefaults(Properties.DEFAULT_PROPERTY);
 
         Kde1dSourceReader loader =

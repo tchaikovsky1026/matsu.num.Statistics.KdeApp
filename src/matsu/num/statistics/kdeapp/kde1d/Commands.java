@@ -23,7 +23,7 @@ import java.util.Set;
 import matsu.num.statistics.kdeapp.command.ArgumentRequiringCommand;
 import matsu.num.statistics.kdeapp.command.CommandAssignmentRule;
 import matsu.num.statistics.kdeapp.command.ConsoleOptionCommand;
-import matsu.num.statistics.kdeapp.command.ConsoleParameters;
+import matsu.num.statistics.kdeapp.command.ConsoleParameterInterpreter;
 import matsu.num.statistics.kdeapp.command.NoArgumentCommand;
 import matsu.num.statistics.kdeapp.format.CommentPrefix;
 import matsu.num.statistics.kdeapp.format.Separator;
@@ -133,8 +133,8 @@ public final class Commands {
      * 
      * @return パラメータ解釈器
      */
-    public static ConsoleParameters.Interpreter getInterpreter() {
-        return ConsoleParameters.Interpreter.of(
+    public static ConsoleParameterInterpreter getInterpreter() {
+        return ConsoleParameterInterpreter.of(
                 Set.copyOf(NoArgCommandsHolder.values),
                 Set.copyOf(ArgumentRequiringCommandsHolder.values),
                 COMMAND_ASSIGNMENT_RULE);
