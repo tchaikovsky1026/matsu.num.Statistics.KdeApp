@@ -11,14 +11,17 @@
 package matsu.num.statistics.kdeapp.kde1d;
 
 import java.nio.file.Path;
+import java.util.NoSuchElementException;
+import java.util.Set;
 
 import matsu.num.statistics.kdeapp.config.ConfigProperty;
 import matsu.num.statistics.kdeapp.config.PropertyKey;
+import matsu.num.statistics.kdeapp.exception.ProgrammingBugException;
 import matsu.num.statistics.kdeapp.format.CommentPrefix;
 import matsu.num.statistics.kdeapp.format.Separator;
 
 /**
- * プロパティ.
+ * このパッケージで扱うプロパティ.
  * 
  * @author Matsuura Y.
  */
@@ -27,7 +30,6 @@ public final class Properties {
     /*
      * コンパイルエラーを回避するために, 暫定的に定数を用意する.
      */
-
     public static final PropertyKey<Boolean> ECHO = PropertyKey.of(Boolean.class);
 
     public static final PropertyKey<Path> INPUT_FILE_PATH = PropertyKey.of(Path.class);
@@ -55,5 +57,39 @@ public final class Properties {
     private Properties() {
         // インスタンス化不可
         throw new AssertionError();
+    }
+
+    /**
+     * {@link ConfigProperty} が完全であるかどうかを検証する.
+     * 
+     * <p>
+     * プロパティは, コマンドインタプリタでの必須宣言, オプションの場合はデフォルト値の用意によって,
+     * 完全なものが生成されなければならない. <br>
+     * 完全でないのはプログラムのバグである. <br>
+     * このメソッドは, それを検証するものである.
+     * </p>
+     * 
+     * @param property ConfigProperty
+     * @throws ProgrammingBugException プロパティが網羅されていない場合
+     */
+    static void validateCompleteness(ConfigProperty property) {
+
+        PropertyKey<?> key = null;
+        try {
+            for (PropertyKey<?> k : PropertyKeyHolder.properties) {
+                key = k;
+                property.get(k);
+            }
+        } catch (NoSuchElementException e) {
+            throw new ProgrammingBugException("requiring: " + key);
+        }
+    }
+
+    private static final class PropertyKeyHolder {
+        static final Set<PropertyKey<?>> properties;
+
+        static {
+            properties = Set.copyOf(PropertyKey.constantsOf(Properties.class));
+        }
     }
 }

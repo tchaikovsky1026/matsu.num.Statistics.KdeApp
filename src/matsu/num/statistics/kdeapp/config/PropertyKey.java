@@ -10,7 +10,11 @@
  */
 package matsu.num.statistics.kdeapp.config;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * プロパティのキー (プロパティ名) を扱う.
@@ -69,5 +73,31 @@ public final class PropertyKey<T> {
      */
     public static <T> PropertyKey<T> of(Class<T> valueType) {
         return new PropertyKey<T>(valueType);
+    }
+
+    /**
+     * 与えたクラス (clazz) に定義されている {@link PropertyKey} 型のstaticフィールドの値を得る. <br>
+     * ただし, clazz とフィールドは {@code public} でなければならない.
+     * 
+     * @param clazz clazz
+     * @return clazz クラスに定義された public static な {@link PropertyKey} フィールドの値
+     */
+    public static Set<PropertyKey<?>> constantsOf(Class<?> clazz) {
+        Set<PropertyKey<?>> constantFieldSet = new HashSet<>();
+        @SuppressWarnings("rawtypes")
+        Class<PropertyKey> type = PropertyKey.class;
+
+        // staticかつ互換性のあるフィールドのみが対象
+        for (Field f : clazz.getFields()) {
+            if ((f.getModifiers() & Modifier.STATIC) == 0) {
+                continue;
+            }
+            try {
+                constantFieldSet.add(type.cast(f.get(null)));
+            } catch (IllegalAccessException | ClassCastException ignore) {
+                //無関係なフィールドなら無視する
+            }
+        }
+        return constantFieldSet;
     }
 }
