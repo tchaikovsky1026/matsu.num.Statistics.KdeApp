@@ -45,9 +45,9 @@ final class Kde2dCliAppBody {
         } catch (ApplicationException ae) {
             exitCode = ae.getExitCode();
             LoggerHolder.LOGGER.severe(ae.toStringForLogging(), ae);
-        } catch (Exception e) {
+        } catch (Throwable t) {
             exitCode = 1;
-            LoggerHolder.LOGGER.severe(e.getClass().getName(), e);
+            LoggerHolder.LOGGER.severe(t.getClass().getName() + ": " + t.getMessage(), t);
         } finally {
             LoggerHolder.LOGGER.info("end kde2d, exit-code=" + exitCode);
             System.exit(exitCode);
