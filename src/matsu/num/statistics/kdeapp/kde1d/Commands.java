@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.23
+ * 2026.3.24
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -41,19 +41,13 @@ public final class Commands {
      * 結果を標準出力しないことを表現するシングルトンインスタンス.
      */
     public static final NoArgumentCommand<?> ECHO_OFF =
-            NoArgumentCommand.of(
-                    "ECHO_OFF",
-                    Properties.ECHO, DummySupplier.instance(new Object()),
-                    "--echo-off");
+            NoArgumentCommand.of("ECHO_OFF", Properties.ECHO, () -> false, "--echo-off");
 
     /**
      * 結果を標準出力することを表現するシングルトンインスタンス.
      */
     public static final NoArgumentCommand<?> ECHO_ON =
-            NoArgumentCommand.of(
-                    "ECHO_ON",
-                    Properties.ECHO, DummySupplier.instance(new Object()),
-                    "--echo-on");
+            NoArgumentCommand.of("ECHO_ON", Properties.ECHO, () -> true, "--echo-on");
 
     /**
      * 入力ファイルの指定を表現するシングルトンインスタンス.

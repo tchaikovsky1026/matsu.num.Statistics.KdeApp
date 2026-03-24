@@ -28,6 +28,11 @@ public final class NoArgumentCommand<T> extends ConsoleOptionCommand<T> {
     /**
      * 内部から呼ばれる唯一のコンストラクタ.
      * 
+     * <p>
+     * サプライヤは例外をスローしてはならず,
+     * {@code null} を返してはいけない.
+     * </p>
+     * 
      * @param enumString インスタンスの文字列表現
      * @param propertyKey 対応するプロパティキー
      * @param supplier このコマンドが指定されている場合に呼ばれる生成器
