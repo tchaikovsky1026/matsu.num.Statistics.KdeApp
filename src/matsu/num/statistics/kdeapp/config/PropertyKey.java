@@ -12,9 +12,12 @@ package matsu.num.statistics.kdeapp.config;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * プロパティのキー (プロパティ名) を扱う.
@@ -112,18 +115,12 @@ public final class PropertyKey<T> {
      * 与えたクラス (clazz) に定義されている {@link PropertyKey} 型のstaticフィールドの値を得る. <br>
      * ただし, clazz とフィールドは {@code public} でなければならない.
      * 
-     * <p>
-     * 
-     * </p>
-     * 
      * @param clazz clazz
      * @return clazz クラスに定義された public static な {@link PropertyKey} フィールドの値
-     * @throws IllegalArgumentException プロパティ名に重複がある場合
      * @throws NullPointerException 引数にnullを含む場合
      */
     public static Set<PropertyKey<?>> constantsOf(Class<?> clazz) {
         Set<PropertyKey<?>> constantFieldSet = new HashSet<>();
-        Set<String> nameSet = new HashSet<>();
 
         @SuppressWarnings("rawtypes")
         Class<PropertyKey> type = PropertyKey.class;
@@ -136,13 +133,37 @@ public final class PropertyKey<T> {
             try {
                 PropertyKey<?> p = type.cast(f.get(null));
                 constantFieldSet.add(p);
-                if (!nameSet.add(p.propertyName())) {
-                    throw new IllegalArgumentException("duplicate property name: " + p.propertyName());
-                }
             } catch (IllegalAccessException | ClassCastException ignore) {
                 //無関係なフィールドなら無視する
             }
         }
         return constantFieldSet;
+    }
+
+    /**
+     * プロパティキーへのマッピングが可能なオブジェクトの集合についてマッピングを行い,
+     * 「プロパティキーが異なるならプロパティ名も異なる」ことを確認する.
+     * 
+     * @param <T> プロパティキーへのマッピングができるオブジェクトの型
+     * @param objetcs オブジェクトの集合
+     * @param mapper プロパティキーへのマッパ
+     * @throws IllegalArgumentException プロパティ名に重複がある場合
+     * @throws NullPointerException 引数にnullを含む場合
+     */
+    public static <T> void requireNoNameDuplicates(
+            Collection<? extends T> objetcs,
+            Function<? super T, ? extends PropertyKey<?>> mapper) {
+
+        // 含まれるオブジェクトから, 重複のないキーを取り出す
+        Set<PropertyKey<?>> keySet = objetcs.stream()
+                .map(mapper)
+                .collect(Collectors.toSet());
+
+        Set<String> nameSet = new HashSet<>();
+        for (PropertyKey<?> key : keySet) {
+            if (!nameSet.add(key.propertyName())) {
+                throw new IllegalArgumentException("duplicate property name: " + key.propertyName());
+            }
+        }
     }
 }
