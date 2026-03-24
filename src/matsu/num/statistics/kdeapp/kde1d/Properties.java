@@ -74,11 +74,14 @@ public final class Properties {
      * </p>
      * 
      * @param property ConfigProperty
-     * @throws ProgrammingBugException プロパティが網羅されていない場合
+     * @throws ProgrammingBugException プロパティが網羅されていない場合,
+     *             (このクラスに定義されたキー定数のプロパティ名に重複がある場合)
      */
     static void validateCompleteness(ConfigProperty property) {
-
         PropertyKey<?> key = null;
+        if (!PropertyKeyHolder.valid) {
+            throw new ProgrammingBugException(PropertyKeyHolder.errorMessage);
+        }
         try {
             for (PropertyKey<?> k : PropertyKeyHolder.properties) {
                 key = k;
@@ -91,9 +94,26 @@ public final class Properties {
 
     private static final class PropertyKeyHolder {
         static final Set<PropertyKey<?>> properties;
+        static final boolean valid;
+        static final String errorMessage;
 
         static {
-            properties = Set.copyOf(PropertyKey.constantsOf(Properties.class));
+
+            boolean currentValid = false;
+            Set<PropertyKey<?>> currentProperties = null;
+            String currentErrorMessage = null;
+
+            try {
+                // プロパティ名の重複で例外をスロー
+                currentProperties = Set.copyOf(PropertyKey.constantsOf(Properties.class));
+                currentValid = true;
+            } catch (IllegalArgumentException iae) {
+                currentErrorMessage = iae.getMessage();
+            }
+
+            properties = currentProperties;
+            valid = currentValid;
+            errorMessage = currentErrorMessage;
         }
     }
 }
