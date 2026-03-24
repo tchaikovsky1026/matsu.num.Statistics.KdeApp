@@ -12,14 +12,12 @@ package matsu.num.statistics.kdeapp.kde2d;
 
 import static matsu.num.statistics.kdeapp.command.CommandAssignmentRule.*;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import matsu.num.statistics.kdeapp.base.ConstantsCollector;
 import matsu.num.statistics.kdeapp.command.ArgumentRequiringCommand;
 import matsu.num.statistics.kdeapp.command.CommandAssignmentRule;
 import matsu.num.statistics.kdeapp.command.ConsoleOptionCommand;
@@ -31,6 +29,9 @@ import matsu.num.statistics.kdeapp.format.Separator;
 /**
  * kde2d で取り扱う, コマンドに関するルールなど.
  * 
+ * @apiNote
+ *              リフレクションのため,
+ *              クラス, static フィールドとも {@code public} でなければならない.
  * @author Matsuura Y.
  */
 public final class Commands {
@@ -153,8 +154,8 @@ public final class Commands {
      */
     public static ConsoleParameterInterpreter getInterpreter() {
         return ConsoleParameterInterpreter.of(
-                Set.copyOf(NoArgCommandsHolder.values),
-                Set.copyOf(ArgumentRequiringCommandsHolder.values),
+                NoArgCommandsHolder.values,
+                ArgumentRequiringCommandsHolder.values,
                 COMMAND_ASSIGNMENT_RULE);
     }
 
@@ -180,28 +181,8 @@ public final class Commands {
          * オプションコマンドの集合. <br>
          * 不変になるようにすること.
          */
-        static final Collection<ArgumentRequiringCommand<?>> values;
-
-        static {
-            List<ArgumentRequiringCommand<?>> constantFieldList = new ArrayList<>();
-
-            @SuppressWarnings("rawtypes")
-            Class<ArgumentRequiringCommand> clazz = ArgumentRequiringCommand.class;
-
-            // staticかつ互換性のあるフィールドのみが対象
-            for (Field f : Commands.class.getFields()) {
-                if ((f.getModifiers() & Modifier.STATIC) == 0) {
-                    continue;
-                }
-                try {
-                    constantFieldList.add(clazz.cast(f.get(null)));
-                } catch (IllegalAccessException | ClassCastException ignore) {
-                    //無関係なフィールドなら無視する
-                }
-            }
-
-            values = List.copyOf(constantFieldList);
-        }
+        static final Set<ArgumentRequiringCommand<?>> values = Set.copyOf(
+                ConstantsCollector.collect(Commands.class, ArgumentRequiringCommand.class));
     }
 
     private static final class NoArgCommandsHolder {
@@ -210,27 +191,7 @@ public final class Commands {
          * オプションコマンドの集合. <br>
          * 不変になるようにすること.
          */
-        static final Collection<NoArgumentCommand<?>> values;
-
-        static {
-            List<NoArgumentCommand<?>> constantFieldList = new ArrayList<>();
-
-            @SuppressWarnings("rawtypes")
-            Class<NoArgumentCommand> clazz = NoArgumentCommand.class;
-
-            // staticかつ互換性のあるフィールドのみが対象
-            for (Field f : Commands.class.getFields()) {
-                if ((f.getModifiers() & Modifier.STATIC) == 0) {
-                    continue;
-                }
-                try {
-                    constantFieldList.add(clazz.cast(f.get(null)));
-                } catch (IllegalAccessException | ClassCastException ignore) {
-                    //無関係なフィールドなら無視する
-                }
-            }
-
-            values = List.copyOf(constantFieldList);
-        }
+        static final Set<NoArgumentCommand<?>> values = Set.copyOf(
+                ConstantsCollector.collect(Commands.class, NoArgumentCommand.class));
     }
 }

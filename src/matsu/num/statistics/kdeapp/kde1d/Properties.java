@@ -14,6 +14,7 @@ import java.nio.file.Path;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import matsu.num.statistics.kdeapp.base.ConstantsCollector;
 import matsu.num.statistics.kdeapp.config.ConfigProperty;
 import matsu.num.statistics.kdeapp.config.PropertyKey;
 import matsu.num.statistics.kdeapp.exception.ProgrammingBugException;
@@ -23,6 +24,9 @@ import matsu.num.statistics.kdeapp.format.Separator;
 /**
  * このパッケージで扱うプロパティ.
  * 
+ * @apiNote
+ *              リフレクションのため,
+ *              クラス, static フィールドとも {@code public} でなければならない.
  * @author Matsuura Y.
  */
 public final class Properties {
@@ -89,10 +93,7 @@ public final class Properties {
     }
 
     private static final class PropertyKeyHolder {
-        static final Set<PropertyKey<?>> properties;
-
-        static {
-            properties = Set.copyOf(PropertyKey.constantsOf(Properties.class));
-        }
+        static final Set<PropertyKey<?>> properties = Set.copyOf(
+                ConstantsCollector.collect(Properties.class, PropertyKey.class));
     }
 }
