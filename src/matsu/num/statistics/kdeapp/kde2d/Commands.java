@@ -75,37 +75,28 @@ public final class Commands {
 
     /**
      * 強制上書きモードによる出力ファイルの指定を表現するシングルトンインスタンス.
-     * 
-     * <p>
-     * 引数は {@link Path} への変換される.
-     * </p>
      */
-    public static final ArgumentRequiringCommand<Path> OUTPUT_FORCE_FILE_PATH =
+    public static final ArgumentRequiringCommand<OutputFileConfig> OUTPUT_FORCE_FILE_PATH =
             ArgumentRequiringCommand.of(
                     "OUTPUT_FORCE_FILE_PATH", Properties.OUTPUT_FILE,
-                    Path::of,
+                    s -> OutputFileConfig.outputForce(Path.of(s)),
                     "--output-force", "--out-force");
 
     /**
      * 上書き禁止モードである出力ファイルの指定を表現するシングルトンインスタンス.
-     * 
-     * <p>
-     * 引数は {@link Path} への変換される.
-     * </p>
      */
-    public static final ArgumentRequiringCommand<Path> OUTPUT_FILE_PATH =
+    public static final ArgumentRequiringCommand<OutputFileConfig> OUTPUT_FILE_PATH =
             ArgumentRequiringCommand.of(
                     "OUTPUT_FILE_PATH", Properties.OUTPUT_FILE,
-                    Path::of,
+                    s -> OutputFileConfig.output(Path.of(s)),
                     "--output", "--out");
 
     /**
      * ファイル出力しないことを表現するシングルトンインスタンス.
      */
-    public static final NoArgumentCommand<?> OUTPUT_NONE =
+    public static final NoArgumentCommand<OutputFileConfig> OUTPUT_NONE =
             NoArgumentCommand.of(
-                    "OUTPUT_NONE", Properties.OUTPUT_FILE,
-                    DummySupplier.instance(Path.of("dummy")),
+                    "OUTPUT_NONE", Properties.OUTPUT_FILE, () -> OutputFileConfig.none(),
                     "--output-none", "--out-none");
 
     /**

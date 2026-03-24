@@ -79,7 +79,7 @@ final class Kde1dCliRunner {
         WritingFormatter writingFormatter =
                 new WritingFormatterConstructor().apply(interpretation);
         ResultWriter fileWriter =
-                new FileWriterConstructor().apply(interpretation);
+                new FileWriterConstructor().apply(property);
         ResultWriter printer =
                 new PrinterConstructor(out, err).apply(property);
 

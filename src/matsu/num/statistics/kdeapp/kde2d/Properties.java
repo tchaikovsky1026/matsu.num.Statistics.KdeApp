@@ -34,7 +34,7 @@ public final class Properties {
     public static final PropertyKey<CommentPrefix> INPUT_COMMENT_PREFIX = PropertyKey.of(CommentPrefix.class);
     public static final PropertyKey<Separator> INPUT_SEPARATOR = PropertyKey.of(Separator.class);
 
-    public static final PropertyKey<Path> OUTPUT_FILE = PropertyKey.of(Path.class);
+    public static final PropertyKey<OutputFileConfig> OUTPUT_FILE = PropertyKey.of(OutputFileConfig.class);
 
     public static final PropertyKey<Separator> OUTPUT_SEPARATOR = PropertyKey.of(Separator.class);
 
@@ -51,6 +51,8 @@ public final class Properties {
         builder.put(ECHO, true);
         builder.put(INPUT_COMMENT_PREFIX, CommentPrefix.of("#"));
         builder.put(INPUT_SEPARATOR, Separator.from("\t"));
+        
+        builder.put(OUTPUT_FILE, OutputFileConfig.none());
 
         DEFAULT_PROPERTY = builder.build();
     }
