@@ -19,9 +19,9 @@ import matsu.num.statistics.kdeapp.base.DummySupplierForTesting;
  */
 public final class DummyCommandListForTesting {
 
-    public static final PropertyKey<String> DUMMY_1 = PropertyKey.of("dummy-1", String.class);
-    public static final PropertyKey<String> DUMMY_2 = PropertyKey.of("dummy-2", String.class);
-    public static final PropertyKey<String> DUMMY_3 = PropertyKey.of("dummy-3", String.class);
+    public static final ResolverKey<String> DUMMY_1 = ResolverKey.of("dummy-1", String.class);
+    public static final ResolverKey<String> DUMMY_2 = ResolverKey.of("dummy-2", String.class);
+    public static final ResolverKey<String> DUMMY_3 = ResolverKey.of("dummy-3", String.class);
 
     public static final NoArgumentCommand<?> DUMMY_NO_ARG_1 =
             NoArgumentCommand.of(

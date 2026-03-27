@@ -39,7 +39,7 @@ public final class NoArgumentCommand<T> extends ConsoleOptionCommand<T> {
      * @throws IllegalArgumentException ブランクを含む場合
      * @throws NullPointerException 引数にnullが含まれる場合
      */
-    private NoArgumentCommand(String enumString, PropertyKey<T> propertyKey,
+    private NoArgumentCommand(String enumString, ResolverKey<T> propertyKey,
             Supplier<? extends T> supplier,
             String commandRepresentation, String... otherRepresentations) {
         super(enumString, propertyKey, commandRepresentation, otherRepresentations);
@@ -70,7 +70,7 @@ public final class NoArgumentCommand<T> extends ConsoleOptionCommand<T> {
      * @throws NullPointerException 引数にnullが含まれる場合
      */
     public static <T> NoArgumentCommand<T> of(
-            String enumString, PropertyKey<T> propertyKey,
+            String enumString, ResolverKey<T> propertyKey,
             Supplier<? extends T> supplier,
             String commandRepresentation, String... otherRepresentations) {
 

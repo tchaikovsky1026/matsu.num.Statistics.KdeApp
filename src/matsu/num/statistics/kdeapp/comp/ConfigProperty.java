@@ -22,9 +22,9 @@ import java.util.Objects;
  */
 public final class ConfigProperty {
 
-    private final Map<PropertyKey<?>, Object> map;
+    private final Map<ResolverKey<?>, Object> map;
 
-    private ConfigProperty(Map<PropertyKey<?>, Object> map) {
+    private ConfigProperty(Map<ResolverKey<?>, Object> map) {
         this.map = map;
     }
 
@@ -37,7 +37,7 @@ public final class ConfigProperty {
      * @throws NoSuchElementException キーが登録されていない場合
      * @throws NullPointerException 引数がnull
      */
-    public <T> T get(PropertyKey<T> key) {
+    public <T> T get(ResolverKey<T> key) {
         T out = key.cast(map.get(Objects.requireNonNull(key)));
         if (Objects.isNull(out)) {
             throw new NoSuchElementException("no value of " + key);
@@ -53,7 +53,7 @@ public final class ConfigProperty {
      * @throws NullPointerException 引数がnullの場合
      */
     public ConfigProperty withOverrides(ConfigProperty overrides) {
-        Map<PropertyKey<?>, Object> outMap = new HashMap<>();
+        Map<ResolverKey<?>, Object> outMap = new HashMap<>();
         outMap.putAll(this.map);
         outMap.putAll(overrides.map);
         return new ConfigProperty(outMap);
@@ -76,7 +76,7 @@ public final class ConfigProperty {
      */
     public static final class Builder {
 
-        private Map<PropertyKey<?>, Object> map;
+        private Map<ResolverKey<?>, Object> map;
 
         /**
          * 唯一のコンストラクタ.
@@ -96,7 +96,7 @@ public final class ConfigProperty {
          * @throws IllegalStateException 既にビルドされている場合
          * @throws NullPointerException 引数にnullが含まれる場合
          */
-        public <T> T put(PropertyKey<T> key, T value) {
+        public <T> T put(ResolverKey<T> key, T value) {
             validateIfCanBuild();
             // キャストを試みて型を検査する
             // ジェネリクスが適切に使われているなら, キャストは成功する
@@ -113,7 +113,7 @@ public final class ConfigProperty {
          */
         public ConfigProperty build() {
             validateIfCanBuild();
-            Map<PropertyKey<?>, Object> buildMap = map;
+            Map<ResolverKey<?>, Object> buildMap = map;
             map = null;
             return new ConfigProperty(buildMap);
         }

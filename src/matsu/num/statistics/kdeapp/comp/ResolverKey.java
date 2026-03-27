@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.23
+ * 2026.3.28
  */
 package matsu.num.statistics.kdeapp.comp;
 
@@ -18,44 +18,30 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * プロパティのキー (プロパティ名) を扱う.
+ * モジュールコンポーネントの Resolve に関わるキー (Resolver 名) を扱う.
  * 
  * <p>
  * インスタンスの identity に基づく equalty を提供する.
  * </p>
  * 
  * @author Matsuura Y.
- * @param <T> このプロパティが扱う値の型
+ * @param <T> この Resolver が扱う (提供する) 値の型
  */
-public final class PropertyKey<T> {
+public final class ResolverKey<T> {
 
-    private final String propertyName;
+    private final String resolverName;
     private final Class<T> valueType;
 
     /**
      * 唯一のコンストラクタ.
      *
-     * @param propertyName プロパティ名
+     * @param resolverName プロパティ名
      * @param valueType 値の型
-     * @throws IllegalArgumentException 文字列表現に空白を含む場合
      * @throws NullPointerException 引数にnullが含まれる場合
      */
-    private PropertyKey(String propertyName, Class<T> valueType) {
+    private ResolverKey(String resolverName, Class<T> valueType) {
         this.valueType = Objects.requireNonNull(valueType);
-        this.propertyName = propertyName;
-
-        if (propertyName.chars().anyMatch(Character::isWhitespace)) {
-            throw new IllegalArgumentException(this.toString() + " includes white space");
-        }
-    }
-
-    /**
-     * このインスタンスのプロパティ名を返す.
-     * 
-     * @return プロパティ名
-     */
-    public String propertyName() {
-        return propertyName;
+        this.resolverName = resolverName;
     }
 
     /**
@@ -65,7 +51,7 @@ public final class PropertyKey<T> {
      * @return キャストされたobj
      * @throws ClassCastException キャストに失敗した場合
      */
-    public T cast(Object valueObj) {
+    T cast(Object valueObj) {
         return this.valueType.cast(valueObj);
     }
 
@@ -92,21 +78,20 @@ public final class PropertyKey<T> {
      */
     @Override
     public String toString() {
-        return propertyName();
+        return resolverName;
     }
 
     /**
-     * プロパティキーを返す.
+     * Resolver キーを返す.
      * 
      * @param <T> 扱う値の型
-     * @param propertyName プロパティ名
-     * @param valueType 値の型
-     * @return プロパティキー
-     * @throws IllegalArgumentException 文字列表現に空白を含む場合
+     * @param resolverName Resolver 名
+     * @param valueType 値の型トークン
+     * @return Resolver キー
      * @throws NullPointerException 引数がnullの場合
      */
-    public static <T> PropertyKey<T> of(String propertyName, Class<T> valueType) {
-        return new PropertyKey<T>(propertyName, valueType);
+    public static <T> ResolverKey<T> of(String resolverName, Class<T> valueType) {
+        return new ResolverKey<T>(resolverName, valueType);
     }
 
     /**
@@ -118,20 +103,22 @@ public final class PropertyKey<T> {
      * @param mapper プロパティキーへのマッパ
      * @throws IllegalArgumentException プロパティ名に重複がある場合
      * @throws NullPointerException 引数にnullを含む場合
+     * @deprecated resolverName は文字列をキーとしないので, 正規化の必要がない.
      */
+    @Deprecated(forRemoval = true)
     public static <T> void requireNoNameDuplicates(
             Collection<? extends T> objetcs,
-            Function<? super T, ? extends PropertyKey<?>> mapper) {
+            Function<? super T, ? extends ResolverKey<?>> mapper) {
 
         // 含まれるオブジェクトから, 重複のないキーを取り出す
-        Set<PropertyKey<?>> keySet = objetcs.stream()
+        Set<ResolverKey<?>> keySet = objetcs.stream()
                 .map(mapper)
                 .collect(Collectors.toSet());
 
         Set<String> nameSet = new HashSet<>();
-        for (PropertyKey<?> key : keySet) {
-            if (!nameSet.add(key.propertyName())) {
-                throw new IllegalArgumentException("duplicate property name: " + key.propertyName());
+        for (ResolverKey<?> key : keySet) {
+            if (!nameSet.add(key.resolverName)) {
+                throw new IllegalArgumentException("duplicate property name: " + key.resolverName);
             }
         }
     }

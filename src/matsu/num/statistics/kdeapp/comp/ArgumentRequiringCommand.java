@@ -48,7 +48,7 @@ public final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand<T> {
      * @throws NullPointerException 引数にnullが含まれる場合
      */
     private ArgumentRequiringCommand(
-            String enumString, PropertyKey<T> propertyKey,
+            String enumString, ResolverKey<T> propertyKey,
             Function<? super String, ? extends T> converter,
             String commandRepresentation, String... otherRepresentations) {
         super(enumString, propertyKey, commandRepresentation, otherRepresentations);
@@ -111,7 +111,7 @@ public final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand<T> {
      * @throws NullPointerException 引数にnullが含まれる場合
      */
     public static <T> ArgumentRequiringCommand<T> of(
-            String enumString, PropertyKey<T> propertyKey,
+            String enumString, ResolverKey<T> propertyKey,
             Function<? super String, ? extends T> converter,
             String commandRepresentation, String... otherRepresentations) {
 
@@ -120,7 +120,7 @@ public final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand<T> {
     }
 
     /**
-     * {@link #of(String, PropertyKey, Function, String, String...)}
+     * {@link #of(String, ResolverKey, Function, String, String...)}
      * メソッドのコンバータに恒等写像を与える形式で, インスタンスを生成する.
      * 
      * @param enumString インスタンスの文字列表現
@@ -133,7 +133,7 @@ public final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand<T> {
      */
     public static ArgumentRequiringCommand<String> identifying(
             String enumString,
-            PropertyKey<String> propertyKey,
+            ResolverKey<String> propertyKey,
             String commandRepresentation, String... otherRepresentations) {
 
         return new ArgumentRequiringCommand<String>(
