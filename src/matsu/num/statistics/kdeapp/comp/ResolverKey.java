@@ -10,12 +10,7 @@
  */
 package matsu.num.statistics.kdeapp.comp;
 
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * モジュールコンポーネントの Resolve に関わるキー (Resolver 名) を扱う.
@@ -92,34 +87,5 @@ public final class ResolverKey<T> {
      */
     public static <T> ResolverKey<T> of(String resolverName, Class<T> valueType) {
         return new ResolverKey<T>(resolverName, valueType);
-    }
-
-    /**
-     * プロパティキーへのマッピングが可能なオブジェクトの集合についてマッピングを行い,
-     * 「プロパティキーが異なるならプロパティ名も異なる」ことを確認する.
-     * 
-     * @param <T> プロパティキーへのマッピングができるオブジェクトの型
-     * @param objetcs オブジェクトの集合
-     * @param mapper プロパティキーへのマッパ
-     * @throws IllegalArgumentException プロパティ名に重複がある場合
-     * @throws NullPointerException 引数にnullを含む場合
-     * @deprecated resolverName は文字列をキーとしないので, 正規化の必要がない.
-     */
-    @Deprecated(forRemoval = true)
-    public static <T> void requireNoNameDuplicates(
-            Collection<? extends T> objetcs,
-            Function<? super T, ? extends ResolverKey<?>> mapper) {
-
-        // 含まれるオブジェクトから, 重複のないキーを取り出す
-        Set<ResolverKey<?>> keySet = objetcs.stream()
-                .map(mapper)
-                .collect(Collectors.toSet());
-
-        Set<String> nameSet = new HashSet<>();
-        for (ResolverKey<?> key : keySet) {
-            if (!nameSet.add(key.resolverName)) {
-                throw new IllegalArgumentException("duplicate property name: " + key.resolverName);
-            }
-        }
     }
 }

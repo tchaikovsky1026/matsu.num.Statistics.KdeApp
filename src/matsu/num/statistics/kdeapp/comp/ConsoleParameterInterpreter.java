@@ -187,9 +187,7 @@ public final class ConsoleParameterInterpreter {
      * </p>
      * 
      * <p>
-     * 渡されたコマンド集合の中で, コマンド文字列 (representation) が重複してはならない. <br>
-     * コマンドが紐づくプロパティキー ({@link ResolverKey}) について,
-     * 異なるプロパティキーに同じプロパティ名が付与されていてはならない.
+     * 渡されたコマンド集合の中で, コマンド文字列 (representation) が重複してはならない.
      * </p>
      * 
      * @param noArgCommands 解釈される引数なしコマンドの集合
@@ -211,7 +209,6 @@ public final class ConsoleParameterInterpreter {
 
         // 文字列に関する重複の確認
         ConsoleOptionCommand.requireNoRepresentationDuplicates(commands);
-        ResolverKey.requireNoNameDuplicates(commands, c -> c.propertyKey());
 
         Map<String, NoArgumentCommand<?>> mapperToNoArgCommand =
                 ConsoleOptionCommand.toCommandMapper(noArgCommands);
