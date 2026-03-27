@@ -5,9 +5,9 @@
  * http://opensource.org/licenses/mit-license.php
  */
 
-package matsu.num.statistics.kdeapp.command;
+package matsu.num.statistics.kdeapp.comp;
 
-import static matsu.num.statistics.kdeapp.command.DummyCommandListForTesting.*;
+import static matsu.num.statistics.kdeapp.comp.DummyCommandListForTesting.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +25,6 @@ import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
 import matsu.num.statistics.kdeapp.base.DummySupplierForTesting;
-import matsu.num.statistics.kdeapp.config.ConfigProperty;
-import matsu.num.statistics.kdeapp.config.PropertyKey;
 import matsu.num.statistics.kdeapp.exception.IllegalParameterException;
 
 /**

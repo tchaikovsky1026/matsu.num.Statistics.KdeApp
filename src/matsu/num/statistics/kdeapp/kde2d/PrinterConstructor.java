@@ -15,7 +15,7 @@ import static matsu.num.statistics.kdeapp.kde2d.Properties.*;
 import java.io.PrintStream;
 import java.util.Objects;
 
-import matsu.num.statistics.kdeapp.config.ConfigProperty;
+import matsu.num.statistics.kdeapp.comp.ConfigProperty;
 import matsu.num.statistics.kdeapp.kde2d.task.ResultDisplayPrinter;
 import matsu.num.statistics.kdeapp.kde2d.task.ResultWriter;
 

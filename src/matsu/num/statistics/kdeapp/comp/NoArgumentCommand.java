@@ -8,12 +8,10 @@
 /*
  * 2026.3.23
  */
-package matsu.num.statistics.kdeapp.command;
+package matsu.num.statistics.kdeapp.comp;
 
 import java.util.Objects;
 import java.util.function.Supplier;
-
-import matsu.num.statistics.kdeapp.config.PropertyKey;
 
 /**
  * 引数をとらないコマンドを扱うクラス.

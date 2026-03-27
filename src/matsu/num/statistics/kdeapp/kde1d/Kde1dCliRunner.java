@@ -12,7 +12,7 @@ package matsu.num.statistics.kdeapp.kde1d;
 
 import java.io.PrintStream;
 
-import matsu.num.statistics.kdeapp.config.ConfigProperty;
+import matsu.num.statistics.kdeapp.comp.ConfigProperty;
 import matsu.num.statistics.kdeapp.exception.ApplicationException;
 import matsu.num.statistics.kdeapp.kde1d.task.GaussianStandardKde1dCalculator;
 import matsu.num.statistics.kdeapp.kde1d.task.Kde1dSourceReader;

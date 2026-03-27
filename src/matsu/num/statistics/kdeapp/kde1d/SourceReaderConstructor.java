@@ -14,7 +14,7 @@ import static matsu.num.statistics.kdeapp.kde1d.Properties.*;
 
 import java.nio.file.Path;
 
-import matsu.num.statistics.kdeapp.config.ConfigProperty;
+import matsu.num.statistics.kdeapp.comp.ConfigProperty;
 import matsu.num.statistics.kdeapp.format.CommentPrefix;
 import matsu.num.statistics.kdeapp.kde1d.task.Kde1dSourceReader;
 

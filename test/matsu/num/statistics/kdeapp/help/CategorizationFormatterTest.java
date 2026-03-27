@@ -7,7 +7,7 @@
 
 package matsu.num.statistics.kdeapp.help;
 
-import static matsu.num.statistics.kdeapp.command.DummyCommandListForTesting.*;
+import static matsu.num.statistics.kdeapp.comp.DummyCommandListForTesting.*;
 
 import java.util.ArrayList;
 import java.util.List;

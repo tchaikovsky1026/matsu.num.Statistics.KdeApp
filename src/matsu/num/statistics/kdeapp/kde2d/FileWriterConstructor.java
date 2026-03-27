@@ -10,7 +10,7 @@
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
-import matsu.num.statistics.kdeapp.config.ConfigProperty;
+import matsu.num.statistics.kdeapp.comp.ConfigProperty;
 import matsu.num.statistics.kdeapp.kde2d.task.ResultFileWriter;
 import matsu.num.statistics.kdeapp.kde2d.task.ResultWriter;
 

@@ -8,7 +8,7 @@
 /*
  * 2026.3.24
  */
-package matsu.num.statistics.kdeapp.command;
+package matsu.num.statistics.kdeapp.comp;
 
 import static java.util.stream.Collectors.*;
 
@@ -18,8 +18,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import matsu.num.statistics.kdeapp.config.ConfigProperty;
-import matsu.num.statistics.kdeapp.config.PropertyKey;
 import matsu.num.statistics.kdeapp.exception.IllegalParameterException;
 import matsu.num.statistics.kdeapp.logging.AppLogger;
 

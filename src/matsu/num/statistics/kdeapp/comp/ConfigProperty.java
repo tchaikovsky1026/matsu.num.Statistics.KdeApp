@@ -8,7 +8,7 @@
 /*
  * 2026.3.23
  */
-package matsu.num.statistics.kdeapp.config;
+package matsu.num.statistics.kdeapp.comp;
 
 import java.util.HashMap;
 import java.util.Map;

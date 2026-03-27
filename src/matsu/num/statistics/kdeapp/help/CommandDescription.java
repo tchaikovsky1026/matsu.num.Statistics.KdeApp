@@ -20,9 +20,9 @@ import java.util.Objects;
 import java.util.function.UnaryOperator;
 import java.util.stream.StreamSupport;
 
-import matsu.num.statistics.kdeapp.command.ArgumentRequiringCommand;
-import matsu.num.statistics.kdeapp.command.ConsoleOptionCommand;
-import matsu.num.statistics.kdeapp.command.NoArgumentCommand;
+import matsu.num.statistics.kdeapp.comp.ArgumentRequiringCommand;
+import matsu.num.statistics.kdeapp.comp.ConsoleOptionCommand;
+import matsu.num.statistics.kdeapp.comp.NoArgumentCommand;
 
 /**
  * コマンドの説明を表現するクラス.

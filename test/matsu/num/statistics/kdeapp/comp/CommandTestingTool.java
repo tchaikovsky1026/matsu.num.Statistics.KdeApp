@@ -8,7 +8,7 @@
 /*
  * 2026.3.23
  */
-package matsu.num.statistics.kdeapp.command;
+package matsu.num.statistics.kdeapp.comp;
 
 /**
  * コマンドに関するテスティングツール.

@@ -10,7 +10,7 @@
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
-import static matsu.num.statistics.kdeapp.command.CommandAssignmentRule.*;
+import static matsu.num.statistics.kdeapp.comp.CommandAssignmentRule.*;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -18,11 +18,11 @@ import java.util.List;
 import java.util.Set;
 
 import matsu.num.statistics.kdeapp.base.ConstantsCollector;
-import matsu.num.statistics.kdeapp.command.ArgumentRequiringCommand;
-import matsu.num.statistics.kdeapp.command.CommandAssignmentRule;
-import matsu.num.statistics.kdeapp.command.ConsoleOptionCommand;
-import matsu.num.statistics.kdeapp.command.ConsoleParameterInterpreter;
-import matsu.num.statistics.kdeapp.command.NoArgumentCommand;
+import matsu.num.statistics.kdeapp.comp.ArgumentRequiringCommand;
+import matsu.num.statistics.kdeapp.comp.CommandAssignmentRule;
+import matsu.num.statistics.kdeapp.comp.ConsoleOptionCommand;
+import matsu.num.statistics.kdeapp.comp.ConsoleParameterInterpreter;
+import matsu.num.statistics.kdeapp.comp.NoArgumentCommand;
 import matsu.num.statistics.kdeapp.format.CommentPrefix;
 import matsu.num.statistics.kdeapp.format.Separator;
 

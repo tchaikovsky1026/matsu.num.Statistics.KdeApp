@@ -8,7 +8,7 @@
 package matsu.num.statistics.kdeapp.help;
 
 import static java.util.Comparator.*;
-import static matsu.num.statistics.kdeapp.command.DummyCommandListForTesting.*;
+import static matsu.num.statistics.kdeapp.comp.DummyCommandListForTesting.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
@@ -24,8 +24,8 @@ import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
-import matsu.num.statistics.kdeapp.command.ArgumentRequiringCommand;
-import matsu.num.statistics.kdeapp.command.NoArgumentCommand;
+import matsu.num.statistics.kdeapp.comp.ArgumentRequiringCommand;
+import matsu.num.statistics.kdeapp.comp.NoArgumentCommand;
 
 /**
  * {@link CommandDescription} のテスト.

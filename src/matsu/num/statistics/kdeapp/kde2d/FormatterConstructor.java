@@ -12,7 +12,7 @@ package matsu.num.statistics.kdeapp.kde2d;
 
 import static matsu.num.statistics.kdeapp.kde2d.Properties.*;
 
-import matsu.num.statistics.kdeapp.config.ConfigProperty;
+import matsu.num.statistics.kdeapp.comp.ConfigProperty;
 import matsu.num.statistics.kdeapp.kde2d.task.WritingFormatter;
 import matsu.num.statistics.kdeapp.kde2d.task.WritingFormatter.Builder;
 

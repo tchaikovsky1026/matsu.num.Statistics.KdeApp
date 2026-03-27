@@ -15,8 +15,8 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 import matsu.num.statistics.kdeapp.base.ConstantsCollector;
-import matsu.num.statistics.kdeapp.config.ConfigProperty;
-import matsu.num.statistics.kdeapp.config.PropertyKey;
+import matsu.num.statistics.kdeapp.comp.ConfigProperty;
+import matsu.num.statistics.kdeapp.comp.PropertyKey;
 import matsu.num.statistics.kdeapp.exception.ProgrammingBugException;
 import matsu.num.statistics.kdeapp.format.CommentPrefix;
 import matsu.num.statistics.kdeapp.format.Separator;
