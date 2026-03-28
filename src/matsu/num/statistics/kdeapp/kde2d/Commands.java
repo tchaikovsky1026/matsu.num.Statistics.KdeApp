@@ -40,20 +40,20 @@ public final class Commands {
      * 結果を標準出力しないことを表現するシングルトンインスタンス.
      */
     public static final NoArgumentCommand<?> ECHO_OFF =
-            NoArgumentCommand.of("ECHO_OFF", Properties.ECHO, () -> false, "--echo-off");
+            NoArgumentCommand.of("ECHO_OFF", Resolvers.ECHO, () -> false, "--echo-off");
 
     /**
      * 結果を標準出力することを表現するシングルトンインスタンス.
      */
     public static final NoArgumentCommand<?> ECHO_ON =
-            NoArgumentCommand.of("ECHO_ON", Properties.ECHO, () -> true, "--echo-on");
+            NoArgumentCommand.of("ECHO_ON", Resolvers.ECHO, () -> true, "--echo-on");
 
     /**
      * 入力ファイルの指定を表現するシングルトンインスタンス.
      */
     public static final ArgumentRequiringCommand<Path> INPUT_FILE_PATH =
             ArgumentRequiringCommand.of(
-                    "INPUT_FILE_PATH", Properties.INPUT_FILE_PATH, Path::of,
+                    "INPUT_FILE_PATH", Resolvers.INPUT_FILE_PATH, Path::of,
                     "--input", "--in");
 
     /**
@@ -61,7 +61,7 @@ public final class Commands {
      */
     public static final ArgumentRequiringCommand<CommentPrefix> INPUT_COMMENT_PREFIX =
             ArgumentRequiringCommand.of(
-                    "INPUT_COMMENT_PREFIX", Properties.INPUT_COMMENT_PREFIX, CommentPrefix::of,
+                    "INPUT_COMMENT_PREFIX", Resolvers.INPUT_COMMENT_PREFIX, CommentPrefix::of,
                     "--input-comment-prefix", "--in-comment-prefix");
 
     /**
@@ -69,7 +69,7 @@ public final class Commands {
      */
     public static final ArgumentRequiringCommand<Separator> INPUT_SEPARATOR =
             ArgumentRequiringCommand.of(
-                    "INPUT_SEPARATOR", Properties.INPUT_SEPARATOR, Separator::from,
+                    "INPUT_SEPARATOR", Resolvers.INPUT_SEPARATOR, Separator::from,
                     "--input-separator", "--in-sep");
 
     /**
@@ -77,7 +77,7 @@ public final class Commands {
      */
     public static final ArgumentRequiringCommand<OutputFileConfig> OUTPUT_FORCE_FILE_PATH =
             ArgumentRequiringCommand.of(
-                    "OUTPUT_FORCE_FILE_PATH", Properties.OUTPUT_FILE,
+                    "OUTPUT_FORCE_FILE_PATH", Resolvers.OUTPUT_FILE,
                     s -> OutputFileConfig.outputForce(Path.of(s)),
                     "--output-force", "--out-force");
 
@@ -86,7 +86,7 @@ public final class Commands {
      */
     public static final ArgumentRequiringCommand<OutputFileConfig> OUTPUT_FILE_PATH =
             ArgumentRequiringCommand.of(
-                    "OUTPUT_FILE_PATH", Properties.OUTPUT_FILE,
+                    "OUTPUT_FILE_PATH", Resolvers.OUTPUT_FILE,
                     s -> OutputFileConfig.output(Path.of(s)),
                     "--output", "--out");
 
@@ -95,7 +95,7 @@ public final class Commands {
      */
     public static final NoArgumentCommand<OutputFileConfig> OUTPUT_NONE =
             NoArgumentCommand.of(
-                    "OUTPUT_NONE", Properties.OUTPUT_FILE, () -> OutputFileConfig.none(),
+                    "OUTPUT_NONE", Resolvers.OUTPUT_FILE, () -> OutputFileConfig.none(),
                     "--output-none", "--out-none");
 
     /**
@@ -103,7 +103,7 @@ public final class Commands {
      */
     public static final ArgumentRequiringCommand<Separator> OUTPUT_SEPARATOR =
             ArgumentRequiringCommand.of(
-                    "OUTPUT_SEPARATOR", Properties.OUTPUT_SEPARATOR,
+                    "OUTPUT_SEPARATOR", Resolvers.OUTPUT_SEPARATOR,
                     Separator::from,
                     "--output-separator", "--out-sep");
 
@@ -112,7 +112,7 @@ public final class Commands {
      */
     public static final ArgumentRequiringCommand<OutputLabelPrefixConfig> OUTPUT_LABEL_PREFIX =
             ArgumentRequiringCommand.of(
-                    "OUTPUT_LABEL_PREFIX", Properties.OUTPUT_LABEL_PREFIX,
+                    "OUTPUT_LABEL_PREFIX", Resolvers.OUTPUT_LABEL_PREFIX,
                     OutputLabelPrefixConfig::withLabel,
                     "--output-label-prefix", "--out-label-prefix");
 
@@ -121,7 +121,7 @@ public final class Commands {
      */
     public static final NoArgumentCommand<OutputLabelPrefixConfig> OUTPUT_NO_LABEL =
             NoArgumentCommand.of(
-                    "OUTPUT_NO_LABEL", Properties.OUTPUT_LABEL_PREFIX,
+                    "OUTPUT_NO_LABEL", Resolvers.OUTPUT_LABEL_PREFIX,
                     () -> OutputLabelPrefixConfig.nonLabel(),
                     "--output-no-label", "--out-no-label");
 
@@ -130,7 +130,7 @@ public final class Commands {
      */
     public static final ArgumentRequiringCommand<FormatterBuilderSupplier> OUTPUT_FORMAT_TYPE =
             ArgumentRequiringCommand.of(
-                    "OUTPUT_FORMAT_TYPE", Properties.OUTPUT_FORMAT_TYPE,
+                    "OUTPUT_FORMAT_TYPE", Resolvers.OUTPUT_FORMAT_TYPE,
                     FormatterBuilderSupplier::from,
                     "--output-format", "--out-format");
 

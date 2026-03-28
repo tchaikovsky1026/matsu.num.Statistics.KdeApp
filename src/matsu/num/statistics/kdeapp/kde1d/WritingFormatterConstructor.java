@@ -10,7 +10,7 @@
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
-import static matsu.num.statistics.kdeapp.kde1d.Properties.*;
+import static matsu.num.statistics.kdeapp.kde1d.Resolvers.*;
 
 import matsu.num.statistics.kdeapp.comp.ResolverContainer;
 import matsu.num.statistics.kdeapp.kde1d.task.WritingFormatter;

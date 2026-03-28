@@ -10,7 +10,7 @@
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
-import static matsu.num.statistics.kdeapp.kde1d.Properties.*;
+import static matsu.num.statistics.kdeapp.kde1d.Resolvers.*;
 
 import java.nio.file.Path;
 

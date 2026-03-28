@@ -8,7 +8,7 @@
 /*
  * 2026.3.24
  */
-package matsu.num.statistics.kdeapp.kde2d;
+package matsu.num.statistics.kdeapp.kde1d;
 
 import java.nio.file.Path;
 import java.util.NoSuchElementException;
@@ -29,20 +29,17 @@ import matsu.num.statistics.kdeapp.format.Separator;
  *              クラス, static フィールドとも {@code public} でなければならない.
  * @author Matsuura Y.
  */
-public final class Properties {
+public final class Resolvers {
 
     /*
      * コンパイルエラーを回避するために, 暫定的に定数を用意する.
      */
-
     public static final ResolverKey<Boolean> ECHO = ResolverKey.of("echo", Boolean.class);
 
     public static final ResolverKey<Path> INPUT_FILE_PATH = ResolverKey.of(
             "input-file", Path.class);
     public static final ResolverKey<CommentPrefix> INPUT_COMMENT_PREFIX = ResolverKey.of(
             "input-comment-prefix", CommentPrefix.class);
-    public static final ResolverKey<Separator> INPUT_SEPARATOR = ResolverKey.of(
-            "input-separator", Separator.class);
 
     public static final ResolverKey<OutputFileConfig> OUTPUT_FILE = ResolverKey.of(
             "output-file", OutputFileConfig.class);
@@ -50,8 +47,6 @@ public final class Properties {
             "output-separator", Separator.class);
     public static final ResolverKey<OutputLabelPrefixConfig> OUTPUT_LABEL_PREFIX = ResolverKey.of(
             "output-label-prefix", OutputLabelPrefixConfig.class);
-    public static final ResolverKey<FormatterBuilderSupplier> OUTPUT_FORMAT_TYPE = ResolverKey.of(
-            "output-format", FormatterBuilderSupplier.class);
 
     public static final ResolverContainer DEFAULT_PROPERTY;
 
@@ -60,17 +55,14 @@ public final class Properties {
 
         builder.put(ECHO, true);
         builder.put(INPUT_COMMENT_PREFIX, CommentPrefix.of("#"));
-        builder.put(INPUT_SEPARATOR, Separator.from("\t"));
-
         builder.put(OUTPUT_FILE, OutputFileConfig.none());
         builder.put(OUTPUT_SEPARATOR, Separator.from("\t"));
         builder.put(OUTPUT_LABEL_PREFIX, OutputLabelPrefixConfig.nonLabel());
-        builder.put(OUTPUT_FORMAT_TYPE, FormatterBuilderSupplier.XYZ);
 
         DEFAULT_PROPERTY = builder.build();
     }
 
-    private Properties() {
+    private Resolvers() {
         // インスタンス化不可
         throw new AssertionError();
     }
@@ -102,6 +94,6 @@ public final class Properties {
 
     private static final class PropertyKeyHolder {
         static final Set<ResolverKey<?>> properties = Set.copyOf(
-                ConstantsCollector.collect(Properties.class, ResolverKey.class));
+                ConstantsCollector.collect(Resolvers.class, ResolverKey.class));
     }
 }

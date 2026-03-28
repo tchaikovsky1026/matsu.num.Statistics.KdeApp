@@ -31,7 +31,7 @@ final class FileWriterConstructor {
      * @throws NullPointerException {@inheritDoc }
      */
     ResultWriter apply(ResolverContainer property) {
-        OutputFileConfig outputFileConfig = property.get(Properties.OUTPUT_FILE);
+        OutputFileConfig outputFileConfig = property.get(Resolvers.OUTPUT_FILE);
         return outputFileConfig.get();
     }
 }

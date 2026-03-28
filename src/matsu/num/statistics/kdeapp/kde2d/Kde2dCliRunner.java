@@ -70,8 +70,8 @@ final class Kde2dCliRunner {
         out.println("kde2d...");
 
         ResolverContainer property = Commands.getInterpreter().interpret(args)
-                .withDefaults(Properties.DEFAULT_PROPERTY);
-        Properties.validateCompleteness(property);
+                .withDefaults(Resolvers.DEFAULT_PROPERTY);
+        Resolvers.validateCompleteness(property);
 
         Kde2dSourceReader loader =
                 new SourceReaderConstructor().apply(property);
