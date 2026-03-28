@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.24
+ * 2026.3.29
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -20,6 +20,7 @@ import matsu.num.statistics.kdeapp.comp.ResolverKey;
 import matsu.num.statistics.kdeapp.exception.ProgrammingBugException;
 import matsu.num.statistics.kdeapp.format.CommentPrefix;
 import matsu.num.statistics.kdeapp.format.Separator;
+import matsu.num.statistics.kdeapp.kde1d.comp.EchoPrinter;
 
 /**
  * このパッケージで扱うプロパティ.
@@ -34,7 +35,8 @@ public final class Resolvers {
     /*
      * コンパイルエラーを回避するために, 暫定的に定数を用意する.
      */
-    public static final ResolverKey<Boolean> ECHO = ResolverKey.of("echo", Boolean.class);
+    public static final ResolverKey<EchoPrinter> ECHO =
+            ResolverKey.of("ECHO", EchoPrinter.class);
 
     public static final ResolverKey<Path> INPUT_FILE_PATH = ResolverKey.of(
             "input-file", Path.class);
@@ -53,7 +55,7 @@ public final class Resolvers {
     static {
         var builder = new ResolverContainer.Builder();
 
-        builder.put(ECHO, true);
+        builder.put(ECHO, EchoPrinter.ON);
         builder.put(INPUT_COMMENT_PREFIX, CommentPrefix.of("#"));
         builder.put(OUTPUT_FILE, OutputFileConfig.none());
         builder.put(OUTPUT_SEPARATOR, Separator.from("\t"));

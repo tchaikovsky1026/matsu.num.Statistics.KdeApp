@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.24
+ * 2026.3.29
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
@@ -25,6 +25,7 @@ import matsu.num.statistics.kdeapp.comp.ConsoleParameterInterpreter;
 import matsu.num.statistics.kdeapp.comp.NoArgumentCommand;
 import matsu.num.statistics.kdeapp.format.CommentPrefix;
 import matsu.num.statistics.kdeapp.format.Separator;
+import matsu.num.statistics.kdeapp.kde2d.comp.EchoPrinter;
 
 /**
  * kde2d で取り扱う, コマンドに関するルールなど.
@@ -40,13 +41,18 @@ public final class Commands {
      * 結果を標準出力しないことを表現するシングルトンインスタンス.
      */
     public static final NoArgumentCommand<?> ECHO_OFF =
-            NoArgumentCommand.of("ECHO_OFF", Resolvers.ECHO, () -> false, "--echo-off");
-
+            NoArgumentCommand.of(
+                    "ECHO_OFF", Resolvers.ECHO,
+                    () -> EchoPrinter.OFF,
+                    "--echo-off");
     /**
      * 結果を標準出力することを表現するシングルトンインスタンス.
      */
     public static final NoArgumentCommand<?> ECHO_ON =
-            NoArgumentCommand.of("ECHO_ON", Resolvers.ECHO, () -> true, "--echo-on");
+            NoArgumentCommand.of(
+                    "ECHO_ON", Resolvers.ECHO,
+                    () -> EchoPrinter.ON,
+                    "--echo-on");
 
     /**
      * 入力ファイルの指定を表現するシングルトンインスタンス.
