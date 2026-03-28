@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.24
+ * 2026.3.29
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
@@ -38,11 +38,11 @@ public final class Resolvers {
     public static final ResolverKey<Boolean> ECHO = ResolverKey.of("echo", Boolean.class);
 
     public static final ResolverKey<Path> INPUT_FILE_PATH = ResolverKey.of(
-            "input-file", Path.class);
+            "INPUT_FILE", Path.class);
     public static final ResolverKey<CommentPrefix> INPUT_COMMENT_PREFIX = ResolverKey.of(
-            "input-comment-prefix", CommentPrefix.class);
+            "INPUT_COMMENT_PREFIX", CommentPrefix.class);
     public static final ResolverKey<Separator> INPUT_SEPARATOR = ResolverKey.of(
-            "input-separator", Separator.class);
+            "INPUT_SEPARATOR", Separator.class);
 
     public static final ResolverKey<OutputFileConfig> OUTPUT_FILE = ResolverKey.of(
             "output-file", OutputFileConfig.class);
