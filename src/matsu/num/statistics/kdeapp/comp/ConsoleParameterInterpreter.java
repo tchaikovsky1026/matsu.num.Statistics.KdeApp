@@ -8,7 +8,7 @@
 /*
  * 2026.3.24
  */
-package matsu.num.statistics.kdeapp.command;
+package matsu.num.statistics.kdeapp.comp;
 
 import static java.util.stream.Collectors.*;
 
@@ -18,8 +18,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import matsu.num.statistics.kdeapp.config.ConfigProperty;
-import matsu.num.statistics.kdeapp.config.PropertyKey;
 import matsu.num.statistics.kdeapp.exception.IllegalParameterException;
 import matsu.num.statistics.kdeapp.logging.AppLogger;
 
@@ -82,7 +80,7 @@ public final class ConsoleParameterInterpreter {
      * @throws IllegalParameterException パラメータの形式が不正の場合, コマンドの組み合わせが不正の場合
      * @throws NullPointerException 引数にnullが含まれる場合
      */
-    public ConfigProperty interpret(String[] args) {
+    public ResolverContainer interpret(String[] args) {
 
         final int size = args.length;
 
@@ -92,7 +90,7 @@ public final class ConsoleParameterInterpreter {
         Set<ConsoleOptionCommand<?>> commandSet = new HashSet<>();
 
         // コマンドの登録状況
-        var propertyBuilder = new ConfigProperty.Builder();
+        var propertyBuilder = new ResolverContainer.Builder();
 
         LOGGER.info("=== Console parameter interpreting ===");
 
@@ -169,12 +167,12 @@ public final class ConsoleParameterInterpreter {
      * @return
      */
     private static <T> T register(
-            ConfigProperty.Builder propertyBuilder,
+            ResolverContainer.Builder propertyBuilder,
             NoArgumentCommand<T> noArgCommand) {
         return propertyBuilder.put(noArgCommand.propertyKey(), noArgCommand.get());
     }
 
-    private static <T> T register(ConfigProperty.Builder propertyBuilder,
+    private static <T> T register(ResolverContainer.Builder propertyBuilder,
             ArgumentRequiringCommand<T> argCommand,
             String commandParameter) {
         return propertyBuilder.put(argCommand.propertyKey(), argCommand.convertArg(commandParameter));
@@ -189,9 +187,7 @@ public final class ConsoleParameterInterpreter {
      * </p>
      * 
      * <p>
-     * 渡されたコマンド集合の中で, コマンド文字列 (representation) が重複してはならない. <br>
-     * コマンドが紐づくプロパティキー ({@link PropertyKey}) について,
-     * 異なるプロパティキーに同じプロパティ名が付与されていてはならない.
+     * 渡されたコマンド集合の中で, コマンド文字列 (representation) が重複してはならない.
      * </p>
      * 
      * @param noArgCommands 解釈される引数なしコマンドの集合
@@ -213,7 +209,6 @@ public final class ConsoleParameterInterpreter {
 
         // 文字列に関する重複の確認
         ConsoleOptionCommand.requireNoRepresentationDuplicates(commands);
-        PropertyKey.requireNoNameDuplicates(commands, c -> c.propertyKey());
 
         Map<String, NoArgumentCommand<?>> mapperToNoArgCommand =
                 ConsoleOptionCommand.toCommandMapper(noArgCommands);

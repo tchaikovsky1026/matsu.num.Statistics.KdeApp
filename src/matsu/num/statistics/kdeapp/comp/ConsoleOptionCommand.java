@@ -8,7 +8,7 @@
 /*
  * 2026.3.23
  */
-package matsu.num.statistics.kdeapp.command;
+package matsu.num.statistics.kdeapp.comp;
 
 import static java.util.stream.Collectors.*;
 
@@ -19,8 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-
-import matsu.num.statistics.kdeapp.config.PropertyKey;
 
 /**
  * コンソールオプションコマンドを表現するクラス.
@@ -36,13 +34,13 @@ import matsu.num.statistics.kdeapp.config.PropertyKey;
  * </p>
  * 
  * @author Matsuura Y.
- * @param <T> このコマンドによって得られる値の型, see {@link PropertyKey}
+ * @param <T> このコマンドによって得られる値の型, see {@link ResolverKey}
  */
 public abstract sealed class ConsoleOptionCommand<T>
         permits ArgumentRequiringCommand, NoArgumentCommand {
 
     private final String enumString;
-    private final PropertyKey<T> propertyKey;
+    private final ResolverKey<T> propertyKey;
 
     private final String commandRepresentation;
     private final Set<String> representations;
@@ -58,7 +56,7 @@ public abstract sealed class ConsoleOptionCommand<T>
      * @throws IllegalArgumentException 文字列表現に空白を含む場合
      * @throws NullPointerException 引数にnullが含まれる場合
      */
-    ConsoleOptionCommand(String enumString, PropertyKey<T> propertyKey,
+    ConsoleOptionCommand(String enumString, ResolverKey<T> propertyKey,
             String commandRepresentation, String... otherRepresentations) {
 
         this.enumString = enumString;
@@ -103,7 +101,7 @@ public abstract sealed class ConsoleOptionCommand<T>
      * 
      * @return プロパティキー
      */
-    final PropertyKey<T> propertyKey() {
+    final ResolverKey<T> propertyKey() {
         return propertyKey;
     }
 

@@ -5,9 +5,9 @@
  * http://opensource.org/licenses/mit-license.php
  */
 
-package matsu.num.statistics.kdeapp.command;
+package matsu.num.statistics.kdeapp.comp;
 
-import static matsu.num.statistics.kdeapp.command.DummyCommandListForTesting.*;
+import static matsu.num.statistics.kdeapp.comp.DummyCommandListForTesting.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +25,6 @@ import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
 import matsu.num.statistics.kdeapp.base.DummySupplierForTesting;
-import matsu.num.statistics.kdeapp.config.ConfigProperty;
-import matsu.num.statistics.kdeapp.config.PropertyKey;
 import matsu.num.statistics.kdeapp.exception.IllegalParameterException;
 
 /**
@@ -42,7 +40,7 @@ final class ConsoleParametersTest {
 
             // ArgCommandとコマンド文字列が重複するNoArgCommand
             NoArgumentCommand<?> command = NoArgumentCommand.of(
-                    "DUMMY_4", PropertyKey.of("dummy-4", String.class),
+                    "DUMMY_4", ResolverKey.of("dummy-4", String.class),
                     DummySupplierForTesting.instance(""),
                     DUMMY_ARG_1.commandString());
 
@@ -133,7 +131,7 @@ final class ConsoleParametersTest {
 
         private final String file = "test.txt";
 
-        private ConfigProperty property;
+        private ResolverContainer property;
 
         @Before
         public void before_解釈の構築() {

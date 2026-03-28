@@ -12,7 +12,7 @@ package matsu.num.statistics.kdeapp.kde1d;
 
 import java.io.PrintStream;
 
-import matsu.num.statistics.kdeapp.config.ConfigProperty;
+import matsu.num.statistics.kdeapp.comp.ResolverContainer;
 import matsu.num.statistics.kdeapp.exception.ApplicationException;
 import matsu.num.statistics.kdeapp.kde1d.task.GaussianStandardKde1dCalculator;
 import matsu.num.statistics.kdeapp.kde1d.task.Kde1dSourceReader;
@@ -69,9 +69,9 @@ final class Kde1dCliRunner {
 
         out.println("kde1d...");
 
-        ConfigProperty property = Commands.getInterpreter().interpret(args)
-                .withDefaults(Properties.DEFAULT_PROPERTY);
-        Properties.validateCompleteness(property);
+        ResolverContainer property = Commands.getInterpreter().interpret(args)
+                .withDefaults(Resolvers.DEFAULT_PROPERTY);
+        Resolvers.validateCompleteness(property);
 
         Kde1dSourceReader loader =
                 new SourceReaderConstructor().apply(property);

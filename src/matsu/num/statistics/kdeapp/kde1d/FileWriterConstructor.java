@@ -10,7 +10,7 @@
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
-import matsu.num.statistics.kdeapp.config.ConfigProperty;
+import matsu.num.statistics.kdeapp.comp.ResolverContainer;
 import matsu.num.statistics.kdeapp.kde1d.task.ResultFileWriter;
 import matsu.num.statistics.kdeapp.kde1d.task.ResultWriter;
 
@@ -30,8 +30,8 @@ final class FileWriterConstructor {
     /**
      * @throws NullPointerException {@inheritDoc }
      */
-    ResultWriter apply(ConfigProperty property) {
-        OutputFileConfig outputFileConfig = property.get(Properties.OUTPUT_FILE);
+    ResultWriter apply(ResolverContainer property) {
+        OutputFileConfig outputFileConfig = property.get(Resolvers.OUTPUT_FILE);
         return outputFileConfig.get();
     }
 }

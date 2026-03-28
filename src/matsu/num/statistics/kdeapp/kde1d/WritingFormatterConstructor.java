@@ -10,9 +10,9 @@
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
-import static matsu.num.statistics.kdeapp.kde1d.Properties.*;
+import static matsu.num.statistics.kdeapp.kde1d.Resolvers.*;
 
-import matsu.num.statistics.kdeapp.config.ConfigProperty;
+import matsu.num.statistics.kdeapp.comp.ResolverContainer;
 import matsu.num.statistics.kdeapp.kde1d.task.WritingFormatter;
 import matsu.num.statistics.kdeapp.kde1d.task.XyTypeFormatterBuilder;
 
@@ -38,7 +38,7 @@ final class WritingFormatterConstructor {
     /**
      * @throws NullPointerException {@inheritDoc }
      */
-    WritingFormatter apply(ConfigProperty property) {
+    WritingFormatter apply(ResolverContainer property) {
         var builder = new XyTypeFormatterBuilder(property.get(OUTPUT_SEPARATOR));
         property.get(OUTPUT_LABEL_PREFIX).accept(builder);
         return builder.build();

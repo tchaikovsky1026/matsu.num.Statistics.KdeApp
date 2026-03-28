@@ -10,12 +10,12 @@
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
-import static matsu.num.statistics.kdeapp.kde1d.Properties.*;
+import static matsu.num.statistics.kdeapp.kde1d.Resolvers.*;
 
 import java.io.PrintStream;
 import java.util.Objects;
 
-import matsu.num.statistics.kdeapp.config.ConfigProperty;
+import matsu.num.statistics.kdeapp.comp.ResolverContainer;
 import matsu.num.statistics.kdeapp.kde1d.task.ResultDisplayPrinter;
 import matsu.num.statistics.kdeapp.kde1d.task.ResultWriter;
 
@@ -45,7 +45,7 @@ final class PrinterConstructor {
     /**
      * @throws NullPointerException {@inheritDoc }
      */
-    ResultWriter apply(ConfigProperty property) {
+    ResultWriter apply(ResolverContainer property) {
         return property.get(ECHO)
                 ? new ResultDisplayPrinter(out, err)
                 : ResultWriter.nullWriter();

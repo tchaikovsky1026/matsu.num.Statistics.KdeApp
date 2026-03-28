@@ -10,9 +10,9 @@
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
-import static matsu.num.statistics.kdeapp.kde2d.Properties.*;
+import static matsu.num.statistics.kdeapp.kde2d.Resolvers.*;
 
-import matsu.num.statistics.kdeapp.config.ConfigProperty;
+import matsu.num.statistics.kdeapp.comp.ResolverContainer;
 import matsu.num.statistics.kdeapp.kde2d.task.WritingFormatter;
 import matsu.num.statistics.kdeapp.kde2d.task.WritingFormatter.Builder;
 
@@ -32,7 +32,7 @@ final class FormatterConstructor {
     /**
      * @throws NullPointerException {@inheritDoc }
      */
-    WritingFormatter apply(ConfigProperty property) {
+    WritingFormatter apply(ResolverContainer property) {
         Builder<? extends Builder<?>> builder =
                 property.get(OUTPUT_FORMAT_TYPE)
                         .createBuilder();

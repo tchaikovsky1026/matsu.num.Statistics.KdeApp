@@ -8,7 +8,7 @@
 /*
  * 2026.3.23
  */
-package matsu.num.statistics.kdeapp.config;
+package matsu.num.statistics.kdeapp.comp;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,16 +16,16 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 
 /**
- * コンフィグのプロパティ.
+ * Resolver のコンテナ: {@link ResolverKey} から値へのマップを扱う.
  * 
  * @author Matsuura Y.
  */
-public final class ConfigProperty {
+public final class ResolverContainer {
 
-    private final Map<PropertyKey<?>, Object> map;
+    private final Map<ResolverKey<?>, Object> map;
 
-    private ConfigProperty(Map<PropertyKey<?>, Object> map) {
-        this.map = map;
+    private ResolverContainer(Map<ResolverKey<?>, Object> map) {
+        this.map = Map.copyOf(map);
     }
 
     /**
@@ -37,7 +37,7 @@ public final class ConfigProperty {
      * @throws NoSuchElementException キーが登録されていない場合
      * @throws NullPointerException 引数がnull
      */
-    public <T> T get(PropertyKey<T> key) {
+    public <T> T get(ResolverKey<T> key) {
         T out = key.cast(map.get(Objects.requireNonNull(key)));
         if (Objects.isNull(out)) {
             throw new NoSuchElementException("no value of " + key);
@@ -52,11 +52,11 @@ public final class ConfigProperty {
      * @return オーバーライド後のプロパティ
      * @throws NullPointerException 引数がnullの場合
      */
-    public ConfigProperty withOverrides(ConfigProperty overrides) {
-        Map<PropertyKey<?>, Object> outMap = new HashMap<>();
+    public ResolverContainer withOverrides(ResolverContainer overrides) {
+        Map<ResolverKey<?>, Object> outMap = new HashMap<>();
         outMap.putAll(this.map);
         outMap.putAll(overrides.map);
-        return new ConfigProperty(outMap);
+        return new ResolverContainer(outMap);
     }
 
     /**
@@ -66,17 +66,17 @@ public final class ConfigProperty {
      * @return 補完後のプロパティ
      * @throws NullPointerException 引数がnullの場合
      */
-    public ConfigProperty withDefaults(ConfigProperty defaults) {
+    public ResolverContainer withDefaults(ResolverContainer defaults) {
         return defaults.withOverrides(this);
     }
 
     /**
-     * プロパティビルダ.
+     * コンテナのビルダ.
      * スレッドセーフでない.
      */
     public static final class Builder {
 
-        private Map<PropertyKey<?>, Object> map;
+        private volatile Map<ResolverKey<?>, Object> map;
 
         /**
          * 唯一のコンストラクタ.
@@ -96,11 +96,11 @@ public final class ConfigProperty {
          * @throws IllegalStateException 既にビルドされている場合
          * @throws NullPointerException 引数にnullが含まれる場合
          */
-        public <T> T put(PropertyKey<T> key, T value) {
+        public <T> T put(ResolverKey<T> key, T value) {
             validateIfCanBuild();
+
             // キャストを試みて型を検査する
             // ジェネリクスが適切に使われているなら, キャストは成功する
-
             return key.cast( // 登録済みの場合は古い値が戻る
                     map.put(key, key.cast(Objects.requireNonNull(value))));
         }
@@ -111,11 +111,11 @@ public final class ConfigProperty {
          * @return コンフィグプロパティ
          * @throws IllegalStateException 既にビルドされている場合
          */
-        public ConfigProperty build() {
+        public ResolverContainer build() {
             validateIfCanBuild();
-            Map<PropertyKey<?>, Object> buildMap = map;
+            Map<ResolverKey<?>, Object> buildMap = map;
             map = null;
-            return new ConfigProperty(buildMap);
+            return new ResolverContainer(buildMap);
         }
 
         /**
