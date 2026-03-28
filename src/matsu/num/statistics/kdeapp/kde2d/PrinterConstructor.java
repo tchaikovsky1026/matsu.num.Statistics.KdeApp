@@ -15,7 +15,7 @@ import static matsu.num.statistics.kdeapp.kde2d.Properties.*;
 import java.io.PrintStream;
 import java.util.Objects;
 
-import matsu.num.statistics.kdeapp.comp.ConfigProperty;
+import matsu.num.statistics.kdeapp.comp.ResolverContainer;
 import matsu.num.statistics.kdeapp.kde2d.task.ResultDisplayPrinter;
 import matsu.num.statistics.kdeapp.kde2d.task.ResultWriter;
 
@@ -45,7 +45,7 @@ final class PrinterConstructor {
     /**
      * @throws NullPointerException {@inheritDoc }
      */
-    ResultWriter apply(ConfigProperty property) {
+    ResultWriter apply(ResolverContainer property) {
         return property.get(ECHO)
                 ? new ResultDisplayPrinter(out, err)
                 : ResultWriter.nullWriter();

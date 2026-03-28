@@ -14,7 +14,7 @@ import static matsu.num.statistics.kdeapp.kde1d.Properties.*;
 
 import java.nio.file.Path;
 
-import matsu.num.statistics.kdeapp.comp.ConfigProperty;
+import matsu.num.statistics.kdeapp.comp.ResolverContainer;
 import matsu.num.statistics.kdeapp.format.CommentPrefix;
 import matsu.num.statistics.kdeapp.kde1d.task.Kde1dSourceReader;
 
@@ -44,7 +44,7 @@ final class SourceReaderConstructor {
     /**
      * @throws NullPointerException {@inheritDoc }
      */
-    Kde1dSourceReader apply(ConfigProperty property) {
+    Kde1dSourceReader apply(ResolverContainer property) {
         Path path = property.get(INPUT_FILE_PATH);
         CommentPrefix commentPrefix = property.get(INPUT_COMMENT_PREFIX);
         return new Kde1dSourceReader(path, commentPrefix);

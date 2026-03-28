@@ -15,7 +15,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 import matsu.num.statistics.kdeapp.base.ConstantsCollector;
-import matsu.num.statistics.kdeapp.comp.ConfigProperty;
+import matsu.num.statistics.kdeapp.comp.ResolverContainer;
 import matsu.num.statistics.kdeapp.comp.ResolverKey;
 import matsu.num.statistics.kdeapp.exception.ProgrammingBugException;
 import matsu.num.statistics.kdeapp.format.CommentPrefix;
@@ -53,10 +53,10 @@ public final class Properties {
     public static final ResolverKey<FormatterBuilderSupplier> OUTPUT_FORMAT_TYPE = ResolverKey.of(
             "output-format", FormatterBuilderSupplier.class);
 
-    public static final ConfigProperty DEFAULT_PROPERTY;
+    public static final ResolverContainer DEFAULT_PROPERTY;
 
     static {
-        var builder = new ConfigProperty.Builder();
+        var builder = new ResolverContainer.Builder();
 
         builder.put(ECHO, true);
         builder.put(INPUT_COMMENT_PREFIX, CommentPrefix.of("#"));
@@ -76,7 +76,7 @@ public final class Properties {
     }
 
     /**
-     * {@link ConfigProperty} が完全であるかどうかを検証する.
+     * {@link ResolverContainer} が完全であるかどうかを検証する.
      * 
      * <p>
      * プロパティは, コマンドインタプリタでの必須宣言, オプションの場合はデフォルト値の用意によって,
@@ -88,7 +88,7 @@ public final class Properties {
      * @param property ConfigProperty
      * @throws ProgrammingBugException プロパティが網羅されていない場合
      */
-    static void validateCompleteness(ConfigProperty property) {
+    static void validateCompleteness(ResolverContainer property) {
         ResolverKey<?> key = null;
         try {
             for (ResolverKey<?> k : PropertyKeyHolder.properties) {

@@ -80,7 +80,7 @@ public final class ConsoleParameterInterpreter {
      * @throws IllegalParameterException パラメータの形式が不正の場合, コマンドの組み合わせが不正の場合
      * @throws NullPointerException 引数にnullが含まれる場合
      */
-    public ConfigProperty interpret(String[] args) {
+    public ResolverContainer interpret(String[] args) {
 
         final int size = args.length;
 
@@ -90,7 +90,7 @@ public final class ConsoleParameterInterpreter {
         Set<ConsoleOptionCommand<?>> commandSet = new HashSet<>();
 
         // コマンドの登録状況
-        var propertyBuilder = new ConfigProperty.Builder();
+        var propertyBuilder = new ResolverContainer.Builder();
 
         LOGGER.info("=== Console parameter interpreting ===");
 
@@ -167,12 +167,12 @@ public final class ConsoleParameterInterpreter {
      * @return
      */
     private static <T> T register(
-            ConfigProperty.Builder propertyBuilder,
+            ResolverContainer.Builder propertyBuilder,
             NoArgumentCommand<T> noArgCommand) {
         return propertyBuilder.put(noArgCommand.propertyKey(), noArgCommand.get());
     }
 
-    private static <T> T register(ConfigProperty.Builder propertyBuilder,
+    private static <T> T register(ResolverContainer.Builder propertyBuilder,
             ArgumentRequiringCommand<T> argCommand,
             String commandParameter) {
         return propertyBuilder.put(argCommand.propertyKey(), argCommand.convertArg(commandParameter));

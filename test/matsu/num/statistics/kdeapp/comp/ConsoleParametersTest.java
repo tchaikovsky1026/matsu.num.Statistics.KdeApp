@@ -131,7 +131,7 @@ final class ConsoleParametersTest {
 
         private final String file = "test.txt";
 
-        private ConfigProperty property;
+        private ResolverContainer property;
 
         @Before
         public void before_解釈の構築() {

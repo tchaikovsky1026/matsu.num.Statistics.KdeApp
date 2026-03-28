@@ -12,7 +12,7 @@ package matsu.num.statistics.kdeapp.kde2d;
 
 import java.io.PrintStream;
 
-import matsu.num.statistics.kdeapp.comp.ConfigProperty;
+import matsu.num.statistics.kdeapp.comp.ResolverContainer;
 import matsu.num.statistics.kdeapp.exception.ApplicationException;
 import matsu.num.statistics.kdeapp.kde2d.task.GaussianStandardKde2dCalculator;
 import matsu.num.statistics.kdeapp.kde2d.task.Kde2dSourceReader;
@@ -69,7 +69,7 @@ final class Kde2dCliRunner {
 
         out.println("kde2d...");
 
-        ConfigProperty property = Commands.getInterpreter().interpret(args)
+        ResolverContainer property = Commands.getInterpreter().interpret(args)
                 .withDefaults(Properties.DEFAULT_PROPERTY);
         Properties.validateCompleteness(property);
 
