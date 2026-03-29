@@ -26,6 +26,7 @@ import matsu.num.statistics.kdeapp.comp.NoArgumentCommand;
 import matsu.num.statistics.kdeapp.format.CommentPrefix;
 import matsu.num.statistics.kdeapp.format.Separator;
 import matsu.num.statistics.kdeapp.kde1d.comp.EchoPrinter;
+import matsu.num.statistics.kdeapp.kde1d.comp.LabelPrefixSetting;
 import matsu.num.statistics.kdeapp.kde1d.task.ResultFileWriter;
 import matsu.num.statistics.kdeapp.kde1d.task.ResultWriter;
 
@@ -105,19 +106,19 @@ public final class Commands {
     /**
      * 出力のラベルに付与する prefix の指定を表現するシングルトンインスタンス.
      */
-    public static final ArgumentRequiringCommand<OutputLabelPrefixConfig> OUTPUT_LABEL_PREFIX =
+    public static final ArgumentRequiringCommand<LabelPrefixSetting> OUTPUT_LABEL_PREFIX =
             ArgumentRequiringCommand.of(
-                    "OUTPUT_LABEL_PREFIX", Resolvers.OUTPUT_LABEL_PREFIX,
-                    OutputLabelPrefixConfig::withLabel,
+                    "OUTPUT_LABEL_PREFIX", Resolvers.OUTPUT_LABEL_PREFIX_SETTING,
+                    LabelPrefixSetting::enable,
                     "--output-label-prefix", "--out-label-prefix");
 
     /**
      * ラベルを出力しないことを表現するシングルトンインスタンス.
      */
-    public static final NoArgumentCommand<OutputLabelPrefixConfig> OUTPUT_NO_LABEL =
+    public static final NoArgumentCommand<LabelPrefixSetting> OUTPUT_NO_LABEL =
             NoArgumentCommand.of(
-                    "OUTPUT_NO_LABEL", Resolvers.OUTPUT_LABEL_PREFIX,
-                    () -> OutputLabelPrefixConfig.nonLabel(),
+                    "OUTPUT_NO_LABEL", Resolvers.OUTPUT_LABEL_PREFIX_SETTING,
+                    () -> LabelPrefixSetting.disable(),
                     "--output-no-label", "--out-no-label");
 
     /**
