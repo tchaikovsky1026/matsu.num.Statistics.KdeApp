@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.24
+ * 2026.3.29
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
@@ -20,6 +20,7 @@ import matsu.num.statistics.kdeapp.comp.ResolverKey;
 import matsu.num.statistics.kdeapp.exception.ProgrammingBugException;
 import matsu.num.statistics.kdeapp.format.CommentPrefix;
 import matsu.num.statistics.kdeapp.format.Separator;
+import matsu.num.statistics.kdeapp.kde2d.task.ResultWriter;
 
 /**
  * このパッケージで扱うプロパティ.
@@ -44,8 +45,8 @@ public final class Resolvers {
     public static final ResolverKey<Separator> INPUT_SEPARATOR = ResolverKey.of(
             "input-separator", Separator.class);
 
-    public static final ResolverKey<OutputFileConfig> OUTPUT_FILE = ResolverKey.of(
-            "output-file", OutputFileConfig.class);
+    public static final ResolverKey<ResultWriter> OUTPUT_FILE_WRITER = ResolverKey.of(
+            "OUTPUT_FILE_WRITER", ResultWriter.class);
     public static final ResolverKey<Separator> OUTPUT_SEPARATOR = ResolverKey.of(
             "output-separator", Separator.class);
     public static final ResolverKey<OutputLabelPrefixConfig> OUTPUT_LABEL_PREFIX = ResolverKey.of(
@@ -62,7 +63,7 @@ public final class Resolvers {
         builder.put(INPUT_COMMENT_PREFIX, CommentPrefix.of("#"));
         builder.put(INPUT_SEPARATOR, Separator.from("\t"));
 
-        builder.put(OUTPUT_FILE, OutputFileConfig.none());
+        builder.put(OUTPUT_FILE_WRITER, ResultWriter.nullWriter());
         builder.put(OUTPUT_SEPARATOR, Separator.from("\t"));
         builder.put(OUTPUT_LABEL_PREFIX, OutputLabelPrefixConfig.nonLabel());
         builder.put(OUTPUT_FORMAT_TYPE, FormatterBuilderSupplier.XYZ);
