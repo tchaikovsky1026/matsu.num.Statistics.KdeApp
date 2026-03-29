@@ -60,7 +60,7 @@ final class Kde1dCliRunnerTest {
                     new Kde1dCliRunner().run(
                             new String[] {
                                     INPUT_FILE_PATH.commandString(), inputFile.toString(),
-                                    OUTPUT_FORCE_FILE_PATH.commandString(), outputFile.toString(),
+                                    OUTPUT_FORCE.commandString(), outputFile.toString(),
                                     INPUT_COMMENT_PREFIX.commandString(), commentChar
                             }, out, err),
                     is(0));

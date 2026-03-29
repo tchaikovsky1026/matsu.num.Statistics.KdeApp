@@ -70,7 +70,7 @@ final class Kde1dCliRunner {
         out.println("kde1d...");
 
         ResolverContainer property = Commands.getInterpreter().interpret(args)
-                .withDefaults(Resolvers.DEFAULT_PROPERTY);
+                .withDefaults(Resolvers.DEFAULT_RESOLVERS);
         Resolvers.validateCompleteness(property);
 
         Kde1dSourceReader loader =

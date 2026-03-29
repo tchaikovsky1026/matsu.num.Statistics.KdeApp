@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.24
+ * 2026.3.30
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -20,6 +20,9 @@ import matsu.num.statistics.kdeapp.comp.ResolverKey;
 import matsu.num.statistics.kdeapp.exception.ProgrammingBugException;
 import matsu.num.statistics.kdeapp.format.CommentPrefix;
 import matsu.num.statistics.kdeapp.format.Separator;
+import matsu.num.statistics.kdeapp.kde1d.comp.EchoPrinter;
+import matsu.num.statistics.kdeapp.kde1d.comp.LabelPrefixSetting;
+import matsu.num.statistics.kdeapp.kde1d.task.ResultWriter;
 
 /**
  * このパッケージで扱うプロパティ.
@@ -31,35 +34,56 @@ import matsu.num.statistics.kdeapp.format.Separator;
  */
 public final class Resolvers {
 
-    /*
-     * コンパイルエラーを回避するために, 暫定的に定数を用意する.
+    /**
+     * ディスプレイ出力のOn/Offに関する ResolverKey.
      */
-    public static final ResolverKey<Boolean> ECHO = ResolverKey.of("echo", Boolean.class);
+    public static final ResolverKey<EchoPrinter> ECHO =
+            ResolverKey.of("ECHO", EchoPrinter.class);
 
+    /**
+     * 入力ファイルパスの ResolverKey.
+     */
     public static final ResolverKey<Path> INPUT_FILE_PATH = ResolverKey.of(
-            "input-file", Path.class);
+            "INPUT_FILE", Path.class);
+    /**
+     * 入力ファイルフォーマットのコメント行Prefixの ResolverKey.
+     */
     public static final ResolverKey<CommentPrefix> INPUT_COMMENT_PREFIX = ResolverKey.of(
-            "input-comment-prefix", CommentPrefix.class);
+            "INPUT_COMMENT_PREFIX", CommentPrefix.class);
 
-    public static final ResolverKey<OutputFileConfig> OUTPUT_FILE = ResolverKey.of(
-            "output-file", OutputFileConfig.class);
+    /**
+     * ファイル出力に関する ResolverKey. <br>
+     * (出力を行う場合は) ファイルパスや上書き可能かどうかなどが紐づけられる.
+     */
+    public static final ResolverKey<ResultWriter> OUTPUT_FILE_WRITER = ResolverKey.of(
+            "OUTPUT_FILE_WRITER", ResultWriter.class);
+
+    /**
+     * 出力フォーマットの区切り文字の ResolverKey.
+     */
     public static final ResolverKey<Separator> OUTPUT_SEPARATOR = ResolverKey.of(
-            "output-separator", Separator.class);
-    public static final ResolverKey<OutputLabelPrefixConfig> OUTPUT_LABEL_PREFIX = ResolverKey.of(
-            "output-label-prefix", OutputLabelPrefixConfig.class);
+            "OUTPUT_SEPARATOR", Separator.class);
+    /**
+     * 出力フォーマットのラベル出力設定に関する ResolverKey.
+     */
+    public static final ResolverKey<LabelPrefixSetting> OUTPUT_LABEL_PREFIX_SETTING = ResolverKey.of(
+            "OUTPUT_LABEL_PREFIX_SETTING", LabelPrefixSetting.class);
 
-    public static final ResolverContainer DEFAULT_PROPERTY;
+    /**
+     * デフォルトの Resolver群.
+     */
+    public static final ResolverContainer DEFAULT_RESOLVERS;
 
     static {
         var builder = new ResolverContainer.Builder();
 
-        builder.put(ECHO, true);
+        builder.put(ECHO, EchoPrinter.ON);
         builder.put(INPUT_COMMENT_PREFIX, CommentPrefix.of("#"));
-        builder.put(OUTPUT_FILE, OutputFileConfig.none());
         builder.put(OUTPUT_SEPARATOR, Separator.from("\t"));
-        builder.put(OUTPUT_LABEL_PREFIX, OutputLabelPrefixConfig.nonLabel());
+        builder.put(OUTPUT_FILE_WRITER, ResultWriter.nullWriter());
+        builder.put(OUTPUT_LABEL_PREFIX_SETTING, LabelPrefixSetting.disable());
 
-        DEFAULT_PROPERTY = builder.build();
+        DEFAULT_RESOLVERS = builder.build();
     }
 
     private Resolvers() {

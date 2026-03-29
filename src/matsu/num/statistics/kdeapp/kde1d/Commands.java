@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.24
+ * 2026.3.29
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -25,6 +25,10 @@ import matsu.num.statistics.kdeapp.comp.ConsoleParameterInterpreter;
 import matsu.num.statistics.kdeapp.comp.NoArgumentCommand;
 import matsu.num.statistics.kdeapp.format.CommentPrefix;
 import matsu.num.statistics.kdeapp.format.Separator;
+import matsu.num.statistics.kdeapp.kde1d.comp.EchoPrinter;
+import matsu.num.statistics.kdeapp.kde1d.comp.LabelPrefixSetting;
+import matsu.num.statistics.kdeapp.kde1d.task.ResultFileWriter;
+import matsu.num.statistics.kdeapp.kde1d.task.ResultWriter;
 
 /**
  * kde1d で取り扱う, コマンドに関するルールなど.
@@ -40,13 +44,13 @@ public final class Commands {
      * 結果を標準出力しないことを表現するシングルトンインスタンス.
      */
     public static final NoArgumentCommand<?> ECHO_OFF =
-            NoArgumentCommand.of("ECHO_OFF", Resolvers.ECHO, () -> false, "--echo-off");
+            NoArgumentCommand.of("ECHO_OFF", Resolvers.ECHO, () -> EchoPrinter.OFF, "--echo-off");
 
     /**
      * 結果を標準出力することを表現するシングルトンインスタンス.
      */
     public static final NoArgumentCommand<?> ECHO_ON =
-            NoArgumentCommand.of("ECHO_ON", Resolvers.ECHO, () -> true, "--echo-on");
+            NoArgumentCommand.of("ECHO_ON", Resolvers.ECHO, () -> EchoPrinter.ON, "--echo-on");
 
     /**
      * 入力ファイルの指定を表現するシングルトンインスタンス.
@@ -67,27 +71,28 @@ public final class Commands {
     /**
      * 強制上書きモードによる出力ファイルの指定を表現するシングルトンインスタンス.
      */
-    public static final ArgumentRequiringCommand<OutputFileConfig> OUTPUT_FORCE_FILE_PATH =
+    public static final ArgumentRequiringCommand<ResultWriter> OUTPUT_FORCE =
             ArgumentRequiringCommand.of(
-                    "OUTPUT_FORCE_FILE_PATH", Resolvers.OUTPUT_FILE,
-                    s -> OutputFileConfig.outputForce(Path.of(s)),
+                    "OUTPUT_FORCE_FILE_PATH", Resolvers.OUTPUT_FILE_WRITER,
+                    s -> ResultFileWriter.forceWriter(Path.of(s)),
                     "--output-force", "--out-force");
 
     /**
      * 上書き禁止モードである出力ファイルの指定を表現するシングルトンインスタンス.
      */
-    public static final ArgumentRequiringCommand<OutputFileConfig> OUTPUT_FILE_PATH =
+    public static final ArgumentRequiringCommand<ResultWriter> OUTPUT =
             ArgumentRequiringCommand.of(
-                    "OUTPUT_FILE_PATH", Resolvers.OUTPUT_FILE,
-                    s -> OutputFileConfig.output(Path.of(s)),
+                    "OUTPUT_FILE_PATH", Resolvers.OUTPUT_FILE_WRITER,
+                    s -> ResultFileWriter.regularWriter(Path.of(s)),
                     "--output", "--out");
 
     /**
      * ファイル出力しないことを表現するシングルトンインスタンス.
      */
-    public static final NoArgumentCommand<OutputFileConfig> OUTPUT_NONE =
+    public static final NoArgumentCommand<ResultWriter> OUTPUT_NONE =
             NoArgumentCommand.of(
-                    "OUTPUT_NONE", Resolvers.OUTPUT_FILE, () -> OutputFileConfig.none(),
+                    "OUTPUT_NONE", Resolvers.OUTPUT_FILE_WRITER,
+                    () -> ResultWriter.nullWriter(),
                     "--output-none", "--out-none");
 
     /**
@@ -101,19 +106,19 @@ public final class Commands {
     /**
      * 出力のラベルに付与する prefix の指定を表現するシングルトンインスタンス.
      */
-    public static final ArgumentRequiringCommand<OutputLabelPrefixConfig> OUTPUT_LABEL_PREFIX =
+    public static final ArgumentRequiringCommand<LabelPrefixSetting> OUTPUT_LABEL_PREFIX =
             ArgumentRequiringCommand.of(
-                    "OUTPUT_LABEL_PREFIX", Resolvers.OUTPUT_LABEL_PREFIX,
-                    OutputLabelPrefixConfig::withLabel,
+                    "OUTPUT_LABEL_PREFIX", Resolvers.OUTPUT_LABEL_PREFIX_SETTING,
+                    LabelPrefixSetting::enable,
                     "--output-label-prefix", "--out-label-prefix");
 
     /**
      * ラベルを出力しないことを表現するシングルトンインスタンス.
      */
-    public static final NoArgumentCommand<OutputLabelPrefixConfig> OUTPUT_NO_LABEL =
+    public static final NoArgumentCommand<LabelPrefixSetting> OUTPUT_NO_LABEL =
             NoArgumentCommand.of(
-                    "OUTPUT_NO_LABEL", Resolvers.OUTPUT_LABEL_PREFIX,
-                    () -> OutputLabelPrefixConfig.nonLabel(),
+                    "OUTPUT_NO_LABEL", Resolvers.OUTPUT_LABEL_PREFIX_SETTING,
+                    () -> LabelPrefixSetting.disable(),
                     "--output-no-label", "--out-no-label");
 
     /**
@@ -124,7 +129,7 @@ public final class Commands {
     static {
         COMMAND_ASSIGNMENT_RULE = composite(
                 singleRequiredRule(INPUT_FILE_PATH),
-                singleOptionalRule(OUTPUT_FILE_PATH, OUTPUT_FORCE_FILE_PATH, OUTPUT_NONE),
+                singleOptionalRule(OUTPUT, OUTPUT_FORCE, OUTPUT_NONE),
                 singleOptionalRule(OUTPUT_LABEL_PREFIX, OUTPUT_NO_LABEL),
                 singleOptionalRule(ECHO_OFF, ECHO_ON));
     }
