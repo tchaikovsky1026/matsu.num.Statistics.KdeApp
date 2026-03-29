@@ -21,6 +21,7 @@ import matsu.num.statistics.kdeapp.exception.ProgrammingBugException;
 import matsu.num.statistics.kdeapp.format.CommentPrefix;
 import matsu.num.statistics.kdeapp.format.Separator;
 import matsu.num.statistics.kdeapp.kde1d.comp.EchoPrinter;
+import matsu.num.statistics.kdeapp.kde1d.task.ResultWriter;
 
 /**
  * このパッケージで扱うプロパティ.
@@ -43,12 +44,12 @@ public final class Resolvers {
     public static final ResolverKey<CommentPrefix> INPUT_COMMENT_PREFIX = ResolverKey.of(
             "INPUT_COMMENT_PREFIX", CommentPrefix.class);
 
-    public static final ResolverKey<OutputFileConfig> OUTPUT_FILE = ResolverKey.of(
-            "output-file", OutputFileConfig.class);
     public static final ResolverKey<Separator> OUTPUT_SEPARATOR = ResolverKey.of(
             "output-separator", Separator.class);
     public static final ResolverKey<OutputLabelPrefixConfig> OUTPUT_LABEL_PREFIX = ResolverKey.of(
             "output-label-prefix", OutputLabelPrefixConfig.class);
+    public static final ResolverKey<ResultWriter> OUTPUT_FILE_WRITER = ResolverKey.of(
+            "OUTPUT_FILE_WRITER", ResultWriter.class);
 
     public static final ResolverContainer DEFAULT_PROPERTY;
 
@@ -57,9 +58,9 @@ public final class Resolvers {
 
         builder.put(ECHO, EchoPrinter.ON);
         builder.put(INPUT_COMMENT_PREFIX, CommentPrefix.of("#"));
-        builder.put(OUTPUT_FILE, OutputFileConfig.none());
         builder.put(OUTPUT_SEPARATOR, Separator.from("\t"));
         builder.put(OUTPUT_LABEL_PREFIX, OutputLabelPrefixConfig.nonLabel());
+        builder.put(OUTPUT_FILE_WRITER, ResultWriter.nullWriter());
 
         DEFAULT_PROPERTY = builder.build();
     }

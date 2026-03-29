@@ -6,11 +6,14 @@
  */
 
 /*
- * 2026.3.24
+ * 2026.3.29
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
+import java.util.NoSuchElementException;
+
 import matsu.num.statistics.kdeapp.comp.ResolverContainer;
+import matsu.num.statistics.kdeapp.exception.ProgrammingBugException;
 import matsu.num.statistics.kdeapp.kde2d.task.ResultFileWriter;
 import matsu.num.statistics.kdeapp.kde2d.task.ResultWriter;
 
@@ -31,7 +34,10 @@ final class FileWriterConstructor {
      * @throws NullPointerException {@inheritDoc }
      */
     ResultWriter apply(ResolverContainer property) {
-        OutputFileConfig outputFileConfig = property.get(Resolvers.OUTPUT_FILE);
-        return outputFileConfig.get();
+        try {
+            return property.get(Resolvers.OUTPUT_FILE_WRITER);
+        } catch (NoSuchElementException e) {
+            throw new ProgrammingBugException(e.getMessage());
+        }
     }
 }

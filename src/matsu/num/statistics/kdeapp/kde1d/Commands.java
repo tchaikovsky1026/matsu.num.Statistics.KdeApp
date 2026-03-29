@@ -26,6 +26,8 @@ import matsu.num.statistics.kdeapp.comp.NoArgumentCommand;
 import matsu.num.statistics.kdeapp.format.CommentPrefix;
 import matsu.num.statistics.kdeapp.format.Separator;
 import matsu.num.statistics.kdeapp.kde1d.comp.EchoPrinter;
+import matsu.num.statistics.kdeapp.kde1d.task.ResultFileWriter;
+import matsu.num.statistics.kdeapp.kde1d.task.ResultWriter;
 
 /**
  * kde1d で取り扱う, コマンドに関するルールなど.
@@ -68,27 +70,28 @@ public final class Commands {
     /**
      * 強制上書きモードによる出力ファイルの指定を表現するシングルトンインスタンス.
      */
-    public static final ArgumentRequiringCommand<OutputFileConfig> OUTPUT_FORCE_FILE_PATH =
+    public static final ArgumentRequiringCommand<ResultWriter> OUTPUT_FORCE_FILE_PATH =
             ArgumentRequiringCommand.of(
-                    "OUTPUT_FORCE_FILE_PATH", Resolvers.OUTPUT_FILE,
-                    s -> OutputFileConfig.outputForce(Path.of(s)),
+                    "OUTPUT_FORCE_FILE_PATH", Resolvers.OUTPUT_FILE_WRITER,
+                    s -> ResultFileWriter.forceWriter(Path.of(s)),
                     "--output-force", "--out-force");
 
     /**
      * 上書き禁止モードである出力ファイルの指定を表現するシングルトンインスタンス.
      */
-    public static final ArgumentRequiringCommand<OutputFileConfig> OUTPUT_FILE_PATH =
+    public static final ArgumentRequiringCommand<ResultWriter> OUTPUT_FILE_PATH =
             ArgumentRequiringCommand.of(
-                    "OUTPUT_FILE_PATH", Resolvers.OUTPUT_FILE,
-                    s -> OutputFileConfig.output(Path.of(s)),
+                    "OUTPUT_FILE_PATH", Resolvers.OUTPUT_FILE_WRITER,
+                    s -> ResultFileWriter.regularWriter(Path.of(s)),
                     "--output", "--out");
 
     /**
      * ファイル出力しないことを表現するシングルトンインスタンス.
      */
-    public static final NoArgumentCommand<OutputFileConfig> OUTPUT_NONE =
+    public static final NoArgumentCommand<ResultWriter> OUTPUT_NONE =
             NoArgumentCommand.of(
-                    "OUTPUT_NONE", Resolvers.OUTPUT_FILE, () -> OutputFileConfig.none(),
+                    "OUTPUT_NONE", Resolvers.OUTPUT_FILE_WRITER,
+                    () -> ResultWriter.nullWriter(),
                     "--output-none", "--out-none");
 
     /**
