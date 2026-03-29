@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.24
+ * 2026.3.29
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
@@ -20,6 +20,8 @@ import matsu.num.statistics.kdeapp.comp.ResolverKey;
 import matsu.num.statistics.kdeapp.exception.ProgrammingBugException;
 import matsu.num.statistics.kdeapp.format.CommentPrefix;
 import matsu.num.statistics.kdeapp.format.Separator;
+import matsu.num.statistics.kdeapp.kde2d.comp.BuilderType;
+import matsu.num.statistics.kdeapp.kde2d.comp.LabelPrefixSetting;
 
 /**
  * このパッケージで扱うプロパティ.
@@ -46,12 +48,12 @@ public final class Resolvers {
 
     public static final ResolverKey<OutputFileConfig> OUTPUT_FILE = ResolverKey.of(
             "output-file", OutputFileConfig.class);
+    public static final ResolverKey<BuilderType> OUTPUT_FORMATTER_TYPE = ResolverKey.of(
+            "OUTPUT_FORMATTER_TYPE", BuilderType.class);
+    public static final ResolverKey<LabelPrefixSetting> OUTPUT_LABEL_PREFIX_SETTING = ResolverKey.of(
+            "OUTPUT_LABEL_PREFIX_SETTING", LabelPrefixSetting.class);
     public static final ResolverKey<Separator> OUTPUT_SEPARATOR = ResolverKey.of(
-            "output-separator", Separator.class);
-    public static final ResolverKey<OutputLabelPrefixConfig> OUTPUT_LABEL_PREFIX = ResolverKey.of(
-            "output-label-prefix", OutputLabelPrefixConfig.class);
-    public static final ResolverKey<FormatterBuilderSupplier> OUTPUT_FORMAT_TYPE = ResolverKey.of(
-            "output-format", FormatterBuilderSupplier.class);
+            "OUTPUT_SEPARATOR", Separator.class);
 
     public static final ResolverContainer DEFAULT_PROPERTY;
 
@@ -63,9 +65,9 @@ public final class Resolvers {
         builder.put(INPUT_SEPARATOR, Separator.from("\t"));
 
         builder.put(OUTPUT_FILE, OutputFileConfig.none());
+        builder.put(OUTPUT_FORMATTER_TYPE, BuilderType.XYZ);
+        builder.put(OUTPUT_LABEL_PREFIX_SETTING, LabelPrefixSetting.disable());
         builder.put(OUTPUT_SEPARATOR, Separator.from("\t"));
-        builder.put(OUTPUT_LABEL_PREFIX, OutputLabelPrefixConfig.nonLabel());
-        builder.put(OUTPUT_FORMAT_TYPE, FormatterBuilderSupplier.XYZ);
 
         DEFAULT_PROPERTY = builder.build();
     }
