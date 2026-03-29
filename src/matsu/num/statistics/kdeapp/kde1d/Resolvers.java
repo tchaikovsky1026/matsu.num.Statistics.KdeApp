@@ -39,9 +39,9 @@ public final class Resolvers {
             ResolverKey.of("ECHO", EchoPrinter.class);
 
     public static final ResolverKey<Path> INPUT_FILE_PATH = ResolverKey.of(
-            "input-file", Path.class);
+            "INPUT_FILE", Path.class);
     public static final ResolverKey<CommentPrefix> INPUT_COMMENT_PREFIX = ResolverKey.of(
-            "input-comment-prefix", CommentPrefix.class);
+            "INPUT_COMMENT_PREFIX", CommentPrefix.class);
 
     public static final ResolverKey<OutputFileConfig> OUTPUT_FILE = ResolverKey.of(
             "output-file", OutputFileConfig.class);
