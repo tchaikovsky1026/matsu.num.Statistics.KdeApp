@@ -85,7 +85,7 @@ public final class Commands {
     /**
      * 強制上書きモードによる出力ファイルの指定を表現するシングルトンインスタンス.
      */
-    public static final ArgumentRequiringCommand<ResultWriter> OUTPUT_FORCE_FILE_PATH =
+    public static final ArgumentRequiringCommand<ResultWriter> OUTPUT_FORCE =
             ArgumentRequiringCommand.of(
                     "OUTPUT_FORCE_FILE_PATH", Resolvers.OUTPUT_FILE_WRITER,
                     s -> ResultFileWriter.forceWriter(Path.of(s)),
@@ -94,7 +94,7 @@ public final class Commands {
     /**
      * 上書き禁止モードである出力ファイルの指定を表現するシングルトンインスタンス.
      */
-    public static final ArgumentRequiringCommand<ResultWriter> OUTPUT_FILE_PATH =
+    public static final ArgumentRequiringCommand<ResultWriter> OUTPUT =
             ArgumentRequiringCommand.of(
                     "OUTPUT_FILE_PATH", Resolvers.OUTPUT_FILE_WRITER,
                     s -> ResultFileWriter.regularWriter(Path.of(s)),
@@ -151,7 +151,7 @@ public final class Commands {
     static {
         COMMAND_ASSIGNMENT_RULE = composite(
                 singleRequiredRule(INPUT_FILE_PATH),
-                singleOptionalRule(OUTPUT_FILE_PATH, OUTPUT_FORCE_FILE_PATH, OUTPUT_NONE),
+                singleOptionalRule(OUTPUT, OUTPUT_FORCE, OUTPUT_NONE),
                 singleOptionalRule(OUTPUT_LABEL_PREFIX, OUTPUT_NO_LABEL),
                 singleOptionalRule(ECHO_OFF, ECHO_ON));
     }

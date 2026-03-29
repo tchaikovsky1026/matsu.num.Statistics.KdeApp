@@ -99,14 +99,14 @@ final class CommandDescriptions {
 
         OUTPUT_FILE_PATH =
                 CommandDescription.of(
-                        Commands.OUTPUT_FILE_PATH, "FILE",
+                        Commands.OUTPUT, "FILE",
                         "output result to file (ERROR if it exists)",
                         catOutput);
         list.add(OUTPUT_FILE_PATH);
 
         OUTPUT_FORCE_FILE_PATH =
                 CommandDescription.of(
-                        Commands.OUTPUT_FORCE_FILE_PATH, "FILE",
+                        Commands.OUTPUT_FORCE, "FILE",
                         "overwrite the output file if it exists",
                         catOutput);
         list.add(OUTPUT_FORCE_FILE_PATH);
