@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.24
+ * 2026.3.30
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -69,18 +69,18 @@ final class Kde1dCliRunner {
 
         out.println("kde1d...");
 
-        ResolverContainer property = Commands.getInterpreter().interpret(args)
+        ResolverContainer container = Commands.getInterpreter().interpret(args)
                 .withDefaults(Resolvers.DEFAULT_RESOLVERS);
-        Resolvers.validateCompleteness(property);
+        Resolvers.validateCompleteness(container);
 
         Kde1dSourceReader loader =
-                new SourceReaderConstructor().apply(property);
+                new SourceReaderConstructor().apply(container);
         WritingFormatter writingFormatter =
-                new WritingFormatterConstructor().apply(property);
+                new WritingFormatterConstructor().apply(container);
         ResultWriter fileWriter =
-                new FileWriterConstructor().apply(property);
+                new FileWriterConstructor().apply(container);
         ResultWriter printer =
-                new PrinterConstructor(out, err).apply(property);
+                new PrinterConstructor(out, err).apply(container);
 
         double[] source = loader.read();
         WritableKde1dResult result = new GaussianStandardKde1dCalculator().calc(source);

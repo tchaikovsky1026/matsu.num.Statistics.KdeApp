@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.24
+ * 2026.3.30
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
@@ -69,18 +69,18 @@ final class Kde2dCliRunner {
 
         out.println("kde2d...");
 
-        ResolverContainer property = Commands.getInterpreter().interpret(args)
+        ResolverContainer container = Commands.getInterpreter().interpret(args)
                 .withDefaults(Resolvers.DEFAULT_RESOLVERS);
-        Resolvers.validateCompleteness(property);
+        Resolvers.validateCompleteness(container);
 
         Kde2dSourceReader loader =
-                new SourceReaderConstructor().apply(property);
+                new SourceReaderConstructor().apply(container);
         WritingFormatter writingFormatter =
-                new FormatterConstructor().apply(property);
+                new FormatterConstructor().apply(container);
         ResultWriter fileWriter =
-                new FileWriterConstructor().apply(property);
+                new FileWriterConstructor().apply(container);
         ResultWriter printer =
-                new PrinterConstructor(out, err).apply(property);
+                new PrinterConstructor(out, err).apply(container);
 
         double[][] source = loader.read();
         WritableKde2dResult result = new GaussianStandardKde2dCalculator().calc(source);
