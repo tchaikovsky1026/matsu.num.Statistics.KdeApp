@@ -68,9 +68,7 @@ public final class Resolvers {
     public static final ResolverKey<StandardPropertyLoader> CONFIG = ResolverKey.of(
             "CONFIG", StandardPropertyLoader.class);
 
-    /**
-     * デフォルトの Resolver群.
-     */
+    /** デフォルトの Resolver群. */
     public static final ResolverContainer DEFAULT_RESOLVERS;
 
     static {

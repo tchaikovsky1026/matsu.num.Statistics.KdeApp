@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.4.12
+ * 2026.4.13
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
@@ -77,9 +77,7 @@ public final class Resolvers {
     public static final ResolverKey<StandardPropertyLoader> CONFIG = ResolverKey.of(
             "CONFIG", StandardPropertyLoader.class);
 
-    /**
-     * デフォルトの Resolver群.
-     */
+    /** デフォルトの Resolver群. */
     public static final ResolverContainer DEFAULT_RESOLVERS;
 
     static {

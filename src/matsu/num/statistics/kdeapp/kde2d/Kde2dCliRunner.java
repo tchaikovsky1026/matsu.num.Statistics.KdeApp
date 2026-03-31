@@ -6,16 +6,18 @@
  */
 
 /*
- * 2026.4.11
+ * 2026.4.13
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
 import java.io.PrintStream;
+import java.util.NoSuchElementException;
 
 import matsu.num.statistics.kdeapp.comp.ResolverContainer;
 import matsu.num.statistics.kdeapp.comp.StandardPropertyToResolvers;
 import matsu.num.statistics.kdeapp.exception.ApplicationException;
 import matsu.num.statistics.kdeapp.exception.InputException;
+import matsu.num.statistics.kdeapp.exception.ProgrammingBugException;
 import matsu.num.statistics.kdeapp.kde2d.task.GaussianStandardKde2dCalculator;
 import matsu.num.statistics.kdeapp.kde2d.task.Kde2dSourceReader;
 import matsu.num.statistics.kdeapp.kde2d.task.ResultWriter;
@@ -90,20 +92,23 @@ final class Kde2dCliRunner {
         return 0;
     }
 
+    /** Resolverを構築する. */
     private ResolverContainer buildContainer(String[] args) {
 
         ResolverContainer commands = Commands.getInterpreter().interpret(args);
 
-        ResolverContainer commandsAndDefault = commands.withDefaults(Resolvers.DEFAULT_RESOLVERS);
-
         ResolverContainer config;
         try {
-            java.util.Properties p = commandsAndDefault.get(Resolvers.CONFIG).compute();
+            java.util.Properties p = commands.withDefaults(Resolvers.DEFAULT_RESOLVERS)
+                    .get(Resolvers.CONFIG) // throws NoSuchElementException: スローされないはず
+                    .compute(); // throws IllegalStateException
             config = new StandardPropertyToResolvers(
                     PropertyConstants.getPropertyKeys(), PropertyConstants.RESOLVER_DESIGNS)
-                            .parse(p);
+                            .parse(p); // throws IllegalArgumentException
         } catch (IllegalStateException | IllegalArgumentException e) {
             throw new InputException("config: " + e.getMessage());
+        } catch (NoSuchElementException e) {
+            throw new ProgrammingBugException(e.getMessage());
         }
 
         ResolverContainer container =
