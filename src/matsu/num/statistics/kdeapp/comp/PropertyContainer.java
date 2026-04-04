@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.31
+ * 2026.4.4
  */
 package matsu.num.statistics.kdeapp.comp;
 
@@ -25,7 +25,7 @@ import java.util.Set;
  */
 public final class PropertyContainer {
 
-    private final Map<PropertyKey, String> map;
+    private final Map<PropertyKey, String> properties;
 
     /**
      * 唯一のコンストラクタ.
@@ -34,28 +34,47 @@ public final class PropertyContainer {
      * 引数はそのまま代入されるので, 世に出し元で参照漏洩, 安全なMapに詰め替えなど, 適切な処理をすること.
      * </p>
      * 
-     * @param map マップ
+     * @param properties マップ
      */
-    private PropertyContainer(Map<PropertyKey, String> map) {
-        this.map = map;
+    private PropertyContainer(Map<PropertyKey, String> properties) {
+        this.properties = properties;
     }
 
     /**
      * 与えられた「設計図」を使って, プロパティを Resolver に変換する.
      * 
      * <p>
-     * 自身が持つプロパティ群と設計図が完全にマッチしない場合,
-     * 例外をスローする.
+     * 自身が持つプロパティ群と設計図が「マッチ」しない場合,
+     * 例外をスローする. <br>
+     * 「マッチ」の詳細については, {@link ResolverDesign} の説明を参照のこと.
      * </p>
      * 
-     * @param resolverDesign 設計図
+     * @param resolverDesigns 設計図
      * @return ResolverContainer
      * @throws IllegalArgumentException 自身と設計図がマッチしない場合
      * @throws NullPointerException 引数がnullの場合
      */
-    public ResolverContainer toResolvers(Object resolverDesign) {
-        // メソッドの箱のみ用意している.
-        return null;
+    public ResolverContainer toResolvers(Set<ResolverDesign<?>> resolverDesigns) {
+        var builder = new ResolverContainer.Builder();
+        for (ResolverDesign<?> design : resolverDesigns) {
+            computeResolver(builder, design);
+        }
+        return builder.build();
+    }
+
+    /**
+     * 設計図から Resolver の compute を試み, builder に登録する. <br>
+     * compute が発火しなければ何もしない.
+     * 
+     * @param <T> Resolver の型
+     * @param builder {@link ResolverContainer} のビルダ
+     * @param resolverDesign 設計図
+     * @throws IllegalArgumentException 発火されたが失敗した場合
+     */
+    private <T> void computeResolver(
+            ResolverContainer.Builder builder, ResolverDesign<T> resolverDesign) {
+        resolverDesign.compute(properties).ifPresent(
+                resolver -> builder.put(resolverDesign.resolverKey(), resolver));
     }
 
     /**
@@ -66,7 +85,7 @@ public final class PropertyContainer {
 
         private final Map<String, PropertyKey> preparedKeysMap;
 
-        private Map<PropertyKey, String> map;
+        private Map<PropertyKey, String> properties;
 
         /**
          * 与えられたプロパティキーのセットを候補に持つ, コンテナのビルダを作成する.
@@ -82,7 +101,7 @@ public final class PropertyContainer {
                 throw new IllegalArgumentException("key duplicates");
             }
 
-            map = new HashMap<>();
+            properties = new HashMap<>();
         }
 
         /**
@@ -94,7 +113,7 @@ public final class PropertyContainer {
          */
         private Builder(Builder src) {
             preparedKeysMap = src.preparedKeysMap;
-            map = new HashMap<>(src.map);
+            properties = new HashMap<>(src.properties);
         }
 
         /**
@@ -113,7 +132,7 @@ public final class PropertyContainer {
             if (Objects.isNull(key)) {
                 throw new IllegalArgumentException("unknown name: " + propertyName);
             }
-            return map.put(key, Objects.requireNonNull(value));
+            return properties.put(key, Objects.requireNonNull(value));
         }
 
         /**
@@ -135,16 +154,16 @@ public final class PropertyContainer {
          */
         public PropertyContainer build() {
             validateIfCanBuild();
-            Map<PropertyKey, String> buildMap = map;
-            map = null;
-            return new PropertyContainer(buildMap);
+            Map<PropertyKey, String> buildMap = properties;
+            properties = null;
+            return new PropertyContainer(Map.copyOf(buildMap));
         }
 
         /**
          * このビルダの状態を検証する.
          */
         private void validateIfCanBuild() {
-            if (Objects.isNull(map)) {
+            if (Objects.isNull(properties)) {
                 throw new IllegalStateException("already built");
             }
         }

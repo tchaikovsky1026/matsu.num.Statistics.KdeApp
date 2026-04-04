@@ -5,13 +5,14 @@
  * http://opensource.org/licenses/mit-license.php
  */
 
-/*
- * 2026.3.31
- */
 package matsu.num.statistics.kdeapp.comp;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.*;
 
 import java.util.Properties;
 import java.util.Set;
+import java.util.function.BinaryOperator;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -103,7 +104,70 @@ final class PropertyContainerTest {
         }
     }
 
+    public static class Resolver生成に関するテスト {
+
+        private final PropertyKey pKey1 = newProp("key1");
+        private final PropertyKey pKey2 = newProp("key2");
+        private final PropertyKey pKey3 = newProp("key3");
+        private final ResolverKey<Object> rKey = newRes();
+
+        private final BinaryOperator<String> sf =
+                (s1, s2) -> "[" + s1 + ", " + s2 + "]";
+        private final ResolverDesign<Object> design =
+                ResolverDesign.of(
+                        rKey, Set.of(pKey1, pKey2),
+                        map -> {
+                            String p1 = map.get(pKey1);
+                            String p2 = map.get(pKey2);
+                            if (p1 == null || p2 == null) {
+                                throw new IllegalArgumentException();
+                            }
+                            return sf.apply(p1, p2);
+                        });
+
+        private PropertyContainer.Builder builder;
+
+        @Before
+        public void before_プロパティコンテナビルダの用意() {
+            builder = new Builder(Set.of(pKey1, pKey2, pKey3));
+        }
+
+        @Test
+        public void test_発火しないパターン() {
+            builder.put(pKey3.name(), "p3");
+            var container = builder.build();
+            container.toResolvers(Set.of(design));
+        }
+
+        @Test(expected = IllegalArgumentException.class)
+        public void test_発火するが失敗パターン() {
+            builder.put(pKey1.name(), "p1");
+            builder.put(pKey3.name(), "p3");
+            var container = builder.build();
+            container.toResolvers(Set.of(design));
+        }
+
+        @Test
+        public void test_発火して成功パターン() {
+            String s1 = "p1";
+            String s2 = "p2";
+            builder.put(pKey1.name(), s1);
+            builder.put(pKey2.name(), s2);
+            var container = builder.build();
+
+            String result = container.toResolvers(Set.of(design))
+                    .get(rKey)
+                    .toString();
+            String expected = sf.apply(s1, s2);
+            assertThat(result, is(expected));
+        }
+    }
+
     static PropertyKey newProp(String name) {
         return PropertyKey.of(name);
+    }
+
+    static ResolverKey<Object> newRes() {
+        return ResolverKey.of("resolver", Object.class);
     }
 }
