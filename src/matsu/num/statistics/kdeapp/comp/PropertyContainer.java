@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.4.4
+ * 2026.4.7
  */
 package matsu.num.statistics.kdeapp.comp;
 
@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  * プロパティのコンテナ. <br>
@@ -63,6 +64,77 @@ public final class PropertyContainer {
     }
 
     /**
+     * このコンテナにキーが登録されているかを判定する. <br>
+     * {@link ResolverDesign} から呼ばれることを想定する.
+     * 
+     * @param key プロパティキー
+     * @return 登録されている場合はtrue
+     * @throws NullPointerException 引数がnullの場合
+     */
+    boolean contains(PropertyKey key) {
+        return properties.containsKey(Objects.requireNonNull(key));
+    }
+
+    /**
+     * 与えられたキーに対する値を取得する. <br>
+     * このメソッドは, {@link ResolverDesign} の computer の実装に用いることを想定している.
+     * 
+     * <p>
+     * キーが登録されていない場合は例外 {@link IllegalArgumentException} をスローする. <br>
+     * 例外メッセージは次である. <br>
+     * {@literal "require key: <key>"}
+     * </p>
+     * 
+     * @param key キー
+     * @return 値
+     * @throws NullPointerException 引数がnullの場合
+     */
+    public String getOrThrow(PropertyKey key) {
+        String value = properties.get(Objects.requireNonNull(key));
+        if (Objects.isNull(value)) {
+            throw new IllegalArgumentException("require key: " + key);
+        }
+        return value;
+    }
+
+    /**
+     * 与えられたキーに対する値を加工して取得する. <br>
+     * このメソッドは, {@link ResolverDesign} の computer の実装に用いることを想定している.
+     * 
+     * <p>
+     * キーが登録されていない場合は {@link #getOrThrow(PropertyKey)} と同様の例外をスローする. <br>
+     * キーが登録されているが, 加工に失敗した場合,
+     * 例外 {@link IllegalArgumentException} をスローする. <br>
+     * 例外メッセージは次である. <br>
+     * {@literal "Unexpected value: <key>=<value>"}
+     * </p>
+     * 
+     * <p>
+     * 引数として加工方法を {@link Function} で与える. <br>
+     * この {@link Function} は, 加工できない場合は
+     * {@link IllegalArgumentException}
+     * をスローするようにすること.
+     * </p>
+     * 
+     * @param <R> 加工後の型
+     * @param key キー
+     * @param converter 加工方法, 加工できない場合は
+     *            {@link IllegalArgumentException}
+     *            をスローする
+     * @return 加工された値
+     * @throws NullPointerException 引数がnullの場合
+     */
+    public <R> R convertOrThrow(PropertyKey key, Function<? super String, ? extends R> converter) {
+        String value = getOrThrow(key);
+        try {
+            return converter.apply(value);
+        } catch (IllegalArgumentException iae) {
+            throw new IllegalArgumentException(
+                    "Unexpected value: " + key + "=" + value);
+        }
+    }
+
+    /**
      * 設計図から Resolver の compute を試み, builder に登録する. <br>
      * compute が発火しなければ何もしない.
      * 
@@ -73,7 +145,7 @@ public final class PropertyContainer {
      */
     private <T> void computeResolver(
             ResolverContainer.Builder builder, ResolverDesign<T> resolverDesign) {
-        resolverDesign.compute(properties).ifPresent(
+        resolverDesign.compute(this).ifPresent(
                 resolver -> builder.put(resolverDesign.resolverKey(), resolver));
     }
 
