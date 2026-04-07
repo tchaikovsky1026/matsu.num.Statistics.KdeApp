@@ -117,11 +117,8 @@ final class PropertyContainerTest {
                 ResolverDesign.of(
                         rKey, Set.of(pKey1, pKey2),
                         map -> {
-                            String p1 = map.get(pKey1);
-                            String p2 = map.get(pKey2);
-                            if (p1 == null || p2 == null) {
-                                throw new IllegalArgumentException();
-                            }
+                            String p1 = map.getOrThrow(pKey1);
+                            String p2 = map.getOrThrow(pKey2);
                             return sf.apply(p1, p2);
                         });
 

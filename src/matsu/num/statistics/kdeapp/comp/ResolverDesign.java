@@ -10,7 +10,6 @@
  */
 package matsu.num.statistics.kdeapp.comp;
 
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -26,7 +25,7 @@ public final class ResolverDesign<T> {
 
     private final ResolverKey<T> resolverKey;
     private final Set<PropertyKey> triggers;
-    private final Function<? super Map<PropertyKey, String>, ? extends T> computer;
+    private final Function<? super PropertyContainer, ? extends T> computer;
 
     /**
      * @param resolverKey ResolverKey
@@ -35,7 +34,7 @@ public final class ResolverDesign<T> {
      * @throws NullPointerException 引数にnullを含む場合
      */
     private ResolverDesign(ResolverKey<T> resolverKey, Set<PropertyKey> triggers,
-            Function<? super Map<PropertyKey, String>, ? extends T> computer) {
+            Function<? super PropertyContainer, ? extends T> computer) {
         this.resolverKey = resolverKey;
         this.triggers = triggers;
         this.computer = computer;
@@ -66,9 +65,9 @@ public final class ResolverDesign<T> {
      * @throws IllegalArgumentException 構築に失敗した場合
      * @throws NullPointerException 引数にnullを含む場合
      */
-    Optional<T> compute(Map<PropertyKey, String> properties) {
+    Optional<T> compute(PropertyContainer properties) {
         if (triggers.stream().anyMatch(
-                key -> properties.keySet().contains(key))) {
+                key -> properties.contains(key))) {
             return Optional.of(
                     computer.apply(properties));
         } else {
@@ -106,7 +105,7 @@ public final class ResolverDesign<T> {
      */
     public static <T> ResolverDesign<T> of(
             ResolverKey<T> resolverKey, Set<PropertyKey> triggers,
-            Function<? super Map<PropertyKey, String>, ? extends T> computer) {
+            Function<? super PropertyContainer, ? extends T> computer) {
         return new ResolverDesign<>(
                 Objects.requireNonNull(resolverKey),
                 Set.copyOf(triggers),
