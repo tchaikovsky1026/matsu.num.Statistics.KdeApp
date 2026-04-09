@@ -166,26 +166,12 @@ public final class PropertyContainer {
          * @throws NullPointerException 引数にnullが含まれる場合
          */
         public Builder(Set<PropertyKey> preparedKeys) {
-            try {
-                this.preparedKeysMap = preparedKeys.stream()
-                        .collect(toMap(k -> k.name(), k -> k));
-            } catch (IllegalStateException ise) {
-                throw new IllegalArgumentException("key duplicates");
-            }
+            // PropertyKey は name に基づく equality を持つので, この toMap は成功する
+            // Set.copyOfにより安全性を強化
+            this.preparedKeysMap = Set.copyOf(preparedKeys).stream()
+                    .collect(toMap(k -> k.name(), k -> k));
 
             properties = new HashMap<>();
-        }
-
-        /**
-         * 非公開のコピーコンストラクタ.
-         * 
-         * <p>
-         * src はビルド前でなければならない (呼び出し元で確認すること).
-         * </p>
-         */
-        private Builder(Builder src) {
-            preparedKeysMap = src.preparedKeysMap;
-            properties = new HashMap<>(src.properties);
         }
 
         /**
@@ -205,17 +191,6 @@ public final class PropertyContainer {
                 throw new IllegalArgumentException("unknown name: " + propertyName);
             }
             return properties.put(key, Objects.requireNonNull(value));
-        }
-
-        /**
-         * このビルダのコピーを返す.
-         * 
-         * @return コピー
-         * @throws IllegalStateException 既にビルドされている場合
-         */
-        Builder copy() {
-            validateIfCanBuild();
-            return new Builder(this);
         }
 
         /**
@@ -242,11 +217,12 @@ public final class PropertyContainer {
     }
 
     /**
-     * 標準APIのプロパティ機能からプロパティコンテナの生成を行うクラス.
+     * 標準APIのプロパティ機能からプロパティコンテナの生成を行うクラス. <br>
+     * このクラスはイミュータブルでスレッドセーフである.
      */
     public static final class StdApiReader {
 
-        private final Builder baseBuilder;
+        private final Set<PropertyKey> preparedKeys;
 
         /**
          * 与えられたプロパティキーのセットを候補に持つ, 標準APIコンテナのビルダを作成する.
@@ -255,7 +231,7 @@ public final class PropertyContainer {
          * @throws NullPointerException 引数にnullが含まれる場合
          */
         public StdApiReader(Set<PropertyKey> preparedKeys) {
-            this.baseBuilder = new Builder(preparedKeys);
+            this.preparedKeys = Set.copyOf(preparedKeys);
         }
 
         /**
@@ -265,14 +241,14 @@ public final class PropertyContainer {
          * @return プロパティコンテナ
          */
         public PropertyContainer convert(java.util.Properties properties) {
-            Builder copyBuilder = baseBuilder.copy();
+            Builder builder = new Builder(preparedKeys);
             for (String propertyName : properties.stringPropertyNames()) {
                 if (Objects.nonNull(
-                        copyBuilder.put(propertyName, properties.getProperty(propertyName)))) {
+                        builder.put(propertyName, properties.getProperty(propertyName)))) {
                     throw new IllegalArgumentException("duplicated key: " + propertyName);
                 }
             }
-            return copyBuilder.build();
+            return builder.build();
         }
     }
 }
