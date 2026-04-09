@@ -1,0 +1,163 @@
+/*
+ * Copyright © 2026 Matsuura Y.
+ * 
+ * This software is released under the MIT License.
+ * http://opensource.org/licenses/mit-license.php
+ */
+
+/*
+ * 2026.4.8
+ */
+package matsu.num.statistics.kdeapp.kde2d;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import matsu.num.statistics.kdeapp.base.ConstantsCollector;
+import matsu.num.statistics.kdeapp.comp.PropertyKey;
+import matsu.num.statistics.kdeapp.comp.ResolverDesign;
+import matsu.num.statistics.kdeapp.format.CommentPrefix;
+import matsu.num.statistics.kdeapp.format.Separator;
+import matsu.num.statistics.kdeapp.kde2d.comp.BuilderType;
+import matsu.num.statistics.kdeapp.kde2d.comp.EchoPrinter;
+import matsu.num.statistics.kdeapp.kde2d.comp.LabelPrefixSetting;
+
+/**
+ * kde1d で使用する, プロパティに関する定数など.
+ * 
+ * <p>
+ * プロパティキーに関する定数と, Property から Resolver を生成する設計図.
+ * </p>
+ * 
+ * @author Matsuura Y.
+ */
+public final class PropertyConstants {
+
+    /**
+     * ディスプレイ出力のOn/Offに関する PropertyKey. <br>
+     * {@code echo=on} <br>
+     * {@code echo=off}
+     */
+    public static final PropertyKey ECHO = PropertyKey.of("echo");
+
+    /**
+     * 入力ファイルフォーマットの区切り文字に関する PropertyKey. <br>
+     * {@code input.separator=,}
+     */
+    public static final PropertyKey INPUT_SEPARATOR = PropertyKey.of("input.separator");
+
+    /**
+     * 入力ファイルフォーマットのコメント行Prefixに関する PropertyKey. <br>
+     * {@code input.commentprefix=#}
+     */
+    public static final PropertyKey INPUT_COMMENT_PREFIX = PropertyKey.of("input.commentprefix");
+
+    /**
+     * 出力フォーマット形式に関する PropertyKey. <br>
+     * {@code output.formattertype=xyz} <br>
+     * {@code output.formattertype=xyz-block} <br>
+     * {@code output.formattertype=matrix}
+     */
+    public static final PropertyKey OUTPUT_FORMATTER_TYPE = PropertyKey.of("output.formattertype");
+
+    /**
+     * 出力フォーマットの区切り文字に関する PropertyKey. <br>
+     * {@code output.separator=,}
+     */
+    public static final PropertyKey OUTPUT_SEPARATOR = PropertyKey.of("output.separator");
+
+    /**
+     * 出力フォーマットのラベル出力を行うかに関する PropertyKey. <br>
+     * {@code output.label=enabled} <br>
+     * {@code output.label=disabled} <br>
+     * {@code output.labelprefix} が指定される場合, このプロパティは必須である.
+     */
+    public static final PropertyKey OUTPUT_LABEL = PropertyKey.of("output.label");
+
+    /**
+     * 出力フォーマットのラベルの Prefix に関する PropertyKey. <br>
+     * {@code output.labelprefix=//} <br>
+     * {@code output.label=enabled} の場合は必須であり,
+     * {@code output.label=disabled} の場合は無視される.
+     */
+    public static final PropertyKey OUTPUT_LABEL_PREFIX = PropertyKey.of("output.labelprefix");
+
+    /**
+     * このクラスで扱う PropertyKey に関わる Resolver の設計図.
+     */
+    static final Set<ResolverDesign<?>> RESOLVER_DESIGNS;
+
+    static {
+        Set<ResolverDesign<?>> set = new HashSet<>();
+
+        // EchoPrinterDesign
+        set.add(
+                ResolverDesign.of(
+                        Resolvers.ECHO, Set.of(ECHO),
+                        p -> p.convertOrThrow(ECHO, echo -> switch (echo) {
+                            case "on" -> EchoPrinter.ON;
+                            case "off" -> EchoPrinter.OFF;
+                            default -> throw new IllegalArgumentException("echo");
+                        })));
+
+        // InputSeparatorDesign
+        set.add(
+                ResolverDesign.of(
+                        Resolvers.INPUT_SEPARATOR, Set.of(INPUT_SEPARATOR),
+                        p -> p.convertOrThrow(INPUT_SEPARATOR, Separator::from)));
+
+        // InputCommentPrefixDesign
+        set.add(
+                ResolverDesign.of(
+                        Resolvers.INPUT_COMMENT_PREFIX, Set.of(INPUT_COMMENT_PREFIX),
+                        p -> p.convertOrThrow(INPUT_COMMENT_PREFIX, CommentPrefix::of)));
+
+        // OutputFormatterTypeDesign
+        set.add(
+                ResolverDesign.of(
+                        Resolvers.OUTPUT_FORMATTER_TYPE, Set.of(OUTPUT_FORMATTER_TYPE),
+                        p -> p.convertOrThrow(OUTPUT_FORMATTER_TYPE, BuilderType::from)));
+
+        // OutputSeparatorDesign
+        set.add(
+                ResolverDesign.of(
+                        Resolvers.OUTPUT_SEPARATOR, Set.of(OUTPUT_SEPARATOR),
+                        p -> p.convertOrThrow(OUTPUT_SEPARATOR, Separator::from)));
+
+        // OutputLabelPrefixSettingDesign
+        set.add(
+                ResolverDesign.of(
+                        Resolvers.OUTPUT_LABEL_PREFIX_SETTING,
+                        Set.of(OUTPUT_LABEL, OUTPUT_LABEL_PREFIX),
+                        p -> switch (p.getOrThrow(OUTPUT_LABEL)) {
+                            case "disabled" -> LabelPrefixSetting.disable();
+                            case "enabled" -> LabelPrefixSetting.enable(p.getOrThrow(OUTPUT_LABEL_PREFIX));
+                            default -> throw new IllegalArgumentException("output.label");
+                        }));
+
+        RESOLVER_DESIGNS = Set.copyOf(set);
+    }
+
+    /**
+     * このクラスで扱われている PropertyKey のセットを取得する.
+     * 
+     * @return PropertyKey のセット
+     */
+    static Set<PropertyKey> getPropertyKeys() {
+        return PropertyKeyHolder.values;
+    }
+
+    private PropertyConstants() {
+        // インスタンス化不可
+    }
+
+    private static final class PropertyKeyHolder {
+
+        /**
+         * PropertyKey の集合. <br>
+         * 不変.
+         */
+        static final Set<PropertyKey> values = Set.copyOf(
+                ConstantsCollector.collect(PropertyConstants.class, PropertyKey.class));
+    }
+}
