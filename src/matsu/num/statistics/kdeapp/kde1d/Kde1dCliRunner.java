@@ -6,14 +6,16 @@
  */
 
 /*
- * 2026.3.30
+ * 2026.4.11
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
 import java.io.PrintStream;
 
 import matsu.num.statistics.kdeapp.comp.ResolverContainer;
+import matsu.num.statistics.kdeapp.comp.StandardPropertyToResolvers;
 import matsu.num.statistics.kdeapp.exception.ApplicationException;
+import matsu.num.statistics.kdeapp.exception.InputException;
 import matsu.num.statistics.kdeapp.kde1d.task.GaussianStandardKde1dCalculator;
 import matsu.num.statistics.kdeapp.kde1d.task.Kde1dSourceReader;
 import matsu.num.statistics.kdeapp.kde1d.task.ResultWriter;
@@ -69,9 +71,7 @@ final class Kde1dCliRunner {
 
         out.println("kde1d...");
 
-        ResolverContainer container = Commands.getInterpreter().interpret(args)
-                .withDefaults(Resolvers.DEFAULT_RESOLVERS);
-        Resolvers.validateCompleteness(container);
+        ResolverContainer container = buildContainer(args);
 
         Kde1dSourceReader loader =
                 new SourceReaderConstructor().apply(container);
@@ -88,5 +88,29 @@ final class Kde1dCliRunner {
 
         out.println("Bye.");
         return 0;
+    }
+
+    private ResolverContainer buildContainer(String[] args) {
+
+        ResolverContainer commands = Commands.getInterpreter().interpret(args);
+
+        ResolverContainer commandsAndDefault = commands.withDefaults(Resolvers.DEFAULT_RESOLVERS);
+
+        ResolverContainer config;
+        try {
+            java.util.Properties p = commandsAndDefault.get(Resolvers.CONFIG).compute();
+            config = new StandardPropertyToResolvers(
+                    PropertyConstants.getPropertyKeys(), PropertyConstants.RESOLVER_DESIGNS)
+                            .parse(p);
+        } catch (IllegalStateException | IllegalArgumentException e) {
+            throw new InputException("config: " + e.getMessage());
+        }
+
+        ResolverContainer container =
+                Resolvers.DEFAULT_RESOLVERS
+                        .withOverrides(config)
+                        .withOverrides(commands);
+        Resolvers.validateCompleteness(container);
+        return container;
     }
 }

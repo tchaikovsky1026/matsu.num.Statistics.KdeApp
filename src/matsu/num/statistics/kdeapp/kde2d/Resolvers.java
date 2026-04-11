@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.30
+ * 2026.4.11
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
@@ -15,6 +15,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 import matsu.num.statistics.kdeapp.base.ConstantsCollector;
+import matsu.num.statistics.kdeapp.base.StandardPropertyLoader;
 import matsu.num.statistics.kdeapp.comp.ResolverContainer;
 import matsu.num.statistics.kdeapp.comp.ResolverKey;
 import matsu.num.statistics.kdeapp.exception.ProgrammingBugException;
@@ -35,25 +36,19 @@ import matsu.num.statistics.kdeapp.kde2d.task.ResultWriter;
  */
 public final class Resolvers {
 
-    /**
-     * ディスプレイ出力のOn/Offに関する ResolverKey.
-     */
+    /** ディスプレイ出力のOn/Offに関する ResolverKey. */
     public static final ResolverKey<EchoPrinter> ECHO =
             ResolverKey.of("ECHO", EchoPrinter.class);
 
-    /**
-     * 入力ファイルパスの ResolverKey.
-     */
+    /** 入力ファイルパスの ResolverKey. */
     public static final ResolverKey<Path> INPUT_FILE_PATH = ResolverKey.of(
             "INPUT_FILE", Path.class);
-    /**
-     * 入力ファイルフォーマットのコメント行Prefixの ResolverKey.
-     */
+
+    /** 入力ファイルフォーマットのコメント行Prefixの ResolverKey. */
     public static final ResolverKey<CommentPrefix> INPUT_COMMENT_PREFIX = ResolverKey.of(
             "INPUT_COMMENT_PREFIX", CommentPrefix.class);
-    /**
-     * 入力フォーマットの区切り文字の ResolverKey.
-     */
+
+    /** 入力フォーマットの区切り文字の ResolverKey. */
     public static final ResolverKey<Separator> INPUT_SEPARATOR = ResolverKey.of(
             "INPUT_SEPARATOR", Separator.class);
 
@@ -63,21 +58,22 @@ public final class Resolvers {
      */
     public static final ResolverKey<ResultWriter> OUTPUT_FILE_WRITER = ResolverKey.of(
             "OUTPUT_FILE_WRITER", ResultWriter.class);
-    /**
-     * 出力フォーマットの形式に関する ResolverKey.
-     */
+
+    /** 出力フォーマットの形式に関する ResolverKey. */
     public static final ResolverKey<BuilderType> OUTPUT_FORMATTER_TYPE = ResolverKey.of(
             "OUTPUT_FORMATTER_TYPE", BuilderType.class);
-    /**
-     * 出力フォーマットのラベル出力設定に関する ResolverKey.
-     */
+
+    /** 出力フォーマットのラベル出力設定に関する ResolverKey. */
     public static final ResolverKey<LabelPrefixSetting> OUTPUT_LABEL_PREFIX_SETTING = ResolverKey.of(
             "OUTPUT_LABEL_PREFIX_SETTING", LabelPrefixSetting.class);
-    /**
-     * 出力フォーマットの区切り文字の ResolverKey.
-     */
+
+    /** 出力フォーマットの区切り文字の ResolverKey. */
     public static final ResolverKey<Separator> OUTPUT_SEPARATOR = ResolverKey.of(
             "OUTPUT_SEPARATOR", Separator.class);
+
+    /** Resolvers を Config から読むことに関する ResolverKey. */
+    public static final ResolverKey<StandardPropertyLoader> CONFIG = ResolverKey.of(
+            "CONFIG", StandardPropertyLoader.class);
 
     /**
      * デフォルトの Resolver群.
@@ -95,6 +91,7 @@ public final class Resolvers {
         builder.put(OUTPUT_FORMATTER_TYPE, BuilderType.XYZ);
         builder.put(OUTPUT_LABEL_PREFIX_SETTING, LabelPrefixSetting.disable());
         builder.put(OUTPUT_SEPARATOR, Separator.from("\t"));
+        builder.put(CONFIG, StandardPropertyLoader.emptyLoader());
 
         DEFAULT_RESOLVERS = builder.build();
     }
