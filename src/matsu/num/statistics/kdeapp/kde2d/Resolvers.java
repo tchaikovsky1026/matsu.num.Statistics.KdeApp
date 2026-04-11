@@ -6,9 +6,11 @@
  */
 
 /*
- * 2026.4.11
+ * 2026.4.12
  */
 package matsu.num.statistics.kdeapp.kde2d;
+
+import static java.util.stream.Collectors.*;
 
 import java.nio.file.Path;
 import java.util.NoSuchElementException;
@@ -127,7 +129,18 @@ public final class Resolvers {
     }
 
     private static final class PropertyKeyHolder {
-        static final Set<ResolverKey<?>> properties = Set.copyOf(
-                ConstantsCollector.collect(Resolvers.class, ResolverKey.class));
+
+        static final Set<ResolverKey<?>> properties;
+
+        static {
+            @SuppressWarnings("rawtypes")
+            Set<ResolverKey> raw =
+                    ConstantsCollector.collect(Resolvers.class, ResolverKey.class);
+
+            properties = Set.copyOf(
+                    raw.stream()
+                            .map(c -> (ResolverKey<?>) c)
+                            .collect(toSet()));
+        }
     }
 }
