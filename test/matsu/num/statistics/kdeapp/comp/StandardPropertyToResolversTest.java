@@ -20,12 +20,12 @@ import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 
 /**
- * {@link StdApiPropertyLoader} のテスト.
+ * {@link StandardPropertyToResolvers} のテスト.
  * 
  * @author Matsuura Y.
  */
 @RunWith(Enclosed.class)
-final class StdApiPropertyLoaderTest {
+final class StandardPropertyToResolversTest {
 
     public static class プロパティロードのテスト {
 
@@ -37,11 +37,11 @@ final class StdApiPropertyLoaderTest {
                 rKey, Set.of(pKey1, pKey2),
                 p -> joinStr(p.getOrThrow(pKey1), p.getOrThrow(pKey2)));
 
-        private StdApiPropertyLoader loader;
+        private StandardPropertyToResolvers loader;
 
         @Before
         public void before_ローダーを構築する() {
-            loader = new StdApiPropertyLoader(Set.of(pKey1, pKey2), Set.of(design));
+            loader = new StandardPropertyToResolvers(Set.of(pKey1, pKey2), Set.of(design));
         }
 
         @Test
@@ -52,7 +52,7 @@ final class StdApiPropertyLoaderTest {
             p.setProperty(pKey1.name(), s1);
             p.setProperty(pKey2.name(), s2);
 
-            String result = loader.load(p).get(rKey);
+            String result = loader.parse(p).get(rKey);
             assertThat(result, is(joinStr(s1, s2)));
         }
 
@@ -60,7 +60,7 @@ final class StdApiPropertyLoaderTest {
         public void test_全く含まないパターン_例外無し() {
             Properties p = new Properties();
 
-            loader.load(p);
+            loader.parse(p);
         }
 
         @Test(expected = IllegalArgumentException.class)
@@ -68,7 +68,7 @@ final class StdApiPropertyLoaderTest {
             Properties p = new Properties();
             p.setProperty("unknownKey", "v");
 
-            loader.load(p);
+            loader.parse(p);
         }
 
         @Test(expected = IllegalArgumentException.class)
@@ -76,7 +76,7 @@ final class StdApiPropertyLoaderTest {
             Properties p = new Properties();
             p.setProperty(pKey2.name(), "p2");
 
-            loader.load(p);
+            loader.parse(p);
         }
 
         private static String joinStr(String s1, String s2) {

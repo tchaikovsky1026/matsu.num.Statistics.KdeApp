@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.4.9
+ * 2026.4.11
  */
 package matsu.num.statistics.kdeapp.comp;
 
@@ -18,7 +18,7 @@ import java.util.Set;
  * 
  * @author Matsuura Y.
  */
-public final class StdApiPropertyLoader {
+public final class StandardPropertyToResolvers {
 
     private final Set<PropertyKey> preparedKeys;
     private final Set<ResolverDesign<?>> resolverDesigns;
@@ -27,7 +27,7 @@ public final class StdApiPropertyLoader {
      * ローダーを構築する.
      * 
      * <p>
-     * 構築時に, このローダーが扱うプロパティキーの候補と,
+     * 構築時に, この構築器が扱うプロパティキーの候補と,
      * Resolver の設計図を渡す.
      * </p>
      * 
@@ -35,7 +35,7 @@ public final class StdApiPropertyLoader {
      * @param resolverDesigns Resolver の設計図のセット
      * @throws NullPointerException 引数にnullを含む場合
      */
-    public StdApiPropertyLoader(Set<PropertyKey> preparedKeys, Set<ResolverDesign<?>> resolverDesigns) {
+    public StandardPropertyToResolvers(Set<PropertyKey> preparedKeys, Set<ResolverDesign<?>> resolverDesigns) {
         super();
         this.preparedKeys = Set.copyOf(preparedKeys);
         this.resolverDesigns = Set.copyOf(resolverDesigns);
@@ -59,7 +59,7 @@ public final class StdApiPropertyLoader {
      * @throws IllegalArgumentException プロパティが不正の場合 (メソッド説明文)
      * @throws NullPointerException 引数がnullの場合
      */
-    public ResolverContainer load(java.util.Properties properties) {
+    public ResolverContainer parse(java.util.Properties properties) {
         var propertyContainer = new PropertyContainer.StdApiReader(preparedKeys)
                 .convert(properties);
         return propertyContainer.toResolvers(resolverDesigns);
