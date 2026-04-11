@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.24
+ * 2026.4.12
  */
 package matsu.num.statistics.kdeapp.base;
 
@@ -30,6 +30,24 @@ public final class ConstantsCollector {
     /**
      * 与えたクラス (clazz) に定義されている type 型のstaticフィールドの値を得る. <br>
      * ただし, clazz とフィールドは {@code public} でなければならない.
+     * 
+     * 
+     * @apiNote
+     *              type がジェネリック型の場合, 型パラメータ {@code T} には raw 型でバインドされる. <br>
+     *              そのため, 戻り値の {@code Set<T>} は型安全でない. <br>
+     *              そのような type を使用する場合,
+     *              呼び出し元で要素型をワイルドカードで置き換えるように詰め替えを行うべきである. <br>
+     *              例えば, 次のように行う.
+     * 
+     *              <pre>
+     * // T を Optional でバインドする
+     * {@code Set<Optional> rawSet = collect(clazz, Optional.class);}
+     * 
+     * {@code Set<Optional<?>> set = 
+     *         rawSet.stream()
+     *             .map(e -> (Optional<?>) e)
+     *             .collect(Collectors.toSet());}
+     *              </pre>
      * 
      * @param <T> 集める型
      * @param clazz clazz

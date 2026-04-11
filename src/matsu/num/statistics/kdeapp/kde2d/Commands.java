@@ -6,10 +6,11 @@
  */
 
 /*
- * 2026.4.11
+ * 2026.4.12
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
+import static java.util.stream.Collectors.*;
 import static matsu.num.statistics.kdeapp.comp.CommandAssignmentRule.*;
 
 import java.nio.file.Path;
@@ -173,8 +174,18 @@ public final class Commands {
          * オプションコマンドの集合. <br>
          * 不変になるようにすること.
          */
-        static final Set<ArgumentRequiringCommand<?>> values = Set.copyOf(
-                ConstantsCollector.collect(Commands.class, ArgumentRequiringCommand.class));
+        static final Set<ArgumentRequiringCommand<?>> values;
+
+        static {
+            @SuppressWarnings("rawtypes")
+            Set<ArgumentRequiringCommand> raw =
+                    ConstantsCollector.collect(Commands.class, ArgumentRequiringCommand.class);
+
+            values = Set.copyOf(
+                    raw.stream()
+                            .map(c -> (ArgumentRequiringCommand<?>) c)
+                            .collect(toSet()));
+        }
     }
 
     private static final class NoArgCommandsHolder {
@@ -183,7 +194,17 @@ public final class Commands {
          * オプションコマンドの集合. <br>
          * 不変になるようにすること.
          */
-        static final Set<NoArgumentCommand<?>> values = Set.copyOf(
-                ConstantsCollector.collect(Commands.class, NoArgumentCommand.class));
+        static final Set<NoArgumentCommand<?>> values;
+
+        static {
+            @SuppressWarnings("rawtypes")
+            Set<NoArgumentCommand> raw =
+                    ConstantsCollector.collect(Commands.class, NoArgumentCommand.class);
+
+            values = Set.copyOf(
+                    raw.stream()
+                            .map(c -> (NoArgumentCommand<?>) c)
+                            .collect(toSet()));
+        }
     }
 }
