@@ -5,10 +5,10 @@
  * http://opensource.org/licenses/mit-license.php
  */
 
-package matsu.num.statistics.kdeapp.command;
+package matsu.num.statistics.kdeapp.comp;
 
-import static matsu.num.statistics.kdeapp.command.CommandAssignmentRule.*;
-import static matsu.num.statistics.kdeapp.command.DummyCommandListForTesting.*;
+import static matsu.num.statistics.kdeapp.comp.CommandAssignmentRule.*;
+import static matsu.num.statistics.kdeapp.comp.DummyCommandListForTesting.*;
 
 import java.util.Set;
 

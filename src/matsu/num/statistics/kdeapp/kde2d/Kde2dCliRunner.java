@@ -6,14 +6,18 @@
  */
 
 /*
- * 2026.3.12
+ * 2026.4.13
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
 import java.io.PrintStream;
+import java.util.NoSuchElementException;
 
-import matsu.num.statistics.kdeapp.command.ConsoleParameters;
+import matsu.num.statistics.kdeapp.comp.ResolverContainer;
+import matsu.num.statistics.kdeapp.comp.StandardPropertyToResolvers;
 import matsu.num.statistics.kdeapp.exception.ApplicationException;
+import matsu.num.statistics.kdeapp.exception.InputException;
+import matsu.num.statistics.kdeapp.exception.ProgrammingBugException;
 import matsu.num.statistics.kdeapp.kde2d.task.GaussianStandardKde2dCalculator;
 import matsu.num.statistics.kdeapp.kde2d.task.Kde2dSourceReader;
 import matsu.num.statistics.kdeapp.kde2d.task.ResultWriter;
@@ -69,16 +73,16 @@ final class Kde2dCliRunner {
 
         out.println("kde2d...");
 
-        ConsoleParameters interpretation = Commands.getInterpreter().interpret(args);
+        ResolverContainer container = buildContainer(args);
 
         Kde2dSourceReader loader =
-                new SourceReaderConstructor().apply(interpretation);
+                new SourceReaderConstructor().apply(container);
         WritingFormatter writingFormatter =
-                new FormatterConstructor().apply(interpretation);
+                new FormatterConstructor().apply(container);
         ResultWriter fileWriter =
-                new FileWriterConstructor().apply(interpretation);
+                new FileWriterConstructor().apply(container);
         ResultWriter printer =
-                new PrinterConstructor(out, err).apply(interpretation);
+                new PrinterConstructor(out, err).apply(container);
 
         double[][] source = loader.read();
         WritableKde2dResult result = new GaussianStandardKde2dCalculator().calc(source);
@@ -86,5 +90,32 @@ final class Kde2dCliRunner {
 
         out.println("Bye.");
         return 0;
+    }
+
+    /** Resolverを構築する. */
+    private ResolverContainer buildContainer(String[] args) {
+
+        ResolverContainer commands = Commands.getInterpreter().interpret(args);
+
+        ResolverContainer config;
+        try {
+            java.util.Properties p = commands.withDefaults(Resolvers.DEFAULT_RESOLVERS)
+                    .get(Resolvers.CONFIG) // throws NoSuchElementException: スローされないはず
+                    .compute(); // throws IllegalStateException
+            config = new StandardPropertyToResolvers(
+                    PropertyConstants.getPropertyKeys(), PropertyConstants.RESOLVER_DESIGNS)
+                            .parse(p); // throws IllegalArgumentException
+        } catch (IllegalStateException | IllegalArgumentException e) {
+            throw new InputException("config: " + e.getMessage());
+        } catch (NoSuchElementException e) {
+            throw new ProgrammingBugException(e.getMessage());
+        }
+
+        ResolverContainer container =
+                Resolvers.DEFAULT_RESOLVERS
+                        .withOverrides(config)
+                        .withOverrides(commands);
+        Resolvers.validateCompleteness(container);
+        return container;
     }
 }

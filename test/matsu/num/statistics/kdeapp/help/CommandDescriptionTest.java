@@ -8,7 +8,7 @@
 package matsu.num.statistics.kdeapp.help;
 
 import static java.util.Comparator.*;
-import static matsu.num.statistics.kdeapp.command.DummyCommandListForTesting.*;
+import static matsu.num.statistics.kdeapp.comp.DummyCommandListForTesting.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
@@ -24,8 +24,8 @@ import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
-import matsu.num.statistics.kdeapp.command.ArgumentRequiringCommand;
-import matsu.num.statistics.kdeapp.command.NoArgumentCommand;
+import matsu.num.statistics.kdeapp.comp.ArgumentRequiringCommand;
+import matsu.num.statistics.kdeapp.comp.NoArgumentCommand;
 
 /**
  * {@link CommandDescription} のテスト.
@@ -60,7 +60,7 @@ final class CommandDescriptionTest {
         private final CommandCategory category = CommandCategory.from("Dummy");
 
         @DataPoints
-        public static NoArgumentCommand[] noArgCommands = {
+        public static NoArgumentCommand<?>[] noArgCommands = {
                 DUMMY_NO_ARG_1,
                 DUMMY_NO_ARG_2,
                 DUMMY_NO_ARG_3
@@ -75,7 +75,7 @@ final class CommandDescriptionTest {
 
         @Theory
         public void test_usageSyntaxが文字列の多い順_noArg(
-                NoArgumentCommand command) {
+                NoArgumentCommand<?> command) {
             List<String> list = CommandDescription.of(command, "", category).getUsageSyntaxes();
             assertThat(isDescending(list, comparingInt(String::length)), is(true));
         }

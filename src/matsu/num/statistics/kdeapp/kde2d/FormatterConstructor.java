@@ -6,23 +6,25 @@
  */
 
 /*
- * 2026.3.12
+ * 2026.3.29
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
-import static matsu.num.statistics.kdeapp.kde2d.Commands.*;
+import static matsu.num.statistics.kdeapp.kde2d.Resolvers.*;
 
-import matsu.num.statistics.kdeapp.command.ComponentConstructor;
-import matsu.num.statistics.kdeapp.command.ConsoleParameters;
+import java.util.NoSuchElementException;
+
+import matsu.num.statistics.kdeapp.comp.ResolverContainer;
+import matsu.num.statistics.kdeapp.exception.ProgrammingBugException;
+import matsu.num.statistics.kdeapp.format.Separator;
 import matsu.num.statistics.kdeapp.kde2d.task.WritingFormatter;
-import matsu.num.statistics.kdeapp.kde2d.task.WritingFormatter.Builder;
 
 /**
  * {@link WritingFormatter} の構築器.
  * 
  * @author Matsuura Y.
  */
-final class FormatterConstructor implements ComponentConstructor<WritingFormatter> {
+final class FormatterConstructor {
 
     /**
      * 唯一のコンストラクタ.
@@ -33,16 +35,14 @@ final class FormatterConstructor implements ComponentConstructor<WritingFormatte
     /**
      * @throws NullPointerException {@inheritDoc }
      */
-    @Override
-    public WritingFormatter apply(ConsoleParameters interpreter) {
-        Builder<? extends Builder<?>> builder = interpreter.valueOf(OUTPUT_FORMAT_TYPE)
-                .orElse(FormatterBuilderSupplier.XYZ)
-                .createBuilder();
-
-        interpreter.valueOf(OUTPUT_LABEL_PREFIX)
-                .ifPresent(header -> builder.enableLabel(header));
-        interpreter.valueOf(OUTPUT_SEPARATOR)
-                .ifPresent(separator -> builder.setSeparator(separator));
-        return builder.build();
+    WritingFormatter apply(ResolverContainer property) {
+        try {
+            Separator separator = property.get(OUTPUT_SEPARATOR);
+            var builder = property.get(OUTPUT_FORMATTER_TYPE).createBuilder(separator);
+            property.get(OUTPUT_LABEL_PREFIX_SETTING).accept(builder);
+            return builder.build();
+        } catch (NoSuchElementException e) {
+            throw new ProgrammingBugException(e.getMessage());
+        }
     }
 }

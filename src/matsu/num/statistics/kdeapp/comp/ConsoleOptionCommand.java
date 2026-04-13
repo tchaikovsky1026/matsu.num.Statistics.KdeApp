@@ -6,9 +6,9 @@
  */
 
 /*
- * 2026.3.17
+ * 2026.3.23
  */
-package matsu.num.statistics.kdeapp.command;
+package matsu.num.statistics.kdeapp.comp;
 
 import static java.util.stream.Collectors.*;
 
@@ -34,11 +34,13 @@ import java.util.Set;
  * </p>
  * 
  * @author Matsuura Y.
+ * @param <T> このコマンドによって得られる値の型, see {@link ResolverKey}
  */
-public abstract sealed class ConsoleOptionCommand
+public abstract sealed class ConsoleOptionCommand<T>
         permits ArgumentRequiringCommand, NoArgumentCommand {
 
     private final String enumString;
+    private final ResolverKey<T> propertyKey;
 
     private final String commandRepresentation;
     private final Set<String> representations;
@@ -48,26 +50,29 @@ public abstract sealed class ConsoleOptionCommand
      * パッケージ外での継承が許可されないので非公開である.
      * 
      * @param enumString インスタンスの文字列表現
+     * @param propertyKey 対応するプロパティキー
      * @param commandRepresentation コマンドの正式な文字列表現
      * @param otherRepresentations 正式表現以外の文字列表現
-     * @throws IllegalArgumentException ブランクを含む場合
+     * @throws IllegalArgumentException 文字列表現に空白を含む場合
      * @throws NullPointerException 引数にnullが含まれる場合
      */
-    ConsoleOptionCommand(String enumString,
+    ConsoleOptionCommand(String enumString, ResolverKey<T> propertyKey,
             String commandRepresentation, String... otherRepresentations) {
 
         this.enumString = enumString;
         if (this.enumString.isBlank()) {
             throw new IllegalArgumentException("enumString is blank");
         }
+        this.propertyKey = Objects.requireNonNull(propertyKey);
 
         this.commandRepresentation = Objects.requireNonNull(commandRepresentation);
         this.representations = new HashSet<>();
         this.representations.add(commandRepresentation);
         this.representations.addAll(List.of(otherRepresentations));
 
-        if (this.representations.stream().anyMatch(String::isBlank)) {
-            throw new IllegalArgumentException(this.toString() + ": blank representation");
+        if (this.representations.stream().anyMatch(
+                r -> r.chars().anyMatch(Character::isWhitespace))) {
+            throw new IllegalArgumentException(this.toString() + " includes white space");
         }
     }
 
@@ -89,6 +94,15 @@ public abstract sealed class ConsoleOptionCommand
      */
     final List<String> representations() {
         return List.copyOf(representations);
+    }
+
+    /**
+     * このコマンドに対応付けられるプロパティキーを返す.
+     * 
+     * @return プロパティキー
+     */
+    final ResolverKey<T> propertyKey() {
+        return propertyKey;
     }
 
     /**
@@ -135,15 +149,14 @@ public abstract sealed class ConsoleOptionCommand
      * コマンドの集合を, コマンド文字列からコマンドインスタンスへのマッパに変換する.
      * 
      * <p>
-     * コマンドの文字列表現が重複してはいけない.
+     * コマンドの文字列表現が重複した場合, どちらが採用されるかは不明である.
      * </p>
      * 
      * @param commands コマンドの集合
      * @return コマンド文字列からコマンドインスタンスへのマッパ
-     * @throws IllegalArgumentException コマンド文字列に重複がある場合
      * @throws NullPointerException 引数にnullが含まれる場合
      */
-    static <T extends ConsoleOptionCommand>
+    static <T extends ConsoleOptionCommand<?>>
             Map<String, T> toCommandMapper(Collection<? extends T> commands) {
 
         // フラット化
@@ -153,23 +166,13 @@ public abstract sealed class ConsoleOptionCommand
                                 .map(str -> new Pair<T>(o, str)))
                 .toList();
 
-        // オプションの文字列表現定義に重複がないことを確認する.
-        Map<String, Long> map = pairs.stream()
-                .map(p -> p.representation)
-                .collect(groupingBy(s -> s, counting()));
-        for (Map.Entry<String, Long> e : map.entrySet()) {
-            if (e.getValue().longValue() >= 2) {
-                throw new IllegalArgumentException("duplicate representation: " + e.getKey());
-            }
-        }
-
-        // representationに重複がないので, toMapは成功
+        // representationの重複はBinaryOperatorで片方を無視する
         return pairs.stream()
-                .collect(toMap(p -> p.representation, p -> p.command));
+                .collect(toMap(p -> p.representation, p -> p.command, (s1, s2) -> s2));
     }
 
     // コマンドインスタンスとコマンド文字列のペアを表現するクラス
-    private static final class Pair<T extends ConsoleOptionCommand> {
+    private static final class Pair<T extends ConsoleOptionCommand<?>> {
         final T command;
         final String representation;
 
@@ -177,6 +180,26 @@ public abstract sealed class ConsoleOptionCommand
             super();
             this.command = command;
             this.representation = representation;
+        }
+    }
+
+    /**
+     * コマンド集合において, 文字列表現に重複がないことを確認する.
+     * 
+     * @param commands コマンドの集合
+     * @throws IllegalArgumentException プロパティ名に重複がある場合
+     * @throws NullPointerException 引数にnullを含む場合
+     */
+    public static void requireNoRepresentationDuplicates(
+            Set<? extends ConsoleOptionCommand<?>> commands) {
+
+        Set<String> nameSet = new HashSet<>();
+        for (ConsoleOptionCommand<?> c : commands) {
+            for (String r : c.representations) {
+                if (!nameSet.add(r)) {
+                    throw new IllegalArgumentException("duplicate property name: " + r);
+                }
+            }
         }
     }
 }

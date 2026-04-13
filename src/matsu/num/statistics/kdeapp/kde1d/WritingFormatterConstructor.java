@@ -6,15 +6,16 @@
  */
 
 /*
- * 2026.3.10
+ * 2026.3.29
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
-import static matsu.num.statistics.kdeapp.kde1d.Commands.*;
+import static matsu.num.statistics.kdeapp.kde1d.Resolvers.*;
 
-import matsu.num.statistics.kdeapp.command.ComponentConstructor;
-import matsu.num.statistics.kdeapp.command.ConsoleParameters;
-import matsu.num.statistics.kdeapp.format.Separator;
+import java.util.NoSuchElementException;
+
+import matsu.num.statistics.kdeapp.comp.ResolverContainer;
+import matsu.num.statistics.kdeapp.exception.ProgrammingBugException;
 import matsu.num.statistics.kdeapp.kde1d.task.WritingFormatter;
 import matsu.num.statistics.kdeapp.kde1d.task.XyTypeFormatterBuilder;
 
@@ -29,7 +30,7 @@ import matsu.num.statistics.kdeapp.kde1d.task.XyTypeFormatterBuilder;
  * 
  * @author Matsuura Y.
  */
-final class WritingFormatterConstructor implements ComponentConstructor<WritingFormatter> {
+final class WritingFormatterConstructor {
 
     /**
      * 唯一のコンストラクタ.
@@ -40,19 +41,13 @@ final class WritingFormatterConstructor implements ComponentConstructor<WritingF
     /**
      * @throws NullPointerException {@inheritDoc }
      */
-    @Override
-    public WritingFormatter apply(ConsoleParameters interpreter) {
-
-        var builder = new XyTypeFormatterBuilder(
-                Separator.from("\t"));
-
-        interpreter.valueOf(
-                OUTPUT_LABEL_PREFIX)
-                .ifPresent(header -> builder.enableLabel(header));
-
-        interpreter.valueOf(OUTPUT_SEPARATOR)
-                .ifPresent(separator -> builder.setSeparator(separator));
-
-        return builder.build();
+    WritingFormatter apply(ResolverContainer property) {
+        try {
+            var builder = new XyTypeFormatterBuilder(property.get(OUTPUT_SEPARATOR));
+            property.get(OUTPUT_LABEL_PREFIX_SETTING).accept(builder);
+            return builder.build();
+        } catch (NoSuchElementException e) {
+            throw new ProgrammingBugException(e.getMessage());
+        }
     }
 }

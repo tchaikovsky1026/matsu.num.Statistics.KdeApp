@@ -6,9 +6,9 @@
  */
 
 /*
- * 2026.2.27
+ * 2026.3.23
  */
-package matsu.num.statistics.kdeapp.command;
+package matsu.num.statistics.kdeapp.comp;
 
 import java.util.Objects;
 import java.util.function.Function;
@@ -26,9 +26,8 @@ import matsu.num.statistics.kdeapp.exception.IllegalParameterException;
  * @author Matsuura Y.
  * @param <T> コマンドの引数のコンバート先の型, see {@link #convertArg(String)}
  */
-public final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand {
+public final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand<T> {
 
-    private final Class<T> valueType;
     private final Function<? super String, ? extends T> converter;
 
     /**
@@ -41,7 +40,7 @@ public final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand {
      * </p>
      * 
      * @param enumString インスタンスの文字列表現
-     * @param valueType 変更先の型トークン
+     * @param propertyKey 対応するプロパティキー
      * @param converter コンバータ
      * @param commandRepresentation コマンドの正式な文字列表現
      * @param otherRepresentations 正式表現以外の文字列表現
@@ -49,12 +48,11 @@ public final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand {
      * @throws NullPointerException 引数にnullが含まれる場合
      */
     private ArgumentRequiringCommand(
-            String enumString,
-            Class<T> valueType, Function<? super String, ? extends T> converter,
+            String enumString, ResolverKey<T> propertyKey,
+            Function<? super String, ? extends T> converter,
             String commandRepresentation, String... otherRepresentations) {
-        super(enumString, commandRepresentation, otherRepresentations);
+        super(enumString, propertyKey, commandRepresentation, otherRepresentations);
 
-        this.valueType = Objects.requireNonNull(valueType);
         this.converter = Objects.requireNonNull(converter);
     }
 
@@ -70,7 +68,7 @@ public final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand {
      * @throws ClassCastException キャストに失敗した場合
      */
     final T cast(Object obj) {
-        return this.valueType.cast(obj);
+        return this.propertyKey().cast(obj);
     }
 
     /**
@@ -104,7 +102,7 @@ public final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand {
      * 
      * @param <T> コンバート先の型, see {@link #convertArg(String)}
      * @param enumString インスタンスの文字列表現
-     * @param valueType コンバート先 ({@code T}) の型トークン
+     * @param propertyKey 対応するプロパティキー
      * @param converter コンバータ
      * @param commandRepresentation コマンドの正式な文字列表現
      * @param otherRepresentations 正式表現以外の文字列表現
@@ -113,19 +111,20 @@ public final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand {
      * @throws NullPointerException 引数にnullが含まれる場合
      */
     public static <T> ArgumentRequiringCommand<T> of(
-            String enumString,
-            Class<T> valueType, Function<? super String, ? extends T> converter,
+            String enumString, ResolverKey<T> propertyKey,
+            Function<? super String, ? extends T> converter,
             String commandRepresentation, String... otherRepresentations) {
 
         return new ArgumentRequiringCommand<>(
-                enumString, valueType, converter, commandRepresentation, otherRepresentations);
+                enumString, propertyKey, converter, commandRepresentation, otherRepresentations);
     }
 
     /**
-     * {@link #of(String, Class, Function, String, String...)}
+     * {@link #of(String, ResolverKey, Function, String, String...)}
      * メソッドのコンバータに恒等写像を与える形式で, インスタンスを生成する.
      * 
      * @param enumString インスタンスの文字列表現
+     * @param propertyKey 対応するプロパティキー
      * @param commandRepresentation コマンドの正式な文字列表現
      * @param otherRepresentations 正式表現以外の文字列表現
      * @return インスタンス
@@ -133,10 +132,12 @@ public final class ArgumentRequiringCommand<T> extends ConsoleOptionCommand {
      * @throws NullPointerException 引数にnullが含まれる場合
      */
     public static ArgumentRequiringCommand<String> identifying(
-            String enumString, String commandRepresentation, String... otherRepresentations) {
+            String enumString,
+            ResolverKey<String> propertyKey,
+            String commandRepresentation, String... otherRepresentations) {
 
         return new ArgumentRequiringCommand<String>(
-                enumString, String.class, s -> s,
+                enumString, propertyKey, s -> s,
                 commandRepresentation, otherRepresentations);
     }
 }
