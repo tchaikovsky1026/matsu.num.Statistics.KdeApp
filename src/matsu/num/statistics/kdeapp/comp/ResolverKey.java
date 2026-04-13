@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.28
+ * 2026.4.13
  */
 package matsu.num.statistics.kdeapp.comp;
 
@@ -30,13 +30,13 @@ public final class ResolverKey<T> {
     /**
      * 唯一のコンストラクタ.
      *
-     * @param resolverName プロパティ名
+     * @param resolverName Resolver 名
      * @param valueType 値の型
      * @throws NullPointerException 引数にnullが含まれる場合
      */
     private ResolverKey(String resolverName, Class<T> valueType) {
         this.valueType = Objects.requireNonNull(valueType);
-        this.resolverName = resolverName;
+        this.resolverName = Objects.requireNonNull(resolverName);
     }
 
     /**
@@ -50,27 +50,21 @@ public final class ResolverKey<T> {
         return this.valueType.cast(valueObj);
     }
 
-    /**
-     * 等価性を判定する.
-     */
+    /** 等価性を判定する. */
     @Override
     public boolean equals(Object obj) {
         // Object の equals に従う
         return super.equals(obj);
     }
 
-    /**
-     * ハッシュコードを返す.
-     */
+    /** ハッシュコードを返す. */
     @Override
     public int hashCode() {
         // Object の hashCode に従う
         return super.hashCode();
     }
 
-    /**
-     * このインスタンスの文字列表現を返す.
-     */
+    /** このインスタンスの文字列表現を返す. */
     @Override
     public String toString() {
         return resolverName;
@@ -78,6 +72,13 @@ public final class ResolverKey<T> {
 
     /**
      * Resolver キーを返す.
+     * 
+     * <p>
+     * Resolver 名を渡すようになっているが,
+     * インスタンスの equality や識別には使用されない. <br>
+     * 主に, {@link #toString} による文字列生成に使用される. <br>
+     * したがって, Resolver 名に対する規約は {@code null} 制約以外には持たない.
+     * </p>
      * 
      * @param <T> 扱う値の型
      * @param resolverName Resolver 名

@@ -6,14 +6,14 @@
  */
 
 /*
- * 2026.4.11
+ * 2026.4.13
  */
 package matsu.num.statistics.kdeapp.comp;
 
 import java.util.Set;
 
 /**
- * {@link java.util.Properties} からプロパティを読み込み,
+ * {@link java.util.Properties java.util.Properties} からプロパティを読み込み,
  * Resolver を構築する仕組み.
  * 
  * @author Matsuura Y.
@@ -42,7 +42,7 @@ public final class StandardPropertyToResolvers {
     }
 
     /**
-     * 与えたプロパティ ({@link java.util.Properties})
+     * 与えたプロパティ ({@link java.util.Properties java.util.Properties})
      * から ResolverContainer を構築する.
      * 
      * <p>
@@ -51,7 +51,8 @@ public final class StandardPropertyToResolvers {
      * {@link IllegalArgumentException} をスローする
      * (例外メッセージは意味のある文字列である). <br>
      * ただし, 設計図に対して必要なプロパティを全く含まない場合は
-     * Container に登録されないのみで例外はスローされない.
+     * Container に登録されないのみで例外はスローされない
+     * ({@link ResolverDesign} の {@code triggers} で制御される) .
      * </p>
      * 
      * @param properties プロパティ

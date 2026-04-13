@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.23
+ * 2026.4.13
  */
 package matsu.num.statistics.kdeapp.comp;
 
@@ -37,7 +37,7 @@ public final class ResolverContainer {
      * @throws NoSuchElementException キーが登録されていない場合
      * @throws NullPointerException 引数がnull
      */
-    public <T> T get(ResolverKey<T> key) {
+    public <T> T get(ResolverKey<? extends T> key) {
         T out = key.cast(map.get(Objects.requireNonNull(key)));
         if (Objects.isNull(out)) {
             throw new NoSuchElementException("no value of " + key);
@@ -71,8 +71,12 @@ public final class ResolverContainer {
     }
 
     /**
-     * コンテナのビルダ.
+     * コンテナのビルダ. <br>
      * スレッドセーフでない.
+     * 
+     * <p>
+     * このビルダは再利用不可である: ビルド後には使用できない.
+     * </p>
      */
     public static final class Builder {
 
@@ -108,7 +112,7 @@ public final class ResolverContainer {
         /**
          * ビルドする.
          * 
-         * @return コンフィグプロパティ
+         * @return コンテナ
          * @throws IllegalStateException 既にビルドされている場合
          */
         public ResolverContainer build() {
@@ -118,9 +122,7 @@ public final class ResolverContainer {
             return new ResolverContainer(buildMap);
         }
 
-        /**
-         * このビルダの状態を検証する.
-         */
+        /** このビルダの状態を検証する. */
         private void validateIfCanBuild() {
             if (Objects.isNull(map)) {
                 throw new IllegalStateException("already built");

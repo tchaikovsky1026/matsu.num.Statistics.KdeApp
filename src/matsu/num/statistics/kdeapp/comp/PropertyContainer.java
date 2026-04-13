@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.4.7
+ * 2026.4.13
  */
 package matsu.num.statistics.kdeapp.comp;
 
@@ -32,7 +32,7 @@ public final class PropertyContainer {
      * 唯一のコンストラクタ.
      * 
      * <p>
-     * 引数はそのまま代入されるので, 世に出し元で参照漏洩, 安全なMapに詰め替えなど, 適切な処理をすること.
+     * 引数はそのまま代入されるので, 呼び出し元で参照漏洩, 安全なMapに詰め替えなど, 適切な処理をすること.
      * </p>
      * 
      * @param properties マップ
@@ -150,14 +150,18 @@ public final class PropertyContainer {
     }
 
     /**
-     * コンテナのビルダ.
+     * コンテナのビルダ. <br>
      * スレッドセーフでない.
+     * 
+     * <p>
+     * このビルダは再利用不可である: ビルド後には使用できない.
+     * </p>
      */
     public static final class Builder {
 
         private final Map<String, PropertyKey> preparedKeysMap;
 
-        private Map<PropertyKey, String> properties;
+        private volatile Map<PropertyKey, String> properties;
 
         /**
          * 与えられたプロパティキーのセットを候補に持つ, コンテナのビルダを作成する.
@@ -218,7 +222,7 @@ public final class PropertyContainer {
 
     /**
      * 標準APIのプロパティ機能からプロパティコンテナの生成を行うクラス. <br>
-     * このクラスはイミュータブルでスレッドセーフである.
+     * このクラスはイミュータブルでスレッドセーフであり, インスタンスの再利用が可能である.
      */
     public static final class StdApiReader {
 

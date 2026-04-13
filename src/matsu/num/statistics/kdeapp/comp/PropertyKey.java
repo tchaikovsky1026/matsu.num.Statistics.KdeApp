@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.31
+ * 2026.4.13
  */
 package matsu.num.statistics.kdeapp.comp;
 
@@ -21,7 +21,7 @@ import java.util.Objects;
  * </p>
  * 
  * <p>
- * このクラスは, プロパティ名によるequality, comparability を提供する.
+ * このクラスは, プロパティ名による equality, comparability を提供する.
  * </p>
  * 
  * @author Matsuura Y.
@@ -62,9 +62,7 @@ public final class PropertyKey implements Comparable<PropertyKey> {
         Objects.requireNonNull(propertyName);
     }
 
-    /**
-     * 与えたインスタンスが自身と等価かどうかを判定する.
-     */
+    /** 与えたインスタンスが自身と等価かどうかを判定する. */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -78,17 +76,13 @@ public final class PropertyKey implements Comparable<PropertyKey> {
         return this.propertyName.equals(target.propertyName);
     }
 
-    /**
-     * このインスタンスのハッシュコードを返す.
-     */
+    /** このインスタンスのハッシュコードを返す. */
     @Override
     public int hashCode() {
         return propertyName.hashCode();
     }
 
-    /**
-     * このインスタンスの文字列表現を返す.
-     */
+    /** このインスタンスの文字列表現を返す. */
     @Override
     public String toString() {
         return propertyName;
