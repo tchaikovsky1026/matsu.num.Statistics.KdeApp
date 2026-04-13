@@ -67,6 +67,7 @@ chmod +x kde1d.sh
 - `--output-separator CHAR` / `--out-sep CHAR`
 - `--output-label-prefix STR` / `--out-label-prefix STR`
 - `--echo-off`
+- `--config`
 
 ##### `--input FILE` / `--in FILE`
 入力ファイルパスを指定するコマンドである.
@@ -105,6 +106,11 @@ Prefix, 入力ファイルの各行の前後の空白は無視される.
 ##### `--echo-off`
 結果を標準出力しないようにするコマンドである.
 指定されない場合, 標準出力に計算結果が表示される.
+
+##### `--config`
+`kde1d` 用のconfigファイルを読み込んでパラメータ入力を省略可能にするコマンドである.
+configファイルとコマンドパラメータの両方が指定される場合, コマンドパラメータを優先する.
+configの詳細は後述する.
 
 #### Input file format
 入力ファイル形式は, 次の通りである.
@@ -189,6 +195,7 @@ chmod +x kde2d.sh
 - `--output-format FORMAT` / `--out-format FORMAT`
 - `--output-label-prefix STR` / `--out-label-prefix STR`
 - `--echo-off`
+- `--config`
 
 ##### `--input FILE` / `--in FILE`
 入力ファイルパスを指定するコマンドである.
@@ -246,6 +253,11 @@ Prefix, 入力ファイルの各行の前後の空白は無視される.
 ##### `--echo-off`
 結果を標準出力しないようにするコマンドである.
 指定されない場合, 標準出力に計算結果が表示される.
+
+##### `--config`
+`kde2d` 用のconfigファイルを読み込んでパラメータ入力を省略可能にするコマンドである.
+configファイルとコマンドパラメータの両方が指定される場合, コマンドパラメータを優先する.
+configの詳細は後述する.
 
 #### Input file format
 入力ファイル形式は, 次の通りである.
