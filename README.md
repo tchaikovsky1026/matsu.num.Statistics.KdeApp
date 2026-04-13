@@ -142,6 +142,30 @@ configの詳細は後述する.
 2.0,0.25
 ```
 
+#### Config
+`kde1d` 用のconfigは, `root` ディレクトリ直下に `kde1d-config.properties` ファイルを配置する.  
+`kde1d-config.properties` は `java.util.Properties` の形式で UTF-8 で作成する.  
+扱えるプロパティは次である.
+
+- `echo`  
+結果を標準出力するかを制御し,
+`on` で結果を標準出力し, `off` で出力しない.  
+コマンド `--echo-off`,  `--echo-on` に対応.
+- `input.commentprefix`  
+入力ファイルのコメント行の開始文字列を指定する.  
+コマンド `--input-comment-prefix STR` に対応.
+- `output.separator`  
+出力における区切り文字を指定する.  
+コマンド `--output-separator CHAR` に対応.
+- `output.label`, `output.labelprefix`  
+`output.label` は結果出力にラベルを含むかを制御し,
+`disabled` でラベル行無し, `enabled` でラベル行有りである.  
+`output.labelprefix` はラベル行の先頭につける文字列を指定する.  
+コマンド `--output-label-prefix STR`, `--output-no-label` に対応.  
+次の場合はパラメータの指定不正である.
+    - `output.label=enabled` かつ `output.labelprefix` の指定なし.
+    - `output.labelprefix` の指定あり, かつ `output.label` の指定なし.
+
 ## Application: kde2d
 `kde2d` は2次元のカーネル密度推定の実行を表すコードネームである.
 
@@ -337,6 +361,36 @@ configの詳細は後述する.
 1.0,0.125,0.5,0.125
 2.0,0.0,0.125,0.0
 ```
+
+#### Config
+`kde1d` 用のconfigは, `root` ディレクトリ直下に `kde1d-config.properties` ファイルを配置する.  
+`kde1d-config.properties` は `java.util.Properties` の形式で UTF-8 で作成する.  
+扱えるプロパティは次である.
+
+- `echo`  
+結果を標準出力するかを制御し,
+`on` で結果を標準出力し, `off` で出力しない.  
+コマンド `--echo-off`,  `--echo-on` に対応.
+- `input.separator`  
+入力ファイルの区切り文字を指定する.  
+コマンド `--input-separator CHAR` に対応.
+- `input.commentprefix`  
+入力ファイルのコメント行の開始文字列を指定する.  
+コマンド `--input-comment-prefix STR` に対応.
+- `output.formattertype`  
+出力フォーマット形式を指定する.  
+コマンド `--output-format FORMAT` に対応.
+- `output.separator`  
+出力における区切り文字を指定する.  
+コマンド `--output-separator CHAR` に対応.
+- `output.label`, `output.labelprefix`  
+`output.label` は結果出力にラベルを含むかを制御し,
+`disabled` でラベル行無し, `enabled` でラベル行有りである.  
+`output.labelprefix` はラベル行の先頭につける文字列を指定する.  
+コマンド `--output-label-prefix STR`, `--output-no-label` に対応.  
+次の場合はパラメータの指定不正である.
+    - `output.label=enabled` かつ `output.labelprefix` の指定なし.
+    - `output.labelprefix` の指定あり, かつ `output.label` の指定なし.
 
 ## Help
 `root` に移動後, 次のようなコマンドを実行することで,
