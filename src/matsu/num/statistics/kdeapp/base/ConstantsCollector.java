@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.4.12
+ * 2026.4.14
  */
 package matsu.num.statistics.kdeapp.base;
 
@@ -40,10 +40,11 @@ public final class ConstantsCollector {
      *              例えば, 次のように行う.
      * 
      *              <pre>
-     * // T を Optional でバインドする
-     * {@code Set<Optional> rawSet = collect(clazz, Optional.class);}
+     * {@code // T を Optional でバインドする
+     * Set<Optional> rawSet = collect(clazz, Optional.class);
      * 
-     * {@code Set<Optional<?>> set = 
+     * // Optional<?> で詰め替えを行う
+     * Set<Optional<?>> set = 
      *         rawSet.stream()
      *             .map(e -> (Optional<?>) e)
      *             .collect(Collectors.toSet());}
