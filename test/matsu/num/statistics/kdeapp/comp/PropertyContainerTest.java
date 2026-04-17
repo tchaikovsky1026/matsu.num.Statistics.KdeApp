@@ -153,7 +153,7 @@ final class PropertyContainerTest {
             var container = builder.build();
 
             String result = container.toResolvers(Set.of(design))
-                    .get(rKey)
+                    .require(rKey)
                     .toString();
             String expected = sf.apply(s1, s2);
             assertThat(result, is(expected));

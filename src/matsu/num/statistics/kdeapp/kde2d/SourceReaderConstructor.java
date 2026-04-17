@@ -6,17 +6,15 @@
  */
 
 /*
- * 2026.3.29
+ * 2026.4.18
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
 import static matsu.num.statistics.kdeapp.kde2d.Resolvers.*;
 
 import java.nio.file.Path;
-import java.util.NoSuchElementException;
 
 import matsu.num.statistics.kdeapp.comp.ResolverContainer;
-import matsu.num.statistics.kdeapp.exception.ProgrammingBugException;
 import matsu.num.statistics.kdeapp.format.CommentPrefix;
 import matsu.num.statistics.kdeapp.format.Separator;
 import matsu.num.statistics.kdeapp.kde2d.task.Kde2dSourceReader;
@@ -48,13 +46,9 @@ final class SourceReaderConstructor {
      * @throws NullPointerException {@inheritDoc }
      */
     Kde2dSourceReader apply(ResolverContainer property) {
-        try {
-            Path path = property.get(INPUT_FILE_PATH);
-            CommentPrefix commentPrefix = property.get(INPUT_COMMENT_PREFIX);
-            Separator separator = property.get(INPUT_SEPARATOR);
-            return new Kde2dSourceReader(path, separator, commentPrefix);
-        } catch (NoSuchElementException e) {
-            throw new ProgrammingBugException(e.getMessage());
-        }
+        Path path = property.require(INPUT_FILE_PATH);
+        CommentPrefix commentPrefix = property.require(INPUT_COMMENT_PREFIX);
+        Separator separator = property.require(INPUT_SEPARATOR);
+        return new Kde2dSourceReader(path, separator, commentPrefix);
     }
 }

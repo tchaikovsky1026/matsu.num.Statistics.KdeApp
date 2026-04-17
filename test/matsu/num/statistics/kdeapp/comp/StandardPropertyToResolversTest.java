@@ -52,7 +52,7 @@ final class StandardPropertyToResolversTest {
             p.setProperty(pKey1.name(), s1);
             p.setProperty(pKey2.name(), s2);
 
-            String result = loader.parse(p).get(rKey);
+            String result = loader.parse(p).require(rKey);
             assertThat(result, is(joinStr(s1, s2)));
         }
 
