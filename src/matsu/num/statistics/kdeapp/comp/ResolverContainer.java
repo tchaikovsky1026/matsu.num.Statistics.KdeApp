@@ -6,14 +6,13 @@
  */
 
 /*
- * 2026.4.18
+ * 2026.4.20
  */
 package matsu.num.statistics.kdeapp.comp;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 import matsu.num.statistics.kdeapp.exception.ProgrammingBugException;
 
@@ -31,16 +30,16 @@ public final class ResolverContainer {
     }
 
     /**
-     * キーに対する値を返す. <br>
-     * キーが登録されていない場合は {@code Optional.empty()} が返る.
+     * キーに対する値を含むコンテナを返す. <br>
+     * キーが登録されていない場合は空が返る.
      * 
      * @param <T> value type
      * @param key key
      * @return 登録されている値, 登録されていない場合は空
      * @throws NullPointerException 引数がnull
      */
-    public <T> Optional<T> find(ResolverKey<? extends T> key) {
-        return Optional.ofNullable(key.cast(map.get(Objects.requireNonNull(key))));
+    public <T> LookupResult<T> find(ResolverKey<? extends T> key) {
+        return LookupResult.ofNullable(key, key.cast(map.get(key)));
     }
 
     /**
@@ -60,8 +59,8 @@ public final class ResolverContainer {
      */
     public <T> T require(
             ResolverKey<? extends T> key) {
-        return find(key).orElseThrow(
-                () -> new ProgrammingBugException("Missing key: " + key));
+        return find(key).getOrThrow(
+                ProgrammingBugException::new);
     }
 
     /**
