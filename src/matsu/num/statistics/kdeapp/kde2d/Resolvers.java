@@ -6,14 +6,13 @@
  */
 
 /*
- * 2026.4.13
+ * 2026.4.18
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
 import static java.util.stream.Collectors.*;
 
 import java.nio.file.Path;
-import java.util.NoSuchElementException;
 import java.util.Set;
 
 import matsu.num.statistics.kdeapp.base.ConstantsCollector;
@@ -115,14 +114,8 @@ public final class Resolvers {
      * @throws ProgrammingBugException プロパティが網羅されていない場合
      */
     static void validateCompleteness(ResolverContainer property) {
-        ResolverKey<?> key = null;
-        try {
-            for (ResolverKey<?> k : PropertyKeyHolder.properties) {
-                key = k;
-                property.get(k);
-            }
-        } catch (NoSuchElementException e) {
-            throw new ProgrammingBugException("requiring: " + key);
+        for (ResolverKey<?> key : PropertyKeyHolder.properties) {
+            property.require(key);
         }
     }
 

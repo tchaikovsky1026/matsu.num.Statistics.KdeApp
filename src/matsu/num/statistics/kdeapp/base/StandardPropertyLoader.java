@@ -6,17 +6,16 @@
  */
 
 /*
- * 2026.4.11
+ * 2026.4.14
  */
 package matsu.num.statistics.kdeapp.base;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Objects;
 import java.util.Properties;
 
 /**
@@ -27,7 +26,8 @@ import java.util.Properties;
 public abstract class StandardPropertyLoader {
 
     /**
-     * 非公開のコンストラクタ.
+     * 非公開のコンストラクタ. <br>
+     * 外部での継承は想定されていない.
      */
     private StandardPropertyLoader() {
         super();
@@ -68,7 +68,8 @@ public abstract class StandardPropertyLoader {
      * 
      * <p>
      * {@link #compute()} では,
-     * ファイルが存在しない, ファイルの内容が不正の場合に例外がスローされる.
+     * ファイルが存在しない, ファイルを読み込めない, ファイルの内容が不正である場合に
+     * {@link IllegalStateException} がスローされる.
      * </p>
      * 
      * @param path ファイルパス
@@ -76,19 +77,20 @@ public abstract class StandardPropertyLoader {
      * @throws NullPointerException 引数がnullの場合
      */
     public static StandardPropertyLoader fromFile(Path path) {
-        File f = path.toFile();
+        Objects.requireNonNull(path);
 
         return new StandardPropertyLoader() {
             @Override
             public Properties compute() {
+                if (Files.notExists(path)) {
+                    throw new IllegalStateException("file not found: " + path);
+                }
+
                 Properties p = new Properties();
-                try (InputStreamReader isr =
-                        new InputStreamReader(
-                                new FileInputStream(f), StandardCharsets.UTF_8)) {
-                    p.load(isr);
+                try (BufferedReader br =
+                        Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
+                    p.load(br);
                     return p;
-                } catch (FileNotFoundException fne) {
-                    throw new IllegalStateException("file not found: " + f.getPath());
                 } catch (IOException | IllegalArgumentException e) {
                     throw new IllegalStateException("load failed: " + e.getMessage());
                 }

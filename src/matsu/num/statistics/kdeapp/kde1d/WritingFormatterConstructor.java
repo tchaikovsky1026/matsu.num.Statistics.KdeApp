@@ -6,16 +6,13 @@
  */
 
 /*
- * 2026.3.29
+ * 2026.4.18
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
 import static matsu.num.statistics.kdeapp.kde1d.Resolvers.*;
 
-import java.util.NoSuchElementException;
-
 import matsu.num.statistics.kdeapp.comp.ResolverContainer;
-import matsu.num.statistics.kdeapp.exception.ProgrammingBugException;
 import matsu.num.statistics.kdeapp.kde1d.task.WritingFormatter;
 import matsu.num.statistics.kdeapp.kde1d.task.XyTypeFormatterBuilder;
 
@@ -42,12 +39,8 @@ final class WritingFormatterConstructor {
      * @throws NullPointerException {@inheritDoc }
      */
     WritingFormatter apply(ResolverContainer property) {
-        try {
-            var builder = new XyTypeFormatterBuilder(property.get(OUTPUT_SEPARATOR));
-            property.get(OUTPUT_LABEL_PREFIX_SETTING).accept(builder);
-            return builder.build();
-        } catch (NoSuchElementException e) {
-            throw new ProgrammingBugException(e.getMessage());
-        }
+        var builder = new XyTypeFormatterBuilder(property.require(OUTPUT_SEPARATOR));
+        property.require(OUTPUT_LABEL_PREFIX_SETTING).accept(builder);
+        return builder.build();
     }
 }

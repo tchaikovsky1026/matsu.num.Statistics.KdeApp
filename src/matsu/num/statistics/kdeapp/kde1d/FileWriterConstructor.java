@@ -6,14 +6,11 @@
  */
 
 /*
- * 2026.3.28
+ * 2026.4.18
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
-import java.util.NoSuchElementException;
-
 import matsu.num.statistics.kdeapp.comp.ResolverContainer;
-import matsu.num.statistics.kdeapp.exception.ProgrammingBugException;
 import matsu.num.statistics.kdeapp.kde1d.task.ResultFileWriter;
 import matsu.num.statistics.kdeapp.kde1d.task.ResultWriter;
 
@@ -34,10 +31,6 @@ final class FileWriterConstructor {
      * @throws NullPointerException {@inheritDoc }
      */
     ResultWriter apply(ResolverContainer property) {
-        try {
-            return property.get(Resolvers.OUTPUT_FILE_WRITER);
-        } catch (NoSuchElementException e) {
-            throw new ProgrammingBugException(e.getMessage());
-        }
+        return property.require(Resolvers.OUTPUT_FILE_WRITER);
     }
 }

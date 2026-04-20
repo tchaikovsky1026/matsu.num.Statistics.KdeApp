@@ -6,16 +6,13 @@
  */
 
 /*
- * 2026.3.29
+ * 2026.4.18
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
 import static matsu.num.statistics.kdeapp.kde2d.Resolvers.*;
 
-import java.util.NoSuchElementException;
-
 import matsu.num.statistics.kdeapp.comp.ResolverContainer;
-import matsu.num.statistics.kdeapp.exception.ProgrammingBugException;
 import matsu.num.statistics.kdeapp.format.Separator;
 import matsu.num.statistics.kdeapp.kde2d.task.WritingFormatter;
 
@@ -36,13 +33,9 @@ final class FormatterConstructor {
      * @throws NullPointerException {@inheritDoc }
      */
     WritingFormatter apply(ResolverContainer property) {
-        try {
-            Separator separator = property.get(OUTPUT_SEPARATOR);
-            var builder = property.get(OUTPUT_FORMATTER_TYPE).createBuilder(separator);
-            property.get(OUTPUT_LABEL_PREFIX_SETTING).accept(builder);
-            return builder.build();
-        } catch (NoSuchElementException e) {
-            throw new ProgrammingBugException(e.getMessage());
-        }
+        Separator separator = property.require(OUTPUT_SEPARATOR);
+        var builder = property.require(OUTPUT_FORMATTER_TYPE).createBuilder(separator);
+        property.require(OUTPUT_LABEL_PREFIX_SETTING).accept(builder);
+        return builder.build();
     }
 }
