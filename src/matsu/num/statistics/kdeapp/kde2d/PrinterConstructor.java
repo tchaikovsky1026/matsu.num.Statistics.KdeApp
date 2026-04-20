@@ -6,17 +6,14 @@
  */
 
 /*
- * 2026.3.12
+ * 2026.4.18
  */
 package matsu.num.statistics.kdeapp.kde2d;
-
-import static matsu.num.statistics.kdeapp.kde2d.Commands.*;
 
 import java.io.PrintStream;
 import java.util.Objects;
 
-import matsu.num.statistics.kdeapp.command.ComponentConstructor;
-import matsu.num.statistics.kdeapp.command.ConsoleParameters;
+import matsu.num.statistics.kdeapp.comp.ResolverContainer;
 import matsu.num.statistics.kdeapp.kde2d.task.ResultDisplayPrinter;
 import matsu.num.statistics.kdeapp.kde2d.task.ResultWriter;
 
@@ -25,7 +22,7 @@ import matsu.num.statistics.kdeapp.kde2d.task.ResultWriter;
  * 
  * @author Matsuura Y.
  */
-final class PrinterConstructor implements ComponentConstructor<ResultWriter> {
+final class PrinterConstructor {
 
     private final PrintStream out;
     private final PrintStream err;
@@ -46,14 +43,7 @@ final class PrinterConstructor implements ComponentConstructor<ResultWriter> {
     /**
      * @throws NullPointerException {@inheritDoc }
      */
-    @Override
-    public ResultWriter apply(ConsoleParameters interpreter) {
-        ResultWriter writer = ResultWriter.nullWriter();
-
-        if (!interpreter.contains(ECHO_OFF)) {
-            writer = writer.andThen(new ResultDisplayPrinter(out, err));
-        }
-
-        return writer;
+    ResultWriter apply(ResolverContainer property) {
+        return property.require(Resolvers.ECHO).get(out, err);
     }
 }

@@ -6,17 +6,15 @@
  */
 
 /*
- * 2026.3.11
+ * 2026.4.18
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
-import static matsu.num.statistics.kdeapp.kde1d.Commands.*;
+import static matsu.num.statistics.kdeapp.kde1d.Resolvers.*;
 
 import java.nio.file.Path;
 
-import matsu.num.statistics.kdeapp.command.ComponentConstructor;
-import matsu.num.statistics.kdeapp.command.ConsoleParameters;
-import matsu.num.statistics.kdeapp.exception.ProgrammingBugException;
+import matsu.num.statistics.kdeapp.comp.ResolverContainer;
 import matsu.num.statistics.kdeapp.format.CommentPrefix;
 import matsu.num.statistics.kdeapp.kde1d.task.Kde1dSourceReader;
 
@@ -35,7 +33,7 @@ import matsu.num.statistics.kdeapp.kde1d.task.Kde1dSourceReader;
  * 
  * @author Matsuura Y.
  */
-final class SourceReaderConstructor implements ComponentConstructor<Kde1dSourceReader> {
+final class SourceReaderConstructor {
 
     /**
      * 唯一のコンストラクタ.
@@ -46,15 +44,9 @@ final class SourceReaderConstructor implements ComponentConstructor<Kde1dSourceR
     /**
      * @throws NullPointerException {@inheritDoc }
      */
-    @Override
-    public Kde1dSourceReader apply(ConsoleParameters interpreter) {
-
-        // INPUT_FILE_PATH は必須パラメータなので必ず取得できる.
-        Path path = interpreter.valueOf(INPUT_FILE_PATH)
-                .orElseThrow(() -> new ProgrammingBugException("unreachable"));
-
-        CommentPrefix commentPrefix = interpreter.valueOf(INPUT_COMMENT_PREFIX)
-                .orElse(CommentPrefix.of("#"));
+    Kde1dSourceReader apply(ResolverContainer property) {
+        Path path = property.require(INPUT_FILE_PATH);
+        CommentPrefix commentPrefix = property.require(INPUT_COMMENT_PREFIX);
         return new Kde1dSourceReader(path, commentPrefix);
     }
 }

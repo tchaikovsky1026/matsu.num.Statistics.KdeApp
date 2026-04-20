@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.3.18
+ * 2026.3.22
  */
 package matsu.num.statistics.kdeapp.kde2d.help;
 
@@ -36,6 +36,11 @@ final class CommandDescriptions {
     static final CommandDescription ECHO_OFF;
 
     /**
+     * 結果を標準出力することを表現するシングルトンインスタンス.
+     */
+    static final CommandDescription ECHO_ON;
+
+    /**
      * 入力ファイルの指定を表現するシングルトンインスタンス.
      */
     static final CommandDescription INPUT_FILE_PATH;
@@ -49,6 +54,11 @@ final class CommandDescriptions {
      * 上書き禁止モードである出力ファイルの指定を表現するシングルトンインスタンス.
      */
     static final CommandDescription OUTPUT_FILE_PATH;
+
+    /**
+     * ファイル出力しないことを表現するシングルトンインスタンス.
+     */
+    static final CommandDescription OUTPUT_NONE;
 
     /**
      * 入力のコメント行の prefix の指定を表現するシングルトンインスタンス.
@@ -74,6 +84,11 @@ final class CommandDescriptions {
      * 出力のラベルに付与する prefix の指定を表現するシングルトンインスタンス.
      */
     static final CommandDescription OUTPUT_LABEL_PREFIX;
+
+    /**
+     * ラベルを出力しないことを表現するシングルトンインスタンス.
+     */
+    static final CommandDescription OUTPUT_NO_LABEL;
 
     static {
         List<CommandDescription> list = new ArrayList<CommandDescription>();
@@ -101,17 +116,24 @@ final class CommandDescriptions {
 
         OUTPUT_FILE_PATH =
                 CommandDescription.of(
-                        Commands.OUTPUT_FILE_PATH, "FILE",
+                        Commands.OUTPUT, "FILE",
                         "output result to file (ERROR if it exists)",
                         catOutput);
         list.add(OUTPUT_FILE_PATH);
 
         OUTPUT_FORCE_FILE_PATH =
                 CommandDescription.of(
-                        Commands.OUTPUT_FORCE_FILE_PATH, "FILE",
+                        Commands.OUTPUT_FORCE, "FILE",
                         "overwrite the output file if it exists",
                         catOutput);
         list.add(OUTPUT_FORCE_FILE_PATH);
+
+        OUTPUT_NONE =
+                CommandDescription.of(
+                        Commands.OUTPUT_NONE,
+                        "does not output result to file",
+                        catOutput);
+        list.add(OUTPUT_NONE);
 
         OUTPUT_SEPARATOR =
                 CommandDescription.of(
@@ -134,12 +156,26 @@ final class CommandDescriptions {
                         catOutput);
         list.add(OUTPUT_LABEL_PREFIX);
 
+        OUTPUT_NO_LABEL =
+                CommandDescription.of(
+                        Commands.OUTPUT_NO_LABEL,
+                        "does not write label to the output file",
+                        catOutput);
+        list.add(OUTPUT_NO_LABEL);
+
         ECHO_OFF =
                 CommandDescription.of(
                         Commands.ECHO_OFF,
                         "not display the result to stdout",
                         catOther);
         list.add(ECHO_OFF);
+
+        ECHO_ON =
+                CommandDescription.of(
+                        Commands.ECHO_ON,
+                        "display the result to stdout",
+                        catOther);
+        list.add(ECHO_ON);
 
         commands = List.copyOf(list);
     }

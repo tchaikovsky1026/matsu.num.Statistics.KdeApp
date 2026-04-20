@@ -5,27 +5,27 @@
  * http://opensource.org/licenses/mit-license.php
  */
 
-package matsu.num.statistics.kdeapp.command;
+package matsu.num.statistics.kdeapp.comp;
 
-import static matsu.num.statistics.kdeapp.command.DummyCommandListForTesting.*;
-import static org.hamcrest.MatcherAssert.*;
-import static org.hamcrest.Matchers.*;
+import static matsu.num.statistics.kdeapp.comp.DummyCommandListForTesting.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.Test.None;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
+import matsu.num.statistics.kdeapp.base.DummySupplierForTesting;
 import matsu.num.statistics.kdeapp.exception.IllegalParameterException;
+import matsu.num.statistics.kdeapp.exception.ProgrammingBugException;
 
 /**
  * {@link ConsoleParameters} のテスト.
@@ -39,10 +39,12 @@ final class ConsoleParametersTest {
         public void test_コマンドに同一の文字列表現がある場合は例外() {
 
             // ArgCommandとコマンド文字列が重複するNoArgCommand
-            NoArgumentCommand command = NoArgumentCommand.of(
-                    "DUMMY_4", DUMMY_ARG_1.commandString());
+            NoArgumentCommand<?> command = NoArgumentCommand.of(
+                    "DUMMY_4", ResolverKey.of("dummy-4", String.class),
+                    DummySupplierForTesting.instance(""),
+                    DUMMY_ARG_1.commandString());
 
-            ConsoleParameters.Interpreter.of(
+            ConsoleParameterInterpreter.of(
                     Set.of(command),
                     Set.of(DUMMY_ARG_1),
                     CommandAssignmentRule.nullRule());
@@ -55,7 +57,7 @@ final class ConsoleParametersTest {
         @DataPoints
         public static List<String[]> argsList;
 
-        private ConsoleParameters.Interpreter interpreter;
+        private ConsoleParameterInterpreter interpreter;
 
         @BeforeClass
         public static void before_引数リストの作成() {
@@ -81,7 +83,7 @@ final class ConsoleParametersTest {
 
         @Before
         public void before_解釈器の用意() {
-            interpreter = ConsoleParameters.Interpreter.of(
+            interpreter = ConsoleParameterInterpreter.of(
                     Set.of(DUMMY_NO_ARG_1, DUMMY_NO_ARG_2, DUMMY_NO_ARG_3),
                     Set.of(DUMMY_ARG_1, DUMMY_ARG_2, DUMMY_ARG_3),
                     CommandAssignmentRule.nullRule());
@@ -96,11 +98,11 @@ final class ConsoleParametersTest {
 
     public static class 解釈の異常系に関するテスト {
 
-        private ConsoleParameters.Interpreter interpreter;
+        private ConsoleParameterInterpreter interpreter;
 
         @Before
         public void before_解釈器の用意() {
-            interpreter = ConsoleParameters.Interpreter.of(
+            interpreter = ConsoleParameterInterpreter.of(
                     Set.of(DUMMY_NO_ARG_1, DUMMY_NO_ARG_2, DUMMY_NO_ARG_3),
                     Set.of(DUMMY_ARG_1, DUMMY_ARG_2, DUMMY_ARG_3),
                     CommandAssignmentRule.nullRule());
@@ -124,45 +126,40 @@ final class ConsoleParametersTest {
     public static class 解釈結果の取得に関するテスト {
 
         /*
-         * dummy-arg-1 と dummy-noarg-1 を設定
+         * dummy-arg-1 と dummy-noarg-2 を設定
          */
 
         private final String file = "test.txt";
 
-        private ConsoleParameters interpretedParameters;
+        private ResolverContainer property;
 
         @Before
         public void before_解釈の構築() {
-            ConsoleParameters.Interpreter interpreter = ConsoleParameters.Interpreter.of(
+            ConsoleParameterInterpreter interpreter = ConsoleParameterInterpreter.of(
                     Set.of(DUMMY_NO_ARG_1, DUMMY_NO_ARG_2, DUMMY_NO_ARG_3),
                     Set.of(DUMMY_ARG_1, DUMMY_ARG_2, DUMMY_ARG_3),
                     CommandAssignmentRule.nullRule());
 
             // インプットファイル と dummy-no-arg を設定
             String[] args = {
-                    DUMMY_ARG_1.commandString(), file, DUMMY_NO_ARG_1.commandString()
+                    DUMMY_ARG_1.commandString(), file, DUMMY_NO_ARG_2.commandString()
             };
-            interpretedParameters = interpreter.interpret(args);
+            property = interpreter.interpret(args);
         }
 
-        @Test
-        public void test_da1は設定ずみ() {
-            assertThat(interpretedParameters.valueOf(DUMMY_ARG_1).get(), is(file));
+        @Test(expected = None.class)
+        public void test_d1は設定ずみ() {
+            property.require(DUMMY_1);
         }
 
-        @Test
-        public void test_da2は設定されていない() {
-            assertThat(interpretedParameters.valueOf(DUMMY_ARG_2), is(Optional.empty()));
+        @Test(expected = None.class)
+        public void test_d2は設定ずみ() {
+            property.require(DUMMY_2);
         }
 
-        @Test
-        public void test_dna1は設定済み() {
-            assertThat(interpretedParameters.contains(DUMMY_NO_ARG_1), is(true));
-        }
-
-        @Test
-        public void test_dna2は設定されていない() {
-            assertThat(interpretedParameters.contains(DUMMY_NO_ARG_2), is(false));
+        @Test(expected = ProgrammingBugException.class)
+        public void test_d3は設定されていない() {
+            property.require(DUMMY_3);
         }
     }
 }

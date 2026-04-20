@@ -6,23 +6,22 @@
  */
 
 /*
- * 2026.3.12
+ * 2026.4.18
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
-import static matsu.num.statistics.kdeapp.kde2d.Commands.*;
+import static matsu.num.statistics.kdeapp.kde2d.Resolvers.*;
 
-import matsu.num.statistics.kdeapp.command.ComponentConstructor;
-import matsu.num.statistics.kdeapp.command.ConsoleParameters;
+import matsu.num.statistics.kdeapp.comp.ResolverContainer;
+import matsu.num.statistics.kdeapp.format.Separator;
 import matsu.num.statistics.kdeapp.kde2d.task.WritingFormatter;
-import matsu.num.statistics.kdeapp.kde2d.task.WritingFormatter.Builder;
 
 /**
  * {@link WritingFormatter} の構築器.
  * 
  * @author Matsuura Y.
  */
-final class FormatterConstructor implements ComponentConstructor<WritingFormatter> {
+final class FormatterConstructor {
 
     /**
      * 唯一のコンストラクタ.
@@ -33,16 +32,10 @@ final class FormatterConstructor implements ComponentConstructor<WritingFormatte
     /**
      * @throws NullPointerException {@inheritDoc }
      */
-    @Override
-    public WritingFormatter apply(ConsoleParameters interpreter) {
-        Builder<? extends Builder<?>> builder = interpreter.valueOf(OUTPUT_FORMAT_TYPE)
-                .orElse(FormatterBuilderSupplier.XYZ)
-                .createBuilder();
-
-        interpreter.valueOf(OUTPUT_LABEL_PREFIX)
-                .ifPresent(header -> builder.enableLabel(header));
-        interpreter.valueOf(OUTPUT_SEPARATOR)
-                .ifPresent(separator -> builder.setSeparator(separator));
+    WritingFormatter apply(ResolverContainer property) {
+        Separator separator = property.require(OUTPUT_SEPARATOR);
+        var builder = property.require(OUTPUT_FORMATTER_TYPE).createBuilder(separator);
+        property.require(OUTPUT_LABEL_PREFIX_SETTING).accept(builder);
         return builder.build();
     }
 }

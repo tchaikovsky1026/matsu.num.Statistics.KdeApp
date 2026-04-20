@@ -23,6 +23,9 @@ import java.util.stream.Stream;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
+import org.junit.experimental.theories.DataPoints;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
 /**
@@ -33,13 +36,37 @@ final class Kde1dCliRunnerTest {
 
     public static final Class<?> TEST_CLASS = Kde1dCliRunner.class;
 
+    @RunWith(Theories.class)
     public static class 処理の実行のテスト {
 
-        private final Path inputFile = Path.of("test/resources/kde1d test.txt");
-        private final Path outputDir = Path.of("test/output");
-        private final Path outputFile = outputDir.resolve("kde1d result.txt");
+        private static final Path inputFile = Path.of("test/resources/kde1d test.txt");
+        private static final Path outputDir = Path.of("test/output");
+        private static final Path outputFile = outputDir.resolve("kde1d result.txt");
 
-        private final String commentChar = "#";
+        private static final String commentChar = "#";
+
+        @DataPoints
+        public static String[][] args = {
+                {
+                        INPUT_FILE_PATH.commandString(), inputFile.toString(),
+                        INPUT_COMMENT_PREFIX.commandString(), commentChar,
+                        OUTPUT.commandString(), outputFile.toString(),
+                        OUTPUT_SEPARATOR.commandString(), ",",
+                        OUTPUT_LABEL_PREFIX.commandString(), "//",
+                        ECHO_OFF.commandString()
+                },
+                {
+                        INPUT_FILE_PATH.commandString(), inputFile.toString(),
+                        INPUT_COMMENT_PREFIX.commandString(), commentChar,
+                        OUTPUT_NONE.commandString(),
+                        OUTPUT_SEPARATOR.commandString(), ",",
+                        OUTPUT_NO_LABEL.commandString(),
+                        ECHO_ON.commandString()
+                },
+                {
+                        INPUT_FILE_PATH.commandString(), inputFile.toString()
+                }
+        };
 
         @Before
         public void before_ハッピーパスの準備() throws IOException {
@@ -47,8 +74,8 @@ final class Kde1dCliRunnerTest {
             deleteDir(outputDir);
         }
 
-        @Test
-        public void test_ハッピーパス() throws Exception {
+        @Theory
+        public void test_ハッピーパス(String[] arg) throws Exception {
             if (!Files.exists(inputFile)) {
                 throw new AssertionError("does not exists: " + inputFile.toAbsolutePath());
             }
@@ -58,11 +85,7 @@ final class Kde1dCliRunnerTest {
 
             assertThat(
                     new Kde1dCliRunner().run(
-                            new String[] {
-                                    INPUT_FILE_PATH.commandString(), inputFile.toString(),
-                                    OUTPUT_FORCE_FILE_PATH.commandString(), outputFile.toString(),
-                                    INPUT_COMMENT_PREFIX.commandString(), commentChar
-                            }, out, err),
+                            arg, out, err),
                     is(0));
         }
     }

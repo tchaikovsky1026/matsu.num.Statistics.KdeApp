@@ -1,8 +1,7 @@
 # matsu.num.Statistics.KdeApp
-`matsu.num.Statistics.KdeApp` は Java 言語でカーネル密度推定を実行する App を提供する.
-
-API ではないが, Semantic Versioning と類似したバージョン付与を行う.
-現在はバージョン `1.0.0` であり, Java 17 に準拠する.
+`matsu.num.Statistics.KdeApp` は Java 言語でカーネル密度推定を実行する App を提供する.  
+API ではないが, Semantic Versioning と類似したバージョン付与を行う.  
+現在はバージョン `1.1.0` であり, Java 17 に準拠する.
 
 ## Dependency
 このソフトウェアは次のモジュールを要求する.
@@ -27,11 +26,11 @@ API ではないが, Semantic Versioning と類似したバージョン付与を
 - 出力される範囲, 空間分解能
 
 ただしこの自動決定方法について, 将来的にアルゴリズムが変更される
-(バージョンの MINOR UP で対応される) 可能性がある.
+(バージョンの MINOR UP で対応される) 可能性がある.  
 カーネル関数の種類は, おそらく Gaussian カーネルである.
 
 ### Execution
-共通処理として, ターミナルを起動し, カレントディレクトリを `root` に移動する.
+共通処理として, ターミナルを起動し, カレントディレクトリを `root` に移動する.  
 その後, Windows と macOS / Linux で次のようになる.
 
 #### Windows
@@ -63,48 +62,59 @@ chmod +x kde1d.sh
 
 - `--input FILE` / `--in FILE`
 - `--input-comment-prefix STR` / `--in-comment-prefix STR`
-- `--output FILE` / `--out FILE`, または `--output-force FILE` / `--out-force FILE`
+- `--output FILE` / `--out FILE`, または `--output-force FILE` / `--out-force FILE`, または `--output-none` / `--out-none`
 - `--output-separator CHAR` / `--out-sep CHAR`
-- `--output-label-prefix STR` / `--out-label-prefix STR`
-- `--echo-off`
+- `--output-label-prefix STR` / `--out-label-prefix STR`, または `--output-no-label` / `--out-no-label`
+- `--echo-off`, または `--echo-on`
+- `--config`
 
 ##### `--input FILE` / `--in FILE`
-入力ファイルパスを指定するコマンドである.
-このパラメータは必ず指定されなければならない.
+入力ファイルパスを指定するコマンドである.  
+このパラメータは必ず指定されなければならない.  
 指定されない場合, 例外がスローされる.
 
 ##### `--input-comment-prefix STR` / `--in-comment-prefix STR`
-入力ファイルのコメント行の開始文字列を指定するコマンドである.
-指定されない場合, `#` がコメント開始文字列となる.
+入力ファイルのコメント行の開始文字列を指定するコマンドである.  
+指定されない場合, `#` がコメント開始文字列となる.  
+Prefixに空文字は禁止されている.  
 
-Prefixに空文字は禁止されている.
-Prefix, 入力ファイルの各行の前後の空白は無視される.
+##### `--output FILE` / `--out FILE`, または `--output-force FILE` / `--out-force FILE`, または `--output-none` / `--out-none`
 
-##### `--output FILE` / `--out FILE`, または `--output-force FILE` / `--out-force FILE`
-結果のファイル出力を行うコマンドである.
+`--output FILE`, `--output-force FILE` は結果のファイル出力を行うコマンドである.  
 `--output` はファイルが存在した場合はエラーとなり,
-`--output-force` はファイルが存在した場合は上書きする.
-ファイルパスまでのディレクトリは自動で生成される.
+`--output-force` はファイルが存在した場合は上書きする.  
+ファイルパスまでのディレクトリは自動で生成される.  
+`--output-none` は結果のファイル出力を行わないコマンドである.
 
-`--output-force`, `--output`
-はどちらかしか指定できない.
-どちらも指定されない場合, ファイル出力されない.
+`--output-force`, `--output`, `--output-none`
+はいずれかしか指定できない.  
+いずれも指定されない場合, ファイル出力されない.
 
 ##### `--output-separator CHAR` / `--out-sep CHAR`
-出力における区切り文字を指定するコマンドである.
+出力における区切り文字を指定するコマンドである.  
 指定されない場合, `\t` が区切り文字となる.
 
 区切り文字に指定できる文字パターンは次の通りである.
 - ASCII 1文字
 - エスケープシーケンス: `"\t"`, `"\\"`
 
-##### `--output-label-prefix STR` / `--out-label-prefix STR`
-出力のラベル行の先頭につける文字列を指定するコマンドである.
-指定されない場合, ラベルを出力しない.
+##### `--output-label-prefix STR` / `--out-label-prefix STR`, または `--output-no-label` / `--out-no-label`
+`--output-label-prefix` は出力のラベル行の先頭につける文字列を指定するコマンドである.　　
+`--output-no-label` はラベル出力しないコマンドである.  
 
-##### `--echo-off`
-結果を標準出力しないようにするコマンドである.
+`--output-label-prefix`, `--output-no-label`
+はどちらかしか指定できない.  
+どちらもも指定されない場合, ラベルを出力しない.
+
+##### `--echo-off`, または `--echo-on`
+`--echo-off` は結果を標準出力しないようにするコマンドであり,
+`--echo-on` は標準出力するコマンドである.  
 指定されない場合, 標準出力に計算結果が表示される.
+
+##### `--config`
+`kde1d` 用のconfigファイルを読み込んでパラメータ入力を省略可能にするコマンドである.　　
+configファイルとコマンドパラメータの両方が指定される場合, コマンドパラメータを優先する.　　
+configの詳細は後述する.
 
 #### Input file format
 入力ファイル形式は, 次の通りである.
@@ -135,6 +145,30 @@ Prefix, 入力ファイルの各行の前後の空白は無視される.
 1.0,0.5
 2.0,0.25
 ```
+
+#### Config
+`kde1d` 用のconfigは, `root` ディレクトリ直下に `kde1d-config.properties` ファイルを配置する.  
+`kde1d-config.properties` は `java.util.Properties` の形式で UTF-8 で作成する.  
+扱えるプロパティは次である.
+
+- `echo`  
+結果を標準出力するかを制御し,
+`on` で結果を標準出力し, `off` で出力しない.  
+コマンド `--echo-off`,  `--echo-on` に対応.
+- `input.commentprefix`  
+入力ファイルのコメント行の開始文字列を指定する.  
+コマンド `--input-comment-prefix STR` に対応.
+- `output.separator`  
+出力における区切り文字を指定する.  
+コマンド `--output-separator CHAR` に対応.
+- `output.label`, `output.labelprefix`  
+`output.label` は結果出力にラベルを含むかを制御し,
+`disabled` でラベル行無し, `enabled` でラベル行有りである.  
+`output.labelprefix` はラベル行の先頭につける文字列を指定する.  
+コマンド `--output-label-prefix STR`, `--output-no-label` に対応.  
+次の場合はパラメータの指定不正である.
+    - `output.label=enabled` かつ `output.labelprefix` の指定なし.
+    - `output.labelprefix` の指定あり, かつ `output.label` の指定なし.
 
 ## Application: kde2d
 `kde2d` は2次元のカーネル密度推定の実行を表すコードネームである.
@@ -184,44 +218,45 @@ chmod +x kde2d.sh
 - `--input FILE` / `--in FILE`
 - `--input-comment-prefix STR` / `--in-comment-prefix STR` 
 - `--input-separator CHAR` / `--in-sep CHAR`
-- `--output FILE` / `--out FILE`, または `--output-force FILE` / `--out-force FILE`
+- `--output FILE` / `--out FILE`,　または `--output-force FILE` / `--out-force FILE`, または `--output-none` / `--out-none`
 - `--output-separator CHAR` / `--out-sep CHAR`
 - `--output-format FORMAT` / `--out-format FORMAT`
-- `--output-label-prefix STR` / `--out-label-prefix STR`
-- `--echo-off`
+- `--output-label-prefix STR` / `--out-label-prefix STR`, または `--output-no-label` / `--out-no-label`
+- `--echo-off`, または `--echo-on`
+- `--config`
 
 ##### `--input FILE` / `--in FILE`
-入力ファイルパスを指定するコマンドである.
-このパラメータは必ず指定されなければならない.
+入力ファイルパスを指定するコマンドである.  
+このパラメータは必ず指定されなければならない.  
 指定されない場合, 例外がスローされる.
 
 ##### `--input-comment-prefix STR` / `--in-comment-prefix STR`
-入力ファイルのコメント行の開始文字列を指定するコマンドである.
-指定されない場合, `#` がコメント開始文字列となる.
-
-Prefixに空文字は禁止されている.
-Prefix, 入力ファイルの各行の前後の空白は無視される.
+入力ファイルのコメント行の開始文字列を指定するコマンドである.  
+指定されない場合, `#` がコメント開始文字列となる.  
+Prefixに空文字は禁止されている.  
 
 ##### `--input-separator CHAR` / `--in-sep CHAR`
-入力ファイルにおける区切り文字を指定するコマンドである.
+入力ファイルにおける区切り文字を指定するコマンドである.  
 指定されない場合, `\t` が区切り文字となる.
 
 区切り文字に指定できる文字パターンは次の通りである.
 - ASCII 1文字
 - エスケープシーケンス: `"\t"`, `"\\"`
 
-##### `--output FILE` / `--out FILE`, または `--output-force FILE` / `--out-force FILE`
-結果のファイル出力を行うコマンドである.
-`--output` はファイルが存在した場合はエラーとなり,
-`--output-force` はファイルが存在した場合は上書きする.
-ファイルパスまでのディレクトリは自動で生成される.
+##### `--output FILE` / `--out FILE`, または `--output-force FILE` / `--out-force FILE`, または `--output-none` / `--out-none`
 
-`--output-force`, `--output`
-はどちらかしか指定できない.
-どちらも指定されない場合, ファイル出力されない.
+`--output FILE`, `--output-force FILE` は結果のファイル出力を行うコマンドである.  
+`--output` はファイルが存在した場合はエラーとなり,
+`--output-force` はファイルが存在した場合は上書きする.  
+ファイルパスまでのディレクトリは自動で生成される.  
+`--output-none` は結果のファイル出力を行わないコマンドである.
+
+`--output-force`, `--output`, `--output-none`
+はいずれかしか指定できない.  
+いずれも指定されない場合, ファイル出力されない.
 
 ##### `--output-separator CHAR` / `--out-sep CHAR`
-出力における区切り文字を指定するコマンドである.
+出力における区切り文字を指定するコマンドである.  
 指定されない場合, `\t` が区切り文字となる.
 
 区切り文字に指定できる文字パターンは次の通りである.
@@ -229,23 +264,33 @@ Prefix, 入力ファイルの各行の前後の空白は無視される.
 - エスケープシーケンス: `"\t"`, `"\\"`
 
 ##### `--output-format FORMAT` / `--out-format FORMAT`
-結果出力のフォーマット形式を指定する.
+結果出力のフォーマット形式を指定する.  
 形式名は次の通りである.
 
 - `xyz`: 1行が1値を表す, 縦持ち形式を表す.
 - `xyz-block`: 1行が1値を表す縦持ちで, メジャー値 (x値) のまとまりでブロック構造をとる形式を表す.
 - `matrix`: 値を2次元に並べて表す, 行列形式を表す.
 
-それぞれの形式に対する出力例は後述.
+それぞれの形式に対する出力例は後述.  
 指定されない場合は `xyz` となる.
 
-##### `--output-label-prefix STR` / `--out-label-prefix STR`
-出力のラベル行の先頭につける文字列を指定するコマンドである.
-指定されない場合, ラベルを出力しない.
+##### `--output-label-prefix STR` / `--out-label-prefix STR`, または `--output-no-label` / `--out-no-label`
+`--output-label-prefix` は出力のラベル行の先頭につける文字列を指定するコマンドである.　　
+`--output-no-label` はラベル出力しないコマンドである.  
 
-##### `--echo-off`
-結果を標準出力しないようにするコマンドである.
+`--output-label-prefix`, `--output-no-label`
+はどちらかしか指定できない.  
+どちらもも指定されない場合, ラベルを出力しない.
+
+##### `--echo-off`, または `--echo-on`
+`--echo-off` は結果を標準出力しないようにするコマンドであり,
+`--echo-on` は標準出力するコマンドである.  
 指定されない場合, 標準出力に計算結果が表示される.
+
+##### `--config`
+`kde2d` 用のconfigファイルを読み込んでパラメータ入力を省略可能にするコマンドである.  
+configファイルとコマンドパラメータの両方が指定される場合, コマンドパラメータを優先する.  
+configの詳細は後述する.
 
 #### Input file format
 入力ファイル形式は, 次の通りである.
@@ -325,6 +370,36 @@ Prefix, 入力ファイルの各行の前後の空白は無視される.
 1.0,0.125,0.5,0.125
 2.0,0.0,0.125,0.0
 ```
+
+#### Config
+`kde2d` 用のconfigは, `root` ディレクトリ直下に `kde2d-config.properties` ファイルを配置する.  
+`kde2d-config.properties` は `java.util.Properties` の形式で UTF-8 で作成する.  
+扱えるプロパティは次である.
+
+- `echo`  
+結果を標準出力するかを制御し,
+`on` で結果を標準出力し, `off` で出力しない.  
+コマンド `--echo-off`,  `--echo-on` に対応.
+- `input.separator`  
+入力ファイルの区切り文字を指定する.  
+コマンド `--input-separator CHAR` に対応.
+- `input.commentprefix`  
+入力ファイルのコメント行の開始文字列を指定する.  
+コマンド `--input-comment-prefix STR` に対応.
+- `output.formattertype`  
+出力フォーマット形式を指定する.  
+コマンド `--output-format FORMAT` に対応.
+- `output.separator`  
+出力における区切り文字を指定する.  
+コマンド `--output-separator CHAR` に対応.
+- `output.label`, `output.labelprefix`  
+`output.label` は結果出力にラベルを含むかを制御し,
+`disabled` でラベル行無し, `enabled` でラベル行有りである.  
+`output.labelprefix` はラベル行の先頭につける文字列を指定する.  
+コマンド `--output-label-prefix STR`, `--output-no-label` に対応.  
+次の場合はパラメータの指定不正である.
+    - `output.label=enabled` かつ `output.labelprefix` の指定なし.
+    - `output.labelprefix` の指定あり, かつ `output.label` の指定なし.
 
 ## Help
 `root` に移動後, 次のようなコマンドを実行することで,

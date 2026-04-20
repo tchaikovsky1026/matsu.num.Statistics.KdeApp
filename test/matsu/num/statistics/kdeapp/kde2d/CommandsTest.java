@@ -14,7 +14,7 @@ import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 
-import matsu.num.statistics.kdeapp.command.CommandTestingTool;
+import matsu.num.statistics.kdeapp.comp.CommandTestingTool;
 
 /**
  * {@link Commands} のテスト.

@@ -6,6 +6,6 @@
  */
 
 /**
- * アプリケーションの起動コマンドに関連する要素を扱うパッケージ.
+ * kde1d に関するコンポーネント Resolver を扱う.
  */
-package matsu.num.statistics.kdeapp.command;
+package matsu.num.statistics.kdeapp.kde1d.comp;

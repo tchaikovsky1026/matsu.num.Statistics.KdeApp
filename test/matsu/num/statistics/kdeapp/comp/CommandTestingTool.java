@@ -6,9 +6,9 @@
  */
 
 /*
- * 2026.3.16
+ * 2026.3.23
  */
-package matsu.num.statistics.kdeapp.command;
+package matsu.num.statistics.kdeapp.comp;
 
 /**
  * コマンドに関するテスティングツール.
@@ -28,8 +28,8 @@ public final class CommandTestingTool {
      * @param commands コマンド
      * @throws NullPointerException 引数や引数の要素がnullの場合
      */
-    public static void stdout(Iterable<? extends ConsoleOptionCommand> commands) {
-        for (ConsoleOptionCommand c : commands) {
+    public static void stdout(Iterable<? extends ConsoleOptionCommand<?>> commands) {
+        for (ConsoleOptionCommand<?> c : commands) {
             System.out.println(c + ":");
             for (String s : c.representations()) {
                 System.out.println("  " + s);

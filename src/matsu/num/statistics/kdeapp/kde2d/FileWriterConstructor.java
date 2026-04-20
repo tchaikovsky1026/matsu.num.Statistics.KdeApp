@@ -6,14 +6,11 @@
  */
 
 /*
- * 2026.3.12
+ * 2026.4.18
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
-import static matsu.num.statistics.kdeapp.kde2d.Commands.*;
-
-import matsu.num.statistics.kdeapp.command.ComponentConstructor;
-import matsu.num.statistics.kdeapp.command.ConsoleParameters;
+import matsu.num.statistics.kdeapp.comp.ResolverContainer;
 import matsu.num.statistics.kdeapp.kde2d.task.ResultFileWriter;
 import matsu.num.statistics.kdeapp.kde2d.task.ResultWriter;
 
@@ -22,7 +19,7 @@ import matsu.num.statistics.kdeapp.kde2d.task.ResultWriter;
  * 
  * @author Matsuura Y.
  */
-final class FileWriterConstructor implements ComponentConstructor<ResultWriter> {
+final class FileWriterConstructor {
 
     /**
      * 唯一のコンストラクタ.
@@ -33,49 +30,7 @@ final class FileWriterConstructor implements ComponentConstructor<ResultWriter> 
     /**
      * @throws NullPointerException {@inheritDoc }
      */
-    @Override
-    public ResultWriter apply(ConsoleParameters interpreter) {
-
-        WriterContainer container = new WriterContainer();
-
-        /*
-         * この2個の出力はコンソールパラメータの解釈時に排他検証されているので,
-         * ここは else 処理しなくてよい.
-         */
-        interpreter.valueOf(OUTPUT_FORCE_FILE_PATH)
-                .map(ResultFileWriter::forceWriter)
-                .ifPresent(container::add);
-        interpreter.valueOf(OUTPUT_FILE_PATH)
-                .map(ResultFileWriter::regularWriter)
-                .ifPresent(container::add);
-
-        return container.get();
-    }
-
-    /**
-     * {@link ResultWriter} の可変コンテナ.
-     */
-    private static final class WriterContainer {
-
-        private ResultWriter element;
-
-        /**
-         * 唯一のコンストラクタ.
-         * 内部のライター要素はnullWriterで初期化される.
-         */
-        WriterContainer() {
-            element = ResultWriter.nullWriter();
-        }
-
-        /**
-         * @throws NullPointerException 引数がnullの場合
-         */
-        void add(ResultWriter writer) {
-            element = element.andThen(writer);
-        }
-
-        ResultWriter get() {
-            return element;
-        }
+    ResultWriter apply(ResolverContainer property) {
+        return property.require(Resolvers.OUTPUT_FILE_WRITER);
     }
 }
