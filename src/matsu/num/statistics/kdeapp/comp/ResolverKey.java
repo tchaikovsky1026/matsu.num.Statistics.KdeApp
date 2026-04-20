@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.4.13
+ * 2026.4.18
  */
 package matsu.num.statistics.kdeapp.comp;
 
@@ -40,7 +40,9 @@ public final class ResolverKey<T> {
     }
 
     /**
-     * 安全に T 型にキャストする.
+     * 安全に T 型にキャストする. <br>
+     * {@code null} を渡してもよい
+     * ({@code null} が返る).
      * 
      * @param valueObj キャストするインスタンス
      * @return キャストされたobj

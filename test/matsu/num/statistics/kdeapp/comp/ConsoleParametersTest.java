@@ -11,7 +11,6 @@ import static matsu.num.statistics.kdeapp.comp.DummyCommandListForTesting.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.junit.Before;
@@ -26,6 +25,7 @@ import org.junit.runner.RunWith;
 
 import matsu.num.statistics.kdeapp.base.DummySupplierForTesting;
 import matsu.num.statistics.kdeapp.exception.IllegalParameterException;
+import matsu.num.statistics.kdeapp.exception.ProgrammingBugException;
 
 /**
  * {@link ConsoleParameters} のテスト.
@@ -149,17 +149,17 @@ final class ConsoleParametersTest {
 
         @Test(expected = None.class)
         public void test_d1は設定ずみ() {
-            property.get(DUMMY_1);
+            property.require(DUMMY_1);
         }
 
         @Test(expected = None.class)
         public void test_d2は設定ずみ() {
-            property.get(DUMMY_2);
+            property.require(DUMMY_2);
         }
 
-        @Test(expected = NoSuchElementException.class)
+        @Test(expected = ProgrammingBugException.class)
         public void test_d3は設定されていない() {
-            property.get(DUMMY_3);
+            property.require(DUMMY_3);
         }
     }
 }

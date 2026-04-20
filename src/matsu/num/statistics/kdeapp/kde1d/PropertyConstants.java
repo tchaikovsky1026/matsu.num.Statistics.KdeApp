@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.4.8
+ * 2026.4.20
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -79,32 +79,33 @@ public final class PropertyConstants {
         set.add(
                 ResolverDesign.of(
                         Resolvers.ECHO, Set.of(ECHO),
-                        p -> p.convertOrThrow(ECHO, echo -> switch (echo) {
-                            case "on" -> EchoPrinter.ON;
-                            case "off" -> EchoPrinter.OFF;
-                            default -> throw new IllegalArgumentException("echo");
-                        })));
+                        p -> p.find(ECHO)
+                                .map(echo -> switch (echo) {
+                                    case "on" -> EchoPrinter.ON;
+                                    case "off" -> EchoPrinter.OFF;
+                                    default -> throw new IllegalArgumentException("unknown echo");
+                                }).get()));
 
         // InputCommentPrefixDesign
         set.add(
                 ResolverDesign.of(
                         Resolvers.INPUT_COMMENT_PREFIX, Set.of(INPUT_COMMENT_PREFIX),
-                        p -> p.convertOrThrow(INPUT_COMMENT_PREFIX, CommentPrefix::of)));
+                        p -> p.find(INPUT_COMMENT_PREFIX).map(CommentPrefix::of).get()));
 
         // OutputSeparatorDesign
         set.add(
                 ResolverDesign.of(
                         Resolvers.OUTPUT_SEPARATOR, Set.of(OUTPUT_SEPARATOR),
-                        p -> p.convertOrThrow(OUTPUT_SEPARATOR, Separator::from)));
+                        p -> p.find(OUTPUT_SEPARATOR).map(Separator::from).get()));
 
         // OutputLabelPrefixSettingDesign
         set.add(
                 ResolverDesign.of(
                         Resolvers.OUTPUT_LABEL_PREFIX_SETTING,
                         Set.of(OUTPUT_LABEL, OUTPUT_LABEL_PREFIX),
-                        p -> switch (p.getOrThrow(OUTPUT_LABEL)) {
+                        p -> switch (p.find(OUTPUT_LABEL).get()) {
                             case "disabled" -> LabelPrefixSetting.disable();
-                            case "enabled" -> LabelPrefixSetting.enable(p.getOrThrow(OUTPUT_LABEL_PREFIX));
+                            case "enabled" -> LabelPrefixSetting.enable(p.find(OUTPUT_LABEL_PREFIX).get());
                             default -> throw new IllegalArgumentException("output.label");
                         }));
 

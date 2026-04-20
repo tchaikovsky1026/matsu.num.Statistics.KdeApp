@@ -6,14 +6,15 @@
  */
 
 /*
- * 2026.4.13
+ * 2026.4.20
  */
 package matsu.num.statistics.kdeapp.comp;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Objects;
+
+import matsu.num.statistics.kdeapp.exception.ProgrammingBugException;
 
 /**
  * Resolver のコンテナ: {@link ResolverKey} から値へのマップを扱う.
@@ -29,20 +30,37 @@ public final class ResolverContainer {
     }
 
     /**
-     * キーに対する値を返す.
+     * キーに対する値を含むコンテナを返す. <br>
+     * キーが登録されていない場合は空が返る.
+     * 
+     * @param <T> value type
+     * @param key key
+     * @return 登録されている値, 登録されていない場合は空
+     * @throws NullPointerException 引数がnull
+     */
+    public <T> LookupResult<T> find(ResolverKey<? extends T> key) {
+        return LookupResult.ofNullable(key, key.cast(map.get(key)));
+    }
+
+    /**
+     * キーが登録されていることを確信している場合について,
+     * キーに対応する値を返す.
+     * 
+     * <p>
+     * キーが登録されていない場合はプログラム上のバグであるので,
+     * {@link ProgrammingBugException} をスローする.
+     * </p>
      * 
      * @param <T> value type
      * @param key key
      * @return 登録されている値
-     * @throws NoSuchElementException キーが登録されていない場合
-     * @throws NullPointerException 引数がnull
+     * @throws ProgrammingBugException キーが登録されていない場合
+     * @throws NullPointerException 引数がnullの場合
      */
-    public <T> T get(ResolverKey<? extends T> key) {
-        T out = key.cast(map.get(Objects.requireNonNull(key)));
-        if (Objects.isNull(out)) {
-            throw new NoSuchElementException("no value of " + key);
-        }
-        return out;
+    public <T> T require(
+            ResolverKey<? extends T> key) {
+        return find(key).getOrThrow(
+                ProgrammingBugException::new);
     }
 
     /**

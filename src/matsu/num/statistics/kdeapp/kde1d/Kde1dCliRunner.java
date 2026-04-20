@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.4.13
+ * 2026.4.18
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -98,7 +98,7 @@ final class Kde1dCliRunner {
         ResolverContainer config;
         try {
             java.util.Properties p = commands.withDefaults(Resolvers.DEFAULT_RESOLVERS)
-                    .get(Resolvers.CONFIG) // throws NoSuchElementException: スローされないはず
+                    .require(Resolvers.CONFIG)
                     .compute(); // throws IllegalStateException
             config = new StandardPropertyToResolvers(
                     PropertyConstants.getPropertyKeys(), PropertyConstants.RESOLVER_DESIGNS)

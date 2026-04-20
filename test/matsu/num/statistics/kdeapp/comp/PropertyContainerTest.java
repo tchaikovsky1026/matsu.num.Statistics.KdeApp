@@ -117,8 +117,8 @@ final class PropertyContainerTest {
                 ResolverDesign.of(
                         rKey, Set.of(pKey1, pKey2),
                         map -> {
-                            String p1 = map.getOrThrow(pKey1);
-                            String p2 = map.getOrThrow(pKey2);
+                            String p1 = map.find(pKey1).get();
+                            String p2 = map.find(pKey2).get();
                             return sf.apply(p1, p2);
                         });
 
@@ -153,7 +153,7 @@ final class PropertyContainerTest {
             var container = builder.build();
 
             String result = container.toResolvers(Set.of(design))
-                    .get(rKey)
+                    .require(rKey)
                     .toString();
             String expected = sf.apply(s1, s2);
             assertThat(result, is(expected));

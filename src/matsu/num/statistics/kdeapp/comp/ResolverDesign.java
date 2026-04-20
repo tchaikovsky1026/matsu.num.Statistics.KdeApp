@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.4.13
+ * 2026.4.20
  */
 package matsu.num.statistics.kdeapp.comp;
 
@@ -94,7 +94,7 @@ public final class ResolverDesign<T> {
      * (Resolver の構築を試みない). <br>
      * 1個以上含む場合は構築を試みる. <br>
      * 構築に失敗した場合 (プロパティが不足, あるいはプロパティの値が不正の場合),
-     * 例外をスローする.
+     * 例外 ({@link IllegalArgumentException}) をスローする.
      * </p>
      * 
      * @param properties プロパティリスト
@@ -105,8 +105,11 @@ public final class ResolverDesign<T> {
     Optional<T> compute(PropertyContainer properties) {
         if (triggers.stream().anyMatch(
                 key -> properties.contains(key))) {
-            return Optional.of(
-                    computer.apply(properties));
+            try {
+                return Optional.of(computer.apply(properties));
+            } catch (RuntimeException e) {
+                throw new IllegalArgumentException(e.getMessage());
+            }
         } else {
             return Optional.empty();
         }
@@ -122,10 +125,9 @@ public final class ResolverDesign<T> {
      * <p>
      * 設計図の構築のための関数 (computer) についての契約は次である. <br>
      * 必要な Property value がそろっていない場合や {@link PropertyKey} に対する値が不正の場合,
-     * {@link IllegalArgumentException} をスローするようにする. <br>
+     * {@link RuntimeException} のサブタイプをスローするようにする. <br>
      * {@link PropertyKey} に対する値の {@code null} チェックは不要である. <br>
-     * スローした {@link IllegalArgumentException} には,
-     * メッセージを整備すること.
+     * スローした {@link RuntimeException} には, メッセージを整備すること.
      * </p>
      * 
      * @param <T> Resolver の型
