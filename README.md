@@ -372,8 +372,8 @@ configの詳細は後述する.
 ```
 
 #### Config
-`kde1d` 用のconfigは, `root` ディレクトリ直下に `kde1d-config.properties` ファイルを配置する.  
-`kde1d-config.properties` は `java.util.Properties` の形式で UTF-8 で作成する.  
+`kde2d` 用のconfigは, `root` ディレクトリ直下に `kde2d-config.properties` ファイルを配置する.  
+`kde2d-config.properties` は `java.util.Properties` の形式で UTF-8 で作成する.  
 扱えるプロパティは次である.
 
 - `echo`  
