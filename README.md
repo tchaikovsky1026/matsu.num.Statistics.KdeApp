@@ -1,7 +1,7 @@
 # matsu.num.Statistics.KdeApp
 `matsu.num.Statistics.KdeApp` は Java 言語でカーネル密度推定を実行する App を提供する.  
 API ではないが, Semantic Versioning と類似したバージョン付与を行う.  
-現在はバージョン `1.0.0` であり, Java 17 に準拠する.
+現在はバージョン `1.1.0` であり, Java 17 に準拠する.
 
 ## Dependency
 このソフトウェアは次のモジュールを要求する.
