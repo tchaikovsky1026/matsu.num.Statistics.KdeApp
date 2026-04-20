@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.4.18
+ * 2026.4.20
  */
 package matsu.num.statistics.kdeapp.comp;
 
@@ -92,6 +92,21 @@ public final class LookupResult<V> {
 
     /**
      * コンテナが持つ値を取得する. <br>
+     * 空の場合は例外 ({@link IllegalStateException}) がスローされる.
+     * 
+     * <p>
+     * このメソッドは, {@link #getOrThrow(Function)} の例外型固定版である.
+     * </p>
+     * 
+     * @return コンテナが持つ値
+     * @throws IllegalStateException 空の場合
+     */
+    public V get() {
+        return getOrThrow(IllegalStateException::new);
+    }
+
+    /**
+     * コンテナが持つ値を取得する. <br>
      * 空の場合は例外がスローされる.
      * 
      * <p>
@@ -100,7 +115,6 @@ public final class LookupResult<V> {
      * 例外メッセージを例外インスタンスに変換する関数である. <br>
      * 次のような実装を与えればよい. <br>
      * {@code s -> new Exception(s)} <br>
-     * {@code Exception::new} <br>
      * {@code null} を返してはならない.
      * </p>
      * 
@@ -132,12 +146,36 @@ public final class LookupResult<V> {
      * 変換に失敗した場合は例外をスローする.
      * 
      * <p>
+     * このメソッドは, {@link #mapOrThrow(Function, Function)} の例外型固定版である.
+     * </p>
+     * 
+     * @param <V2> 変換後の型
+     * @param mapper 値の変換器
+     * @return 変換後の値を持つコンテナ, 自身が空の場合は空
+     * @throws IllegalStateException 変換に失敗した場合
+     * @throws NullPointerException 引数が null の場合,
+     *             Function が null を生成した場合
+     *             (常にではない)
+     */
+    public <V2> LookupResult<V2> map(
+            Function<? super V, ? extends V2> mapper) {
+        return mapOrThrow(mapper, IllegalStateException::new);
+    }
+
+    /**
+     * コンテナが持つ値を mapper で変換した結果を, 新しいコンテナとして返す. <br>
+     * コンテナが空の場合は空が返る. <br>
+     * 変換に失敗した場合は例外をスローする.
+     * 
+     * <p>
      * 変換 {@code mapper:Function} を適用したときに例外
      * ({@link RuntimeException}) をスローした場合,
      * 例外生成器 ({@code exFactoryIfFailed}) により例外翻訳を行う. <br>
+     * 元の例外のメッセージは無視され,
+     * 翻訳された例外のメッセージはおそらく次のようなものだろう. <br>
+     * {@code "Unexpected value: [<key>: <value>]"} <br>
      * 例外生成器には次のような実装を与えればよい. <br>
      * {@code s -> new Exception(s)} <br>
-     * {@code Exception::new} <br>
      * {@code mapper},
      * {@code exFactoryIfFailed}
      * は {@code null} を返してはならない.
