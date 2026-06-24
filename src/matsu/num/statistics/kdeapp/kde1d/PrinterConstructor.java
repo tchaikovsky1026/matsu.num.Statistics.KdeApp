@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.4.18
+ * 2026.6.24
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -41,7 +41,7 @@ final class PrinterConstructor {
     }
 
     /**
-     * @throws NullPointerException {@inheritDoc }
+     * @throws NullPointerException 引数がnull
      */
     ResultWriter apply(ResolverContainer property) {
         return property.require(Resolvers.ECHO).get(out, err);

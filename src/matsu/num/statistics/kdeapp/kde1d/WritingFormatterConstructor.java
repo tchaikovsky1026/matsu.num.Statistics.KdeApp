@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.4.18
+ * 2026.6.24
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -36,7 +36,7 @@ final class WritingFormatterConstructor {
     }
 
     /**
-     * @throws NullPointerException {@inheritDoc }
+     * @throws NullPointerException 引数がnull
      */
     WritingFormatter apply(ResolverContainer property) {
         var builder = new XyTypeFormatterBuilder(property.require(OUTPUT_SEPARATOR));

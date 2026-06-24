@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.4.18
+ * 2026.6.24
  */
 package matsu.num.statistics.kdeapp.kde2d;
 
@@ -30,7 +30,7 @@ final class FormatterConstructor {
     }
 
     /**
-     * @throws NullPointerException {@inheritDoc }
+     * @throws NullPointerException 引数がnull
      */
     WritingFormatter apply(ResolverContainer property) {
         Separator separator = property.require(OUTPUT_SEPARATOR);

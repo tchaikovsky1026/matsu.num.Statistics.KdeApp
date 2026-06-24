@@ -6,7 +6,7 @@
  */
 
 /*
- * 2026.4.18
+ * 2026.6.24
  */
 package matsu.num.statistics.kdeapp.kde1d;
 
@@ -42,7 +42,7 @@ final class SourceReaderConstructor {
     }
 
     /**
-     * @throws NullPointerException {@inheritDoc }
+     * @throws NullPointerException 引数がnull
      */
     Kde1dSourceReader apply(ResolverContainer property) {
         Path path = property.require(INPUT_FILE_PATH);
